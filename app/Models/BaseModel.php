@@ -26,29 +26,17 @@ class BaseModel extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'deleted_at' => 'datetime',
+            'deleted_at'   => 'datetime',
             'published_at' => 'datetime',
         ];
     }
 
-    /**
-     * Fill the model with an array of attributes.
-     *
-     * @return $this
-     *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     */
     public function fill(array $attributes)
     {
-        unset($attributes['_token']);
-        unset($attributes['_method']);
-
+        unset($attributes['_token'], $attributes['_method']);
         return parent::fill($attributes);
     }
 
-    /**
-     * Create Converted copies of uploaded images.
-     */
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
@@ -69,143 +57,119 @@ class BaseModel extends Model implements HasMedia
      */
     public function getTableColumns()
     {
-        $table_name = DB::getTablePrefix().$this->getTable();
+        $table_name = DB::getTablePrefix() . $this->getTable();
 
         switch (config('database.default')) {
             case 'sqlite':
                 $columns = DB::select("PRAGMA table_info({$table_name});");
                 break;
+
             case 'mysql':
             case 'mariadb':
-                $columns = DB::select('SHOW COLUMNS FROM '.$table_name);
+                $columns = DB::select('SHOW COLUMNS FROM ' . $table_name);
                 $columns = array_map(function ($column) {
                     return [
-                        'name' => $column->Field,
-                        'type' => $column->Type,
+                        'name'    => $column->Field,
+                        'type'    => $column->Type,
                         'notnull' => $column->Null,
-                        'key' => $column->Key,
+                        'key'     => $column->Key,
                         'default' => $column->Default,
-                        'extra' => $column->Extra,
+                        'extra'   => $column->Extra,
                     ];
                 }, $columns);
                 break;
+
             case 'pgsql':
-                $columns = DB::select("SELECT column_name as `Field`, data_type as `Type` FROM information_schema.columns WHERE table_name = '{$table_name}';");
+                $columns = DB::select("
+                    SELECT 
+                        column_name,
+                        data_type,
+                        is_nullable,
+                        column_default
+                    FROM information_schema.columns 
+                    WHERE table_name = '{$table_name}'
+                      AND table_schema = 'public';
+                ");
+
+                $columns = array_map(function ($column) {
+                    return [
+                        'name'    => $column->column_name,
+                        'type'    => $column->data_type,
+                        'notnull' => $column->is_nullable === 'NO' ? 'NO' : 'YES',
+                        'key'     => '', // can be extended with pg_constraint if needed
+                        'default' => $column->column_default,
+                        'extra'   => '',
+                    ];
+                }, $columns);
                 break;
 
             default:
-                // code...
+                $columns = [];
                 break;
         }
 
         return json_decode(json_encode($columns));
     }
 
-    /**
-     * Get Status Label.
-     */
     public function getStatusLabelAttribute()
     {
-        $return_string = '';
-
         switch ($this->attributes['status']) {
             case '0':
-                $return_string = '<span class="badge bg-danger">Inactive</span>';
-                break;
-
+                return '<span class="badge bg-danger">Inactive</span>';
             case '1':
-                $return_string = '<span class="badge bg-success">Active</span>';
-                break;
-
+                return '<span class="badge bg-success">Active</span>';
             case '2':
-                $return_string = '<span class="badge bg-warning text-dark">Pending</span>';
-                break;
-
+                return '<span class="badge bg-warning text-dark">Pending</span>';
             default:
-                $return_string = '<span class="badge bg-primary">Status:'.$this->status.'</span>';
-                break;
+                return '<span class="badge bg-primary">Status:' . $this->status . '</span>';
         }
-
-        return $return_string;
     }
 
-    /**
-     * Get Status Label as text.
-     */
     public function getStatusLabelTextAttribute()
     {
-        $return_string = '';
-
         switch ($this->attributes['status']) {
             case '0':
-                $return_string = 'Inactive';
-                break;
-
+                return 'Inactive';
             case '1':
-                $return_string = 'Active';
-                break;
-
+                return 'Active';
             case '2':
-                $return_string = 'Pending';
-                break;
-
+                return 'Pending';
             default:
-                $return_string = $this->status;
-                break;
+                return $this->status;
         }
-
-        return $return_string;
     }
 
-    /**
-     * Set the 'Slug'.
-     * If no value submitted 'Name' will be used as slug
-     * str_slug helper method was used to format the text.
-     */
     public function setSlugAttribute($value)
     {
         $this->attributes['slug'] = slug_format(trim($value));
-
         if (empty($value)) {
             $this->attributes['slug'] = slug_format(trim($this->attributes['name']));
         }
     }
 
-    /**
-     * Boot the model and attach event listeners.
-     *
-     * @return void
-     */
     protected static function boot()
     {
         parent::boot();
 
-        // create a event to happen on creating
         static::creating(function ($table) {
             $table->created_by = Auth::id();
             $table->created_at = Carbon::now();
         });
 
-        // create a event to happen on updating
         static::updating(function ($table) {
             $table->updated_by = Auth::id();
         });
 
-        // create a event to happen on saving
         static::saving(function ($table) {
             $table->updated_by = Auth::id();
         });
 
-        // create a event to happen on deleting
         static::deleting(function ($table) {
             $table->deleted_by = Auth::id();
             $table->save();
         });
     }
 
-    /**
-     * Scope a query to only include active models.
-     */
     public function scopeActive(Builder $query): void
     {
         $query->where('status', '=', 1);
