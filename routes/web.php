@@ -144,6 +144,15 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
     Route::resource("{$module_name}", BackendUserController::class);
 });
 
+// Public/student-facing lessons page
+Route::middleware(['auth'])->group(function () {
+    Route::get('/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
+        ->name('lessons.index');
+    // Minimal profile routes used by the navigation
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 /**
  * File Manager Routes.
  */

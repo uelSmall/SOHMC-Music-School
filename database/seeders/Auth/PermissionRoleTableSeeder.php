@@ -29,13 +29,10 @@ class PermissionRoleTableSeeder extends Seeder
         $admin = Role::create(['id' => '2', 'name' => 'administrator']);
         $admin->givePermissionTo(['view_backend', 'edit_settings']);
 
-        $manager = Role::create(['id' => '3', 'name' => 'manager']);
-        $manager->givePermissionTo('view_backend');
+        $teacher = Role::create(['id' => '3', 'name' => 'teacher']);
+        $teacher->givePermissionTo('view_backend');
 
-        $executive = Role::create(['id' => '4', 'name' => 'executive']);
-        $executive->givePermissionTo('view_backend');
-
-        $user = Role::create(['id' => '5', 'name' => 'user']);
+        $student = Role::create(['id' => '4', 'name' => 'student']);
     }
 
     public function CreateDefaultPermissions()

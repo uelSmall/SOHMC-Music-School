@@ -20,7 +20,11 @@ class DatabaseSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
 
         // Always run essential seeders
-        $this->call(AuthTableSeeder::class);
+        $this->call([
+            AuthTableSeeder::class,
+            UserSeeder::class,
+            LessonSeeder::class,
+        ]);
 
         // Always run Menu seeder (essential for navigation)
         $this->callEssentialModuleSeeders();
