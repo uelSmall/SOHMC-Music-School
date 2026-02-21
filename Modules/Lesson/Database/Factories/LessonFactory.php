@@ -13,6 +13,8 @@ class LessonFactory extends Factory
 
     public function definition(): array
     {
+        $instruments = ['piano', 'guitar', 'vocals', 'percussion', null];
+
         return [
             'title' => $this->faker->sentence(4),
             'slug' => $this->faker->slug(),
@@ -23,6 +25,7 @@ class LessonFactory extends Factory
             'order' => $this->faker->numberBetween(1, 100),
             'teacher_id' => User::factory(),
             'file_path' => null,
+            'instrument' => $this->faker->randomElement($instruments),
         ];
     }
 
@@ -54,6 +57,13 @@ class LessonFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'file_path' => 'lessons/' . $this->faker->uuid() . '.pdf',
+        ]);
+    }
+
+    public function withInstrument(string $instrument): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'instrument' => $instrument,
         ]);
     }
 }

@@ -75,7 +75,10 @@ class UserTableSeeder extends Seeder
         ];
 
         foreach ($users as $user_data) {
-            $user = User::create($user_data);
+            $user = User::firstOrCreate(
+                ['email' => $user_data['email']],
+                $user_data
+            );
 
             event(new UserCreated($user));
         }

@@ -68,8 +68,12 @@ class MenuDataCommand extends Command
 
         $this->info('Seeding menus and menu items from PHP data...');
 
-        // Disable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Disable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = replica;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        }
 
         // Truncate existing data
         MenuItem::truncate();
@@ -114,8 +118,12 @@ class MenuDataCommand extends Command
         $itemBar->finish();
         $this->newLine();
 
-        // Re-enable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // Re-enable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = DEFAULT;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
 
         $this->info('Menu data seeded successfully from PHP files!');
 
@@ -177,8 +185,12 @@ class MenuDataCommand extends Command
 
         $this->info('Resetting menu data...');
 
-        // Disable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Disable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = replica;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        }
 
         // Truncate all menu data
         $itemCount = MenuItem::count();
@@ -187,8 +199,12 @@ class MenuDataCommand extends Command
         MenuItem::truncate();
         Menu::truncate();
 
-        // Re-enable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // Re-enable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = DEFAULT;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
 
         $this->info("Reset complete! Deleted {$menuCount} menus and {$itemCount} menu items.");
 

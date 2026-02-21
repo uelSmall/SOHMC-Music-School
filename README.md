@@ -43,10 +43,29 @@ php artisan serve
 ## Where To Look
 
 - Lesson model & relations: [Modules/Lesson/Models/Lesson.php](Modules/Lesson/Models/Lesson.php)
-- Backend Livewire components: [app/Livewire/Backend/Lessons](app/Livewire/Backend/Lessons)
+- Assignment model & logic: [Modules/Lesson/Models/LessonStudentAssignment.php](Modules/Lesson/Models/LessonStudentAssignment.php)
+- Backend Livewire components: [app/Livewire/Backend/Lessons](app/Livewire/Backend/Lessons), [app/Livewire/Backend/Assignments](app/Livewire/Backend/Assignments)
+- Frontend Livewire components: [app/Livewire/Frontend/Lessons](app/Livewire/Frontend/Lessons)
 - Student-facing controller & view: [app/Http/Controllers/LessonController.php](app/Http/Controllers/LessonController.php), [resources/views/lessons/index.blade.php](resources/views/lessons/index.blade.php)
 - Seeders: [database/seeders](database/seeders) (RoleSeeder, UserSeeder, LessonSeeder)
 - Project docs: [docs/PROJECT_SUMMARY.md](docs/PROJECT_SUMMARY.md)
+- Feature guide: [docs/FEATURES_GUIDE.md](docs/FEATURES_GUIDE.md)
+
+## Key Features
+
+✅ **Assignment Tracking** - Track which lessons students are assigned with status (assigned, started, in_progress, completed)  
+✅ **Instrument Grouping** - Lessons organized by instrument (piano, guitar, vocals, percussion)  
+✅ **Search & Filtering** - Reactive Livewire search and filters for lessons and assignments  
+✅ **Progress Tracking** - Color-coded status badges and progress dashboard  
+✅ **Teacher Dashboard** - Assign lessons, monitor progress, update status  
+✅ **Student Dashboard** - View assigned lessons, update progress, filter by status  
+✅ **Modern UX** - TailwindCSS cards, tabs, badges, and modals  
+
+## Key Routes
+
+- **Student Lessons**: `GET /lessons` - Search, filter, and view assigned lessons
+- **Teacher Dashboard**: `GET /admin/assignments` - Manage and monitor student assignments
+- **Admin Lessons**: `GET /admin/lessons` - Create/edit/publish lessons (Livewire)
 
 ## Next Improvements (tracked in TODO)
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Lesson\Database\Factories\LessonFactory;
 use Modules\Lesson\Enums\LessonStatus;
 use Spatie\Activitylog\LogOptions;
@@ -33,6 +34,7 @@ class Lesson extends BaseModel
         'order',
         'teacher_id',
         'file_path',
+        'instrument',
         'created_by',
         'updated_by',
     ];
@@ -68,6 +70,11 @@ class Lesson extends BaseModel
     {
         return $this->belongsToMany(User::class, 'lesson_student', 'lesson_id', 'student_id')
             ->withTimestamps();
+    }
+
+    public function assignedStudents(): HasMany
+    {
+        return $this->hasMany(LessonStudentAssignment::class, 'lesson_id');
     }
 
     public function scopePublished($query)

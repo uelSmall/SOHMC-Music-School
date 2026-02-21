@@ -18,8 +18,8 @@ class UserRoleTableSeeder extends Seeder
      */
     public function run()
     {
-        User::findOrFail(1)->assignRole('super admin');
-        User::findOrFail(2)->assignRole('administrator');
+        User::findOrFail(1)->syncRoles('super admin');
+        User::findOrFail(2)->syncRoles('administrator');
 
         Artisan::call('cache:clear');
     }

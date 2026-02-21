@@ -148,6 +148,12 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
 Route::middleware(['auth'])->group(function () {
     Route::get('/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
         ->name('lessons.index');
+    
+    // Teacher/admin assignments dashboard
+    Route::get('/admin/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
+        ->name('backend.assignments.index')
+        ->middleware('can:view_backend');
+    
     // Minimal profile routes used by the navigation
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

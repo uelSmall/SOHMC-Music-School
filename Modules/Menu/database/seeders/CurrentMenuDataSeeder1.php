@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Models\MenuItem;
 
-class CurrentMenuDataSeeder extends Seeder
+class CurrentMenuDataSeeder1 extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,6 +24,7 @@ class CurrentMenuDataSeeder extends Seeder
             } else {
                 echo $message.PHP_EOL;
             }
+
             return;
         }
 
@@ -40,6 +41,10 @@ class CurrentMenuDataSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
+        // Truncate existing data
+        MenuItem::truncate();
+        Menu::truncate();
+
         $allMenus = [];
         $allMenuItems = [];
 
@@ -54,20 +59,14 @@ class CurrentMenuDataSeeder extends Seeder
             }
         }
 
-        // Seed menus safely
+        // Seed menus
         foreach ($allMenus as $menuData) {
-            Menu::updateOrCreate(
-                ['slug' => $menuData['slug']], // unique key
-                $menuData
-            );
+            Menu::create($menuData);
         }
 
-        // Seed menu items safely
+        // Seed menu items
         foreach ($allMenuItems as $itemData) {
-            MenuItem::updateOrCreate(
-                ['slug' => $itemData['slug'], 'menu_id' => $itemData['menu_id']], // composite unique key
-                $itemData
-            );
+            MenuItem::create($itemData);
         }
 
         // Re-enable foreign key constraints (database-specific)

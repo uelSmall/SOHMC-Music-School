@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Lesson\Models\LessonStudentAssignment;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -63,6 +64,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function providers(): HasMany
     {
         return $this->hasMany(UserProvider::class);
+    }
+
+    /**
+     * Get lesson assignments for a student.
+     */
+    public function assignedLessons(): HasMany
+    {
+        return $this->hasMany(LessonStudentAssignment::class, 'student_id');
     }
 
     /**

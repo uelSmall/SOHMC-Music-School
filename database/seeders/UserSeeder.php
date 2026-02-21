@@ -12,9 +12,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $users = [
-            // Super Admin (ID 1 - already exists from AuthTableSeeder)
+            // Super Admin
             [
-                'id' => 1,
                 'username' => '100001',
                 'first_name' => 'Super',
                 'last_name' => 'Admin',
@@ -22,12 +21,9 @@ class UserSeeder extends Seeder
                 'email' => 'super@admin.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
-            // Admin (ID 2 - already exists from AuthTableSeeder)
+            // Admin
             [
-                'id' => 2,
                 'username' => '100002',
                 'first_name' => 'Admin',
                 'last_name' => 'User',
@@ -35,12 +31,9 @@ class UserSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
-            // Teachers (IDs 6-7)
+            // Teachers
             [
-                'id' => 6,
                 'username' => '100006',
                 'first_name' => 'John',
                 'last_name' => 'Smith',
@@ -48,11 +41,8 @@ class UserSeeder extends Seeder
                 'email' => 'teacher1@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
             [
-                'id' => 7,
                 'username' => '100007',
                 'first_name' => 'Jane',
                 'last_name' => 'Doe',
@@ -60,12 +50,9 @@ class UserSeeder extends Seeder
                 'email' => 'teacher2@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
-            // Students (IDs 8-10)
+            // Students
             [
-                'id' => 8,
                 'username' => '100008',
                 'first_name' => 'Alice',
                 'last_name' => 'Johnson',
@@ -73,11 +60,8 @@ class UserSeeder extends Seeder
                 'email' => 'student1@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
             [
-                'id' => 9,
                 'username' => '100009',
                 'first_name' => 'Bob',
                 'last_name' => 'Williams',
@@ -85,11 +69,8 @@ class UserSeeder extends Seeder
                 'email' => 'student2@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
             [
-                'id' => 10,
                 'username' => '100010',
                 'first_name' => 'Carol',
                 'last_name' => 'Brown',
@@ -97,14 +78,12 @@ class UserSeeder extends Seeder
                 'email' => 'student3@example.com',
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
         ];
 
         foreach ($users as $user_data) {
             $user = User::updateOrCreate(
-                ['email' => $user_data['email']],
+                ['email' => $user_data['email']], // unique key
                 $user_data
             );
 
@@ -116,7 +95,6 @@ class UserSeeder extends Seeder
             } elseif (str_contains($user_data['email'], 'student')) {
                 $user->syncRoles(['student']);
             } elseif (str_contains($user_data['email'], 'admin')) {
-                // Admins get appropriate roles based on context
                 if ($user_data['email'] === 'super@admin.com') {
                     $user->syncRoles(['super admin']);
                 } else {
@@ -126,7 +104,3 @@ class UserSeeder extends Seeder
         }
     }
 }
-
-
-
-
