@@ -7,7 +7,6 @@ use Livewire\Attributes\State;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Lesson\Models\Lesson;
-use Modules\Lesson\Models\LessonStudentAssignment;
 
 class LessonSearch extends Component
 {
@@ -108,6 +107,17 @@ class LessonSearch extends Component
             'in_progress' => 'In Progress',
             'completed' => 'Completed',
         ];
+    }
+
+    public function progressPercentage(?string $status): int
+    {
+        return match ($status) {
+            'assigned' => 25,
+            'started' => 45,
+            'in_progress' => 70,
+            'completed' => 100,
+            default => 0,
+        };
     }
 
     public function render()
