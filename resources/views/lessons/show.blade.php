@@ -73,7 +73,7 @@
                 </div>
             @endif
 
-            <h2 class="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Lesson Content</h2>
+            <h2 class="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Instructional Notes</h2>
             <div class="prose max-w-none whitespace-pre-line text-gray-800 dark:text-gray-100">
                 {{ $lesson->content }}
             </div>

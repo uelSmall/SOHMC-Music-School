@@ -76,7 +76,26 @@
     <!-- Lessons Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse ($lessons as $lesson)
-            <div class="soh-card overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
+            @php
+                $assignment = null;
+                $cardBorderClass = 'border-gray-200';
+
+                if (auth()->user()->hasRole('student')) {
+                    $assignment = $lesson->assignedStudents
+                        ->where('student_id', auth()->id())
+                        ->first();
+
+                    $cardBorderClass = match($assignment?->status?->value) {
+                        'started' => 'border-blue-300',
+                        'in_progress' => 'border-yellow-300',
+                        'completed' => 'border-green-300',
+                        'assigned' => 'border-gray-300',
+                        default => 'border-gray-200',
+                    };
+                }
+            @endphp
+
+            <div class="soh-card overflow-hidden border-l-4 {{ $cardBorderClass }} transition hover:-translate-y-0.5 hover:shadow-lg">
                 <!-- Lesson Header -->
                 <div class="p-4" style="background:linear-gradient(90deg,#f4ebfb,#f8f8fb);">
                     <h3 class="line-clamp-2 font-semibold text-black">{{ $lesson->title }}</h3>
@@ -97,12 +116,6 @@
 
                     <!-- Assignment Status Badge (if applicable) -->
                     @if (auth()->user()->hasRole('student'))
-                        @php
-                            $assignment = $lesson->assignedStudents
-                                ->where('student_id', auth()->id())
-                                ->first();
-                        @endphp
-
                         @if ($assignment)
                             <div class="mt-3 border-t border-gray-200 pt-3">
                                 @php
@@ -114,11 +127,17 @@
                                     ];
                                     $color = $statusColors[$assignment->status->value] ?? 'gray';
                                 @endphp
-                                <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full
+
+                                <div class="mb-2 text-[11px] font-semibold tracking-wide text-gray-500 uppercase">Status</div>
+                                <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full ring-1 ring-inset
                                     {{ $color === 'gray' ? 'bg-gray-100 text-gray-800' : '' }}
                                     {{ $color === 'blue' ? 'bg-blue-100 text-blue-800' : '' }}
                                     {{ $color === 'yellow' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                     {{ $color === 'green' ? 'bg-green-100 text-green-800' : '' }}
+                                    {{ $color === 'gray' ? 'ring-gray-200' : '' }}
+                                    {{ $color === 'blue' ? 'ring-blue-200' : '' }}
+                                    {{ $color === 'yellow' ? 'ring-yellow-200' : '' }}
+                                    {{ $color === 'green' ? 'ring-green-200' : '' }}
                                 ">
                                     {{ ucfirst(str_replace('_', ' ', $assignment->status->value)) }}
                                 </span>
