@@ -8,8 +8,8 @@
         >
             <img class="soh-brand-image" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
             <span class="soh-brand-wordmark hidden sm:flex">
-                <span class="soh-brand-title">Sounds of Harmony</span>
-                <span class="soh-brand-subtitle">Music Centre</span>
+                <span class="soh-brand-title">SOHMC</span>
+                <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
             </span>
         </a>
         <p class="mx-auto my-6 text-gray-500 sm:w-1/2 dark:text-gray-400">

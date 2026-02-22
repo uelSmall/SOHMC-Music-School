@@ -10,8 +10,8 @@
                     <span class="soh-brand-lockup soh-brand-light mb-2">
                         <x-app-logo-icon />
                         <span class="soh-brand-wordmark">
-                            <span class="soh-brand-title">Sounds of Harmony</span>
-                            <span class="soh-brand-subtitle">Music Centre</span>
+                            <span class="soh-brand-title">SOHMC</span>
+                            <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
                         </span>
                     </span>
                     <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>

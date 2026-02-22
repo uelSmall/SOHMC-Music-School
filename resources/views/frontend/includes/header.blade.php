@@ -15,8 +15,8 @@
         <a class="soh-brand-lockup soh-brand-light" href="/" wire:navigate aria-label="Go to homepage">
             <img class="soh-brand-image" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
             <span class="soh-brand-wordmark hidden sm:flex">
-                <span class="soh-brand-title">Sounds of Harmony</span>
-                <span class="soh-brand-subtitle">Music Centre</span>
+                <span class="soh-brand-title">SOHMC</span>
+                <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
             </span>
         </a>
         <div class="flex items-center justify-end space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
@@ -260,7 +260,24 @@
                                     wire:navigate
                                 >
                                     <div class="inline-flex items-center">
-                                        <i class="fa-solid fa-user-graduate me-2"></i>
+                                        <svg
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard me-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M4 4h6v8h-6z" />
+                                            <path d="M4 16h6v4h-6z" />
+                                            <path d="M14 12h6v8h-6z" />
+                                            <path d="M14 4h6v4h-6z" />
+                                        </svg>
                                         {{ __("Student Dashboard") }}
                                     </div>
                                 </a>

@@ -1,1 +1,1 @@
-<span {{ $attributes->merge(['class' => 'soh-monogram']) }}>SOH</span>
+<span {{ $attributes->merge(['class' => 'soh-monogram']) }}>SOHMC</span>

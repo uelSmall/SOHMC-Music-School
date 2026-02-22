@@ -41,7 +41,7 @@ class Dashboard extends Component
         ];
 
         $upcomingAssignments = (clone $assignmentsQuery)
-            ->with(['lesson:id,title,instrument', 'lesson.teacher:id,name'])
+            ->with(['lesson:id,title,instrument,teacher_id', 'lesson.teacher:id,name'])
             ->whereNotNull('due_date')
             ->whereDate('due_date', '>=', now()->toDateString())
             ->orderBy('due_date')
@@ -49,7 +49,7 @@ class Dashboard extends Component
             ->get();
 
         $nextLesson = (clone $assignmentsQuery)
-            ->with(['lesson:id,title,instrument', 'lesson.teacher:id,name'])
+            ->with(['lesson:id,title,instrument,teacher_id', 'lesson.teacher:id,name'])
             ->whereIn('status', ['assigned', 'started', 'in_progress'])
             ->orderByRaw('CASE WHEN due_date IS NULL THEN 1 ELSE 0 END')
             ->orderBy('due_date')

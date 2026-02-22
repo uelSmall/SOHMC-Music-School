@@ -131,6 +131,24 @@
                             </div>
                         @endif
                     @endif
+
+                    <div class="mt-4 flex items-center gap-2 border-t border-gray-200 pt-3">
+                        <a
+                            href="{{ route('lessons.show', $lesson) }}"
+                            class="inline-flex items-center rounded-md bg-purple-700 px-3 py-2 text-xs font-semibold text-white hover:bg-purple-800"
+                        >
+                            View Lesson
+                        </a>
+
+                        @if ($lesson->file_path)
+                            <a
+                                href="{{ route('lessons.download', $lesson) }}"
+                                class="inline-flex items-center rounded-md border border-purple-700 px-3 py-2 text-xs font-semibold text-purple-700 hover:bg-purple-50"
+                            >
+                                Download Material
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         @empty

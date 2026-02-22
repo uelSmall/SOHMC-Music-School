@@ -180,6 +180,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
         ->name('lessons.index')
         ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}', [\App\Http\Controllers\LessonController::class, 'show'])
+        ->name('lessons.show')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}/download', [\App\Http\Controllers\LessonController::class, 'download'])
+        ->name('lessons.download')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}/preview', [\App\Http\Controllers\LessonController::class, 'preview'])
+        ->name('lessons.preview')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::post('/lessons/{lesson}/start', [\App\Http\Controllers\LessonController::class, 'markAsStarted'])
+        ->name('lessons.mark-started')
+        ->middleware('can:view_assigned_lessons');
     
     // Teacher/admin assignments dashboard
     Route::get('/admin/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)

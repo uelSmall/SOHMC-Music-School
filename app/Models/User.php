@@ -117,7 +117,27 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function hasRole($roles, ?string $guard = null): bool
     {
         if (! static::$useCachedPermissions) {
-            return $this->hasRoleOriginal($roles, $guard);
+            $hasRole = $this->hasRoleOriginal($roles, $guard);
+
+            if ($hasRole) {
+                return true;
+            }
+
+            $roleNames = $this->getRoleNames();
+
+            if (is_string($roles)) {
+                return $roleNames->contains($roles);
+            }
+
+            if (is_array($roles)) {
+                foreach ($roles as $role) {
+                    if (is_string($role) && $roleNames->contains($role)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         $userRoles = $this->roles; // Uses cached accessor
@@ -163,7 +183,21 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function hasPermissionTo($permission, $guardName = null): bool
     {
         if (! static::$useCachedPermissions) {
-            return $this->hasPermissionToOriginal($permission, $guardName);
+            $hasPermission = $this->hasPermissionToOriginal($permission, $guardName);
+
+            if ($hasPermission) {
+                return true;
+            }
+
+            $permissionName = $permission instanceof \Spatie\Permission\Contracts\Permission
+                ? $permission->name
+                : (string) $permission;
+
+            return $this->roles()
+                ->whereHas('permissions', function ($query) use ($permissionName) {
+                    $query->where('name', $permissionName);
+                })
+                ->exists();
         }
 
         $permissionName = $permission instanceof \Spatie\Permission\Contracts\Permission

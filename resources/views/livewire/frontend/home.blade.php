@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('Welcome to Sounds of Harmony Music Centre') }}</h1>
+                <h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('Welcome to SOHMC') }}</h1>
                 <p class="mt-4 text-base text-gray-600 sm:text-lg">{!! setting('app_description') !!}</p>
 
                 <div class="mt-6 flex flex-wrap gap-3">
@@ -43,7 +43,7 @@
 
     <section class="mt-8">
         <h2 class="soh-page-title text-2xl">{{ __('What You Can Do') }}</h2>
-        <p class="soh-page-subtitle">{{ __('Core features built for Sounds of Harmony Music Centre.') }}</p>
+        <p class="soh-page-subtitle">{{ __('Core features built for SOHMC.') }}</p>
 
         <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="soh-card p-5">

@@ -11,8 +11,8 @@
                     <span class="soh-brand-lockup soh-brand-dark">
                         <x-app-logo-icon />
                         <span class="soh-brand-wordmark">
-                            <span class="soh-brand-title">Sounds of Harmony</span>
-                            <span class="soh-brand-subtitle">Music Centre</span>
+                            <span class="soh-brand-title">SOHMC</span>
+                            <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
                         </span>
                     </span>
                 </a>
@@ -34,8 +34,8 @@
                         <span class="soh-brand-lockup soh-brand-light">
                             <x-app-logo-icon />
                             <span class="soh-brand-wordmark">
-                                <span class="soh-brand-title">Sounds of Harmony</span>
-                                <span class="soh-brand-subtitle">Music Centre</span>
+                                <span class="soh-brand-title">SOHMC</span>
+                                <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
                             </span>
                         </span>
 

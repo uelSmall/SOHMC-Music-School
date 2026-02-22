@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Lesson\Models\Lesson;
+use Modules\Lesson\Enums\AssignmentStatus;
 
 class LessonController extends Controller
 {
@@ -38,5 +43,92 @@ class LessonController extends Controller
         });
 
         return view('lessons.index', compact('lessonsByInstrument'));
+    }
+
+    public function show(Lesson $lesson)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        abort_unless($this->canAccessLesson($user, $lesson), 403);
+
+        $lesson->load([
+            'teacher:id,name',
+            'assignedStudents' => function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+            },
+        ]);
+
+        return view('lessons.show', compact('lesson'));
+    }
+
+    public function download(Lesson $lesson): Response
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        abort_unless($this->canAccessLesson($user, $lesson), 403);
+        abort_unless($lesson->file_path, 404);
+        abort_unless(Storage::disk('public')->exists($lesson->file_path), 404);
+
+        $extension = pathinfo($lesson->file_path, PATHINFO_EXTENSION);
+        $filename = Str::slug($lesson->title ?: 'lesson-material');
+        $downloadName = $extension ? "{$filename}.{$extension}" : $filename;
+
+        return Storage::disk('public')->download($lesson->file_path, $downloadName);
+    }
+
+    public function preview(Lesson $lesson)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        abort_unless($this->canAccessLesson($user, $lesson), 403);
+        abort_unless($lesson->file_path, 404);
+        abort_unless(Storage::disk('public')->exists($lesson->file_path), 404);
+
+        return Storage::disk('public')->response($lesson->file_path);
+    }
+
+    public function markAsStarted(Lesson $lesson): RedirectResponse
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        abort_unless($this->canAccessLesson($user, $lesson), 403);
+        abort_unless($user->hasRole('student'), 403);
+
+        $assignment = $lesson->assignedStudents()
+            ->where('student_id', $user->id)
+            ->first();
+
+        abort_unless($assignment, 404);
+
+        if ($assignment->status === AssignmentStatus::Assigned) {
+            $assignment->update(['status' => AssignmentStatus::Started->value]);
+        }
+
+        return redirect()
+            ->route('lessons.show', $lesson)
+            ->with('message', 'Lesson marked as started.');
+    }
+
+    private function canAccessLesson(User $user, Lesson $lesson): bool
+    {
+        if ($user->hasRole('super admin') || $user->hasRole('administrator')) {
+            return true;
+        }
+
+        if ($user->hasRole('teacher')) {
+            return (int) $lesson->teacher_id === (int) $user->id;
+        }
+
+        if ($user->hasRole('student')) {
+            return $lesson->assignedStudents()
+                ->where('student_id', $user->id)
+                ->exists();
+        }
+
+        return false;
     }
 }

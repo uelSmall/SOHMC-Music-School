@@ -13,7 +13,7 @@
             <h1
                 class="mb-6 text-4xl leading-none font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white"
             >
-                {{ __('Welcome to Sounds of Harmony Music Centre') }}
+                {{ __('Welcome to SOHMC') }}
             </h1>
             <p class="mb-10 text-lg font-normal text-gray-500 sm:px-16 sm:text-2xl xl:px-48 dark:text-gray-400">
                 {!! setting("app_description") !!}
@@ -42,7 +42,7 @@
                 </h1>
 
                 <p class="mb-8 leading-relaxed">
-                    {{ __('Key platform capabilities for Sounds of Harmony Music Centre.') }}
+                    {{ __('Key platform capabilities for SOHMC.') }}
                 </p>
             </div>
         </div>

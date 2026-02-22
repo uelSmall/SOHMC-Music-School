@@ -5,8 +5,8 @@
                 <a href="{{ route('dashboard') }}" class="soh-brand soh-brand-lockup soh-brand-dark">
                     <img src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" class="soh-brand-image" />
                     <span class="soh-brand-wordmark hidden md:flex">
-                        <span class="soh-brand-title">Sounds of Harmony</span>
-                        <span class="soh-brand-subtitle">Music Centre</span>
+                        <span class="soh-brand-title">SOHMC</span>
+                        <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
                     </span>
                 </a>
 
