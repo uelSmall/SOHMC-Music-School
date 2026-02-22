@@ -314,13 +314,15 @@ body {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.5rem;
+	min-width: 2.5rem;
+	width: auto;
+	padding-inline: 0.45rem;
 	height: 2.5rem;
 	border-radius: 0.75rem;
 	background: rgba(255, 255, 255, 0.14);
 	border: 1px solid rgba(255, 255, 255, 0.25);
 	color: #fff;
-	font-size: 0.68rem;
+	font-size: 0.58rem;
 	font-weight: 800;
 	letter-spacing: 0.08em;
 }

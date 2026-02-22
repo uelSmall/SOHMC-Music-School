@@ -13,7 +13,7 @@
 
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
         <a class="soh-brand-lockup soh-brand-dark" href="/" wire:navigate aria-label="Go to homepage">
-            <span class="soh-monogram">SOH</span>
+            <span class="soh-monogram sm:hidden">SOHMC</span>
             <span class="soh-brand-wordmark hidden sm:flex">
                 <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
                 <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>

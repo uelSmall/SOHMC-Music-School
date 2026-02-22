@@ -3,7 +3,7 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center gap-4">
                 <a href="{{ route('home') }}" class="soh-brand soh-brand-lockup soh-brand-dark" aria-label="Go to homepage">
-                    <span class="soh-monogram">SOH</span>
+                    <span class="soh-monogram md:hidden">SOHMC</span>
                     <span class="soh-brand-wordmark hidden md:flex">
                         <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
                         <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
@@ -20,7 +20,7 @@
                     @endif
 
                     @if (auth()->user()->hasRole('student'))
-                        <a href="{{ route('student.dashboard') }}" class="soh-nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">Student</a>
+                        <a href="{{ route('student.dashboard') }}" class="soh-nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">Dashboard</a>
                         <a href="{{ route('lessons.index') }}" class="soh-nav-link {{ request()->routeIs('lessons.index') ? 'active' : '' }}">My Lessons</a>
                     @endif
                 </div>
@@ -60,7 +60,7 @@
             @endif
 
             @if (auth()->user()->hasRole('student'))
-                <a href="{{ route('student.dashboard') }}" class="soh-nav-link block">Student Dashboard</a>
+                <a href="{{ route('student.dashboard') }}" class="soh-nav-link block">Dashboard</a>
                 <a href="{{ route('lessons.index') }}" class="soh-nav-link block">My Lessons</a>
             @endif
 
