@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Welcome to {{ app_name() }}</h1>
+                <h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('Welcome to Sounds of Harmony Music Centre') }}</h1>
                 <p class="mt-4 text-base text-gray-600 sm:text-lg">{!! setting('app_description') !!}</p>
 
                 <div class="mt-6 flex flex-wrap gap-3">
@@ -23,9 +23,6 @@
                             @lang('Sign In')
                         </a>
                     @endauth
-                    <a href="{{ route('terms') }}" class="soh-btn-outline" wire:navigate>
-                        @lang('View Terms')
-                    </a>
                 </div>
             </div>
 
@@ -45,21 +42,25 @@
     </section>
 
     <section class="mt-8">
-        <h2 class="soh-page-title text-2xl">{{ __('Platform Preview') }}</h2>
-        <p class="soh-page-subtitle">{{ __('A quick look at key areas of the platform.') }}</p>
+        <h2 class="soh-page-title text-2xl">{{ __('What You Can Do') }}</h2>
+        <p class="soh-page-subtitle">{{ __('Core features built for Sounds of Harmony Music Centre.') }}</p>
 
         <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div class="soh-card p-3 sm:p-4">
-                <img loading="lazy" src="https://github.com/nasirkhan/laravel-starter/assets/396987/1cf5ce5a-f374-4bae-b5a3-69e8d7ff684d" alt="Page preview" />
+            <div class="soh-card p-5">
+                <h3 class="text-lg font-semibold text-gray-900">@lang('Lesson Management')</h3>
+                <p class="mt-2 text-sm text-gray-600">@lang('Organize lessons, assign teachers, and keep content structured by category.')</p>
             </div>
-            <div class="soh-card p-3 sm:p-4">
-                <img loading="lazy" src="https://github.com/nasirkhan/laravel-starter/assets/396987/93341711-60dd-4624-8cd7-82f1c611287d" alt="Page preview" />
+            <div class="soh-card p-5">
+                <h3 class="text-lg font-semibold text-gray-900">@lang('Student Progress')</h3>
+                <p class="mt-2 text-sm text-gray-600">@lang('Track assigned lessons and monitor student completion in one place.')</p>
             </div>
-            <div class="soh-card p-3 sm:p-4">
-                <img loading="lazy" src="https://github.com/nasirkhan/laravel-starter/assets/396987/0f6b8201-6f6a-429f-894b-4e491cc5eba4" alt="Page preview" />
+            <div class="soh-card p-5">
+                <h3 class="text-lg font-semibold text-gray-900">@lang('Role-Based Access')</h3>
+                <p class="mt-2 text-sm text-gray-600">@lang('Separate dashboards for admins, teachers, and students with clear permissions.')</p>
             </div>
-            <div class="soh-card p-3 sm:p-4">
-                <img loading="lazy" src="https://github.com/nasirkhan/laravel-starter/assets/396987/f8131011-2ecc-4a11-961f-85e02cb8f7a1" alt="Page preview" />
+            <div class="soh-card p-5">
+                <h3 class="text-lg font-semibold text-gray-900">@lang('Account Controls')</h3>
+                <p class="mt-2 text-sm text-gray-600">@lang('Manage profile details, password, and account preferences securely.')</p>
             </div>
         </div>
     </section>

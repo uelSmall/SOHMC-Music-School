@@ -55,5 +55,5 @@
 
 <!--canonical link-->
 <link type="text/plain" rel="author" href="{{ asset("humans.txt") }}" />
-<meta name="generator" content="Laravel Starter - A CMS like modular Laravel starter project." />
+<meta name="generator" content="Sounds of Harmony Music Centre (SOHMC) platform" />
 <link rel="canonical" href="{{ url()->full() }}" />

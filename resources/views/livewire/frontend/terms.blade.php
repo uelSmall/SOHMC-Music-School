@@ -1,17 +1,12 @@
 <div>
     <x-frontend.header-block :title="$title" />
 
-    <section class="mx-auto max-w-screen-xl bg-white p-6 text-gray-600 sm:p-20">
+    <section class="mx-auto max-w-7xl bg-white p-6 text-gray-600 sm:p-20">
         <div class="grid grid-cols-1">
             <p>Welcome to {{ app_name() }}!</p>
             <p>
-                Nasir Khan Saikat and
-                <a href="https://github.com/nasirkhan/laravel-starter/graphs/contributors" target="_blank">
-                    contributors
-                </a>
-                built the {{ config("app.name") }} as an Open Source app. This SERVICE is provided by
-                <a href="https://nasirkhn.com" target="_blank">Nasir Khan Saikat</a>
-                at no cost and is intended for use as is.
+                These terms govern your use of {{ config("app.name") }} and apply to all visitors, students,
+                teachers, and administrators using this service.
             </p>
             <p>
                 These terms and conditions outline the rules and regulations for the use of {{ $company_name }}'s

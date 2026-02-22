@@ -50,7 +50,4 @@
             </div>
         </div>
     </div>
-
-    {{-- Demo content --}}
-    @include("backend.includes.dashboard_demo_data")
 @endsection

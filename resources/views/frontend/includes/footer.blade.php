@@ -22,8 +22,6 @@
 
         <x-frontend.social.all-social-url />
 
-        <x-frontend.footer-license license="cc-by-sa" />
-
         <x-frontend.footer-credit />
     </div>
 </footer>

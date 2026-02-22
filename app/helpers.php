@@ -15,7 +15,7 @@ if (! function_exists('app_name')) {
      */
     function app_name(): string
     {
-        return config('app.name');
+        return (string) setting('app_name', config('app.name'));
     }
 }
 
