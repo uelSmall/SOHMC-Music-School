@@ -12,6 +12,9 @@ class Permission extends \Spatie\Permission\Models\Permission
         return [
             'view_backend',
             'edit_settings',
+            'manage_lessons',
+            'assign_lessons',
+            'view_assigned_lessons',
             'view_logs',
 
             'view_users',

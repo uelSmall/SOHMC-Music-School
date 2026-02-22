@@ -18,8 +18,15 @@ class UserRoleTableSeeder extends Seeder
      */
     public function run()
     {
-        User::findOrFail(1)->syncRoles('super admin');
-        User::findOrFail(2)->syncRoles('administrator');
+        User::where('email', 'super@admin.com')->first()?->syncRoles('super admin');
+        User::where('email', 'admin@admin.com')->first()?->syncRoles('administrator');
+
+        User::where('email', 'teacher1@example.com')->first()?->syncRoles('teacher');
+        User::where('email', 'teacher2@example.com')->first()?->syncRoles('teacher');
+
+        User::where('email', 'student1@example.com')->first()?->syncRoles('student');
+        User::where('email', 'student2@example.com')->first()?->syncRoles('student');
+        User::where('email', 'student3@example.com')->first()?->syncRoles('student');
 
         Artisan::call('cache:clear');
     }

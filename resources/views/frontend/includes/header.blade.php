@@ -12,8 +12,12 @@
     </a>
 
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
-        <a class="flex items-center space-x-3 rtl:space-x-reverse" href="/" wire:navigate aria-label="Go to homepage">
-            <img class="h-9" src="{{ asset("img/logo-with-text.jpg") }}" alt="{{ app_name() }} Logo" />
+        <a class="soh-brand-lockup soh-brand-light" href="/" wire:navigate aria-label="Go to homepage">
+            <img class="soh-brand-image" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
+            <span class="soh-brand-wordmark hidden sm:flex">
+                <span class="soh-brand-title">Sounds of Harmony</span>
+                <span class="soh-brand-subtitle">Music Centre</span>
+            </span>
         </a>
         <div class="flex items-center justify-end space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
 @if (setting('show_theme_dropdown'))
@@ -190,7 +194,7 @@
                     aria-label="User account menu"
                 >
                     <ul class="py-2 font-medium" role="none">
-                        @can("view_backend")
+                        @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
                             <li class="border-b-2 border-gray-200">
                                 <a
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -226,6 +230,38 @@
                                             />
                                         </svg>
                                         {{ __("Admin Dashboard") }}
+                                    </div>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->hasRole('teacher'))
+                            <li class="border-b-2 border-gray-200">
+                                <a
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                                    href="{{ route("teacher.dashboard") }}"
+                                    role="menuitem"
+                                    wire:navigate
+                                >
+                                    <div class="inline-flex items-center">
+                                        <i class="fa-solid fa-chalkboard-user me-2"></i>
+                                        {{ __("Teacher Dashboard") }}
+                                    </div>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (auth()->user()->hasRole('student'))
+                            <li class="border-b-2 border-gray-200">
+                                <a
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                                    href="{{ route("student.dashboard") }}"
+                                    role="menuitem"
+                                    wire:navigate
+                                >
+                                    <div class="inline-flex items-center">
+                                        <i class="fa-solid fa-user-graduate me-2"></i>
+                                        {{ __("Student Dashboard") }}
                                     </div>
                                 </a>
                             </li>

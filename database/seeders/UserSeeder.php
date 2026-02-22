@@ -82,12 +82,16 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user_data) {
-            $user = User::updateOrCreate(
-                ['email' => $user_data['email']], // unique key
+            $user = User::firstOrCreate(
+                ['email' => $user_data['email']],
                 $user_data
             );
 
             event(new UserCreated($user));
+
+            if ($user->roles()->exists()) {
+                continue;
+            }
 
             // Assign roles based on email pattern
             if (str_contains($user_data['email'], 'teacher')) {

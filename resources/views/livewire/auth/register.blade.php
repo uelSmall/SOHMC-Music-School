@@ -72,7 +72,7 @@
         </div>
     </form>
 
-    <div class="space-x-1 text-center text-sm text-zinc-600 tracking-widest dark:text-zinc-400">
+    <div class="space-x-1 text-center text-sm text-gray-600 tracking-widest">
         {{ __('Already have an account?') }}
 
         <x-frontend.link class="text-sm" :href="route('login')" wire:navigate>

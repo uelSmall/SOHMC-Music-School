@@ -75,11 +75,31 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
+     * Resolve preferred dashboard route name based on user role.
+     */
+    public function dashboardRouteName(): string
+    {
+        if ($this->hasRole('super admin') || $this->hasRole('administrator')) {
+            return 'backend.dashboard';
+        }
+
+        if ($this->hasRole('teacher')) {
+            return 'teacher.dashboard';
+        }
+
+        if ($this->hasRole('student')) {
+            return 'student.dashboard';
+        }
+
+        return 'frontend.index';
+    }
+
+    /**
      * Toggle for using cached permissions.
      *
      * @var bool
      */
-    public static $useCachedPermissions = true;
+    public static $useCachedPermissions = false;
 
     /**
      * Clear the user's permission cache.

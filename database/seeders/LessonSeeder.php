@@ -83,9 +83,11 @@ class LessonSeeder extends Seeder
                 ]
             );
 
-            // Assign students to lesson (at least 1, up to all)
-            $assignedStudents = array_slice($studentIds, 0, rand(1, count($studentIds)));
-            $lesson->students()->sync($assignedStudents);
+            if (! $lesson->students()->exists()) {
+                $assignedCount = min(2, count($studentIds));
+                $assignedStudents = array_slice($studentIds, 0, $assignedCount);
+                $lesson->students()->syncWithoutDetaching($assignedStudents);
+            }
         }
 
         $this->command->info('Lessons seeded successfully!');

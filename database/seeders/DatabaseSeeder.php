@@ -22,8 +22,6 @@ class DatabaseSeeder extends Seeder
         // Always run essential seeders
         $this->call([
             AuthTableSeeder::class,
-            UserSeeder::class,
-            LessonSeeder::class,
         ]);
 
         // Always run Menu seeder (essential for navigation)
@@ -31,6 +29,11 @@ class DatabaseSeeder extends Seeder
 
         // Only run dummy data seeders if enabled
         if ($this->shouldSeedDummyData()) {
+            $this->call([
+                UserSeeder::class,
+                LessonSeeder::class,
+            ]);
+
             $this->callDummyDataSeeders();
         }
 
@@ -57,8 +60,8 @@ class DatabaseSeeder extends Seeder
             return false;
         }
 
-        // Default to seeding dummy data
-        return true;
+        // Default to essential seeding only
+        return false;
     }
 
     /**

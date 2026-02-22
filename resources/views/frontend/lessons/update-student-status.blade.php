@@ -17,7 +17,8 @@
         @if ($status !== 'completed')
             <button
                 wire:click="incrementStatus"
-                class="text-xs px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                class="rounded px-2 py-1 text-xs text-white transition-colors"
+                style="background:#6A1B9A;"
                 title="Mark as next status"
             >
                 Next
@@ -27,7 +28,8 @@
         @if ($status === 'assigned')
             <button
                 wire:click="markAsStarted"
-                class="text-xs px-2 py-1 bg-indigo-500 hover:bg-indigo-600 text-white rounded transition-colors"
+                class="rounded px-2 py-1 text-xs text-white transition-colors"
+                style="background:#4A1370;"
             >
                 Start
             </button>

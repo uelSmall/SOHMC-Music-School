@@ -14,6 +14,8 @@ use App\Livewire\Frontend\Terms;
 use App\Livewire\Frontend\Users\ChangePassword;
 use App\Livewire\Frontend\Users\Profile;
 use App\Livewire\Frontend\Users\ProfileEdit;
+use App\Livewire\Student\Dashboard as StudentDashboard;
+use App\Livewire\Teacher\Dashboard as TeacherDashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +40,13 @@ Route::get('home', Home::class)->name('home');
 // Language Switch
 Route::get('language/{language}', [LanguageController::class, 'switch'])->name('language.switch');
 
-Route::get('dashboard', Home::class)->name('dashboard');
+Route::get('dashboard', function () {
+    if (! auth()->check()) {
+        return redirect()->route('frontend.index');
+    }
+
+    return redirect()->route(auth()->user()->dashboardRouteName());
+})->name('dashboard');
 
 // pages
 Route::get('terms', Terms::class)->name('terms');
@@ -144,15 +152,39 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
     Route::resource("{$module_name}", BackendUserController::class);
 });
 
-// Public/student-facing lessons page
+/*
+*
+* Teacher Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lessons'])->group(function () {
+    Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
+});
+
+/*
+*
+* Student Routes
+*
+* --------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->group(function () {
+    Route::get('/student/dashboard', StudentDashboard::class)
+        ->name('student.dashboard')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/student/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
+        ->name('student.lessons.index')
+        ->middleware('can:view_assigned_lessons');
+
     Route::get('/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
-        ->name('lessons.index');
+        ->name('lessons.index')
+        ->middleware('can:view_assigned_lessons');
     
     // Teacher/admin assignments dashboard
     Route::get('/admin/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
         ->name('backend.assignments.index')
-        ->middleware('can:view_backend');
+        ->middleware(['can:view_backend', 'can:assign_lessons']);
     
     // Minimal profile routes used by the navigation
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');

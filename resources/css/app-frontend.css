@@ -13,3 +13,233 @@
 @variant dark (&:where(.dark, .dark *));
 
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
+
+:root {
+	--soh-purple: #6a1b9a;
+	--soh-purple-dark: #4a1370;
+	--soh-black: #000000;
+	--soh-white: #ffffff;
+	--soh-gray: #bdbdbd;
+	--soh-surface: #f7f7f9;
+}
+
+body {
+	background: var(--soh-surface);
+	color: var(--soh-black);
+}
+
+.soh-app-shell {
+	min-height: 100vh;
+	background: linear-gradient(180deg, #f6f2fa 0%, #f7f7f9 28%, #f7f7f9 100%);
+}
+
+.soh-nav {
+	background: var(--soh-purple);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+	color: var(--soh-white);
+}
+
+.soh-brand {
+	color: var(--soh-white);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.soh-nav-link {
+	color: rgba(255, 255, 255, 0.86);
+	border-radius: 0.75rem;
+	padding: 0.5rem 0.85rem;
+	transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.soh-nav-link:hover,
+.soh-nav-link.active {
+	color: var(--soh-white);
+	background: rgba(255, 255, 255, 0.16);
+}
+
+.soh-avatar-chip {
+	background: rgba(255, 255, 255, 0.14);
+	color: var(--soh-white);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 999px;
+}
+
+.soh-card {
+	background: var(--soh-white);
+	border: 1px solid #e9e9ee;
+	border-radius: 1rem;
+	box-shadow: 0 8px 30px rgba(106, 27, 154, 0.06);
+}
+
+.soh-stat-card {
+	background: var(--soh-white);
+	border: 1px solid #ececf2;
+	border-radius: 1rem;
+	padding: 1.25rem;
+}
+
+.soh-kpi-label {
+	color: #5e5f67;
+	font-size: 0.85rem;
+}
+
+.soh-kpi-value {
+	color: var(--soh-black);
+	font-size: 1.9rem;
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.soh-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.7rem;
+	background: var(--soh-purple);
+	color: var(--soh-white);
+	padding: 0.6rem 1rem;
+	font-weight: 600;
+	transition: background-color 0.18s ease;
+}
+
+.soh-btn-primary:hover {
+	background: var(--soh-purple-dark);
+}
+
+.soh-btn-outline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.7rem;
+	border: 1px solid var(--soh-gray);
+	color: #2d2d32;
+	padding: 0.6rem 1rem;
+	font-weight: 600;
+	transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.soh-btn-outline:hover {
+	border-color: var(--soh-purple);
+	color: var(--soh-purple);
+}
+
+.soh-link {
+	color: var(--soh-purple);
+	font-weight: 500;
+}
+
+.soh-link:hover {
+	color: var(--soh-purple-dark);
+}
+
+.soh-input,
+.soh-select {
+	margin-top: 0.25rem;
+	width: 100%;
+	border-radius: 0.5rem;
+	border: 1px solid #d1d5db;
+	background: #fff;
+	padding: 0.5rem 1rem;
+	color: #374151;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	outline: none;
+}
+
+.soh-input:focus,
+.soh-select:focus {
+	border-color: var(--soh-purple);
+	box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+}
+
+.soh-file-input {
+	margin-top: 0.25rem;
+	display: block;
+	width: 100%;
+	font-size: 0.875rem;
+	color: #6b7280;
+}
+
+.soh-file-input::file-selector-button {
+	margin-right: 0.75rem;
+	border: 0;
+	border-radius: 0.5rem;
+	background: rgba(106, 27, 154, 0.1);
+	padding: 0.5rem 1rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--soh-purple);
+	cursor: pointer;
+}
+
+.soh-file-input::file-selector-button:hover {
+	background: rgba(106, 27, 154, 0.15);
+}
+
+.soh-page-title {
+	color: var(--soh-black);
+	font-size: 2rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+.soh-page-subtitle {
+	color: #65666d;
+	margin-top: 0.35rem;
+}
+
+.soh-brand-lockup {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+}
+
+.soh-brand-image {
+	height: 3rem;
+	width: auto;
+	object-fit: contain;
+}
+
+.soh-brand-wordmark {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.1;
+}
+
+.soh-brand-title {
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+}
+
+.soh-brand-subtitle {
+	font-size: 0.72rem;
+	opacity: 0.88;
+}
+
+.soh-brand-dark .soh-brand-title,
+.soh-brand-dark .soh-brand-subtitle {
+	color: #fff;
+}
+
+.soh-brand-light .soh-brand-title {
+	color: var(--soh-black);
+}
+
+.soh-brand-light .soh-brand-subtitle {
+	color: #5f5f66;
+}
+
+.soh-monogram {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.1rem;
+	height: 2.1rem;
+	border-radius: 0.6rem;
+	background: var(--soh-purple);
+	color: #fff;
+	font-size: 0.74rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+}

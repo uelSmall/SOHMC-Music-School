@@ -25,14 +25,31 @@ class PermissionRoleTableSeeder extends Seeder
          * Create Roles and Assign Permissions to Roles.
          */
         $super_admin = Role::firstOrCreate(['name' => 'super admin']);
+        $super_admin->syncPermissions([
+            'view_backend',
+            'edit_settings',
+            'manage_lessons',
+            'assign_lessons',
+            'view_assigned_lessons',
+        ]);
 
         $admin = Role::firstOrCreate(['name' => 'administrator']);
-        $admin->syncPermissions(['view_backend', 'edit_settings']);
+        $admin->syncPermissions([
+            'view_backend',
+            'edit_settings',
+            'manage_lessons',
+            'assign_lessons',
+        ]);
 
         $teacher = Role::firstOrCreate(['name' => 'teacher']);
-        $teacher->syncPermissions('view_backend');
+        $teacher->syncPermissions([
+            'view_backend',
+            'manage_lessons',
+            'assign_lessons',
+        ]);
 
         $student = Role::firstOrCreate(['name' => 'student']);
+        $student->syncPermissions(['view_assigned_lessons']);
     }
 
     public function CreateDefaultPermissions()

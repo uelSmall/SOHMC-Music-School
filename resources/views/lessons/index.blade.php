@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto py-8">
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">My Lessons</h1>
-        <p class="text-gray-600 mt-2">Browse, search, and manage your lesson assignments.</p>
+        <h1 class="soh-page-title">My Lessons</h1>
+        <p class="soh-page-subtitle">Browse lessons, filter quickly, and manage assignment progress.</p>
     </div>
 
     <livewire:frontend.lessons.lesson-search />

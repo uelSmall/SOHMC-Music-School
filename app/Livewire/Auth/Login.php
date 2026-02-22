@@ -41,14 +41,16 @@ class Login extends Component
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
-
-            event(new UserLoginSuccess(request(), $user));
         }
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        $this->redirectIntended(default: route('frontend.index', absolute: false), navigate: true);
+        $defaultRoute = Auth::user()?->dashboardRouteName() ?? 'frontend.index';
+
+        event(new UserLoginSuccess(request(), Auth::user()));
+
+        $this->redirectIntended(default: route($defaultRoute, absolute: false), navigate: true);
     }
 
     /**
