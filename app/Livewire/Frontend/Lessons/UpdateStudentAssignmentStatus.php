@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Frontend\Lessons;
 
+use App\Models\User;
+use App\Notifications\AssignmentStatusUpdatedNotification;
 use Livewire\Component;
 use Modules\Lesson\Models\LessonStudentAssignment;
 
@@ -24,6 +26,9 @@ class UpdateStudentAssignmentStatus extends Component
         if ($currentIndex !== false && $currentIndex < count($statuses) - 1) {
             $this->status = $statuses[$currentIndex + 1];
             $this->assignment->update(['status' => $this->status]);
+            if ($this->status === 'completed') {
+                $this->notifyCompletion();
+            }
             $this->dispatch('statusUpdated');
             session()->flash('message', 'Assignment status updated!');
         }
@@ -49,8 +54,27 @@ class UpdateStudentAssignmentStatus extends Component
     {
         $this->assignment->update(['status' => 'completed']);
         $this->status = 'completed';
+        $this->notifyCompletion();
         $this->dispatch('statusUpdated');
         session()->flash('message', 'Marked as completed!');
+    }
+
+    private function notifyCompletion(): void
+    {
+        $assignment = $this->assignment->loadMissing('lesson.teacher');
+
+        $recipients = User::query()
+            ->where(function ($query) use ($assignment) {
+                $query->whereIn('id', [$assignment->lesson->teacher_id])
+                    ->orWhereHas('roles', function ($rolesQuery) {
+                        $rolesQuery->whereIn('name', ['super admin', 'administrator']);
+                    });
+            })
+            ->get();
+
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new AssignmentStatusUpdatedNotification($assignment));
+        }
     }
 
     public function render()

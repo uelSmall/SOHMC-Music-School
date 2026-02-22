@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Assignments;
 
+use App\Notifications\LessonAssignedNotification;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Livewire\Component;
@@ -67,9 +68,10 @@ class AssignLessonModal extends Component
         ]);
 
         $lesson = Lesson::findOrFail($this->selectedLessonId);
+        $students = User::query()->whereIn('id', $this->selectedStudentIds)->get()->keyBy('id');
 
         foreach ($this->selectedStudentIds as $studentId) {
-            LessonStudentAssignment::updateOrCreate(
+            $assignment = LessonStudentAssignment::updateOrCreate(
                 [
                     'lesson_id' => $lesson->id,
                     'student_id' => $studentId,
@@ -80,6 +82,11 @@ class AssignLessonModal extends Component
                     'assigned_at' => now(),
                 ]
             );
+
+            $student = $students->get($studentId);
+            if ($student) {
+                $student->notify(new LessonAssignedNotification($assignment));
+            }
         }
 
         $this->dispatch('assignmentCreated');

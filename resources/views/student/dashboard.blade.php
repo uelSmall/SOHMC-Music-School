@@ -34,6 +34,56 @@
         </a>
     </div>
 
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="soh-card p-6">
+            <h2 class="mb-4 text-xl font-semibold text-black">My Next Lesson</h2>
+            @if($nextLesson)
+                <div class="space-y-2">
+                    <div class="font-semibold text-black">{{ $nextLesson->lesson->title ?? 'Lesson' }}</div>
+                    <div class="text-sm text-gray-600">
+                        Teacher: {{ $nextLesson->lesson->teacher->name ?? 'N/A' }}
+                        @if(! empty($nextLesson->lesson->instrument))
+                            · Instrument: {{ ucfirst($nextLesson->lesson->instrument) }}
+                        @endif
+                    </div>
+                    @if($nextLesson->due_date)
+                        <div class="text-xs font-medium" style="color:#6A1B9A;">Due: {{ $nextLesson->due_date->format('M d, Y') }}</div>
+                    @else
+                        <div class="text-xs text-gray-500">No due date set</div>
+                    @endif
+                    <div class="pt-2">
+                        <a href="{{ route('lessons.index') }}" class="soh-btn-outline">Open Lessons</a>
+                    </div>
+                </div>
+            @else
+                <p class="text-gray-500">No pending lessons right now.</p>
+            @endif
+        </div>
+
+        <div class="soh-card p-6">
+            <div class="mb-4 flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-black">Notifications</h2>
+                @if($notifications->isNotEmpty())
+                    <button wire:click="markAllNotificationsAsRead" class="text-sm font-medium" style="color:#6A1B9A;">Mark all read</button>
+                @endif
+            </div>
+            @forelse($notifications as $notification)
+                <div class="border-b border-gray-200 py-3 last:border-b-0">
+                    <p class="font-semibold text-black">{{ $notification->data['title'] ?? 'Update' }}</p>
+                    <p class="text-sm text-gray-600">{{ $notification->data['message'] ?? '' }}</p>
+                    <div class="mt-2 flex items-center gap-3">
+                        @if(! empty($notification->data['url']))
+                            <a href="{{ $notification->data['url'] }}" class="text-sm font-medium" style="color:#6A1B9A;">View</a>
+                        @endif
+                        <button wire:click="markNotificationAsRead('{{ $notification->id }}')" class="text-sm text-gray-500">Dismiss</button>
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-500">You’re all caught up.</p>
+            @endforelse
+        </div>
+    </div>
+
     <div class="soh-card p-6">
         <h2 class="mb-4 text-xl font-semibold text-black">Upcoming Due Dates</h2>
         @forelse($upcomingAssignments as $assignment)

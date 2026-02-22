@@ -8,6 +8,20 @@ use Modules\Lesson\Models\LessonStudentAssignment;
 
 class Dashboard extends Component
 {
+    public function markNotificationAsRead(string $notificationId): void
+    {
+        $notification = auth()->user()->unreadNotifications()->where('id', $notificationId)->first();
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+    }
+
+    public function markAllNotificationsAsRead(): void
+    {
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+    }
+
     public function render()
     {
         $teacherId = auth()->id();
@@ -45,10 +59,13 @@ class Dashboard extends Component
             ->limit(8)
             ->get();
 
+        $notifications = auth()->user()->unreadNotifications()->latest()->limit(5)->get();
+
         return view('teacher.dashboard', [
             'stats' => $stats,
             'progress' => $progress,
             'upcomingAssignments' => $upcomingAssignments,
+            'notifications' => $notifications,
         ])->layout('layouts.app');
     }
 }

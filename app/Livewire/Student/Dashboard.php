@@ -7,6 +7,20 @@ use Modules\Lesson\Models\LessonStudentAssignment;
 
 class Dashboard extends Component
 {
+    public function markNotificationAsRead(string $notificationId): void
+    {
+        $notification = auth()->user()->unreadNotifications()->where('id', $notificationId)->first();
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+    }
+
+    public function markAllNotificationsAsRead(): void
+    {
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+    }
+
     public function render()
     {
         $studentId = auth()->id();
@@ -34,9 +48,21 @@ class Dashboard extends Component
             ->limit(8)
             ->get();
 
+        $nextLesson = (clone $assignmentsQuery)
+            ->with(['lesson:id,title,instrument', 'lesson.teacher:id,name'])
+            ->whereIn('status', ['assigned', 'started', 'in_progress'])
+            ->orderByRaw('CASE WHEN due_date IS NULL THEN 1 ELSE 0 END')
+            ->orderBy('due_date')
+            ->orderBy('assigned_at')
+            ->first();
+
+        $notifications = auth()->user()->unreadNotifications()->latest()->limit(5)->get();
+
         return view('student.dashboard', [
             'stats' => $stats,
             'upcomingAssignments' => $upcomingAssignments,
+            'nextLesson' => $nextLesson,
+            'notifications' => $notifications,
         ])->layout('layouts.app');
     }
 }
