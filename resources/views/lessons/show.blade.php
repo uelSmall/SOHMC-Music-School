@@ -9,7 +9,7 @@
         @endif
 
         <div class="soh-card mb-6 overflow-hidden p-0">
-            <div class="bg-linear-to-r from-purple-700 to-purple-500 px-4 py-5 text-white sm:px-8 sm:py-7">
+            <div class="px-4 py-5 text-white sm:px-8 sm:py-7" style="background:#A6128D;">
                 <div class="flex flex-wrap items-start justify-between gap-4">
                     <div>
                         <p class="text-xs font-semibold tracking-wide text-white/80 uppercase">Lesson Overview</p>
@@ -30,7 +30,7 @@
                     <div class="flex flex-wrap items-center gap-2">
                         <a href="{{ route('lessons.index') }}" class="rounded-md border border-white/35 bg-white/10 px-3 py-2 text-xs font-semibold text-white hover:bg-white/20 sm:text-sm">Back to Lessons</a>
                         @if ($lesson->file_path)
-                            <a href="{{ route('lessons.download', $lesson) }}" class="rounded-md bg-white px-3 py-2 text-xs font-semibold text-purple-700 hover:bg-purple-50 sm:text-sm">Download Material</a>
+                            <a href="{{ route('lessons.download', $lesson) }}" class="rounded-md bg-white px-3 py-2 text-xs font-semibold sm:text-sm" style="color:#A6128D;">Download Material</a>
                         @endif
                     </div>
                 </div>
@@ -43,7 +43,7 @@
             @endphp
 
             @if ($assignment)
-                <div class="soh-card mb-6 border-l-4 border-l-purple-600 p-4">
+                <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <p class="text-sm text-gray-700 dark:text-gray-200">
                             Assignment status:
@@ -56,7 +56,7 @@
                         @if ($assignment->status->value === 'assigned')
                             <form method="POST" action="{{ route('lessons.mark-started', $lesson) }}">
                                 @csrf
-                                <button type="submit" class="rounded-md border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-700 hover:bg-purple-100 dark:border-purple-700 dark:bg-purple-900/30 dark:text-purple-200 dark:hover:bg-purple-900/50">
+                                <button type="submit" class="rounded-md border px-3 py-1.5 text-xs font-semibold" style="border-color:#D991CD; background:#F2F2F2; color:#A6128D;">
                                     Mark as Started
                                 </button>
                             </form>
@@ -68,7 +68,7 @@
 
         <div class="soh-card p-4 sm:p-6">
             @if ($lesson->description)
-                <div class="mb-5 rounded-lg border border-purple-100 bg-purple-50/60 p-4 dark:border-purple-900/40 dark:bg-purple-900/20">
+                <div class="mb-5 rounded-lg border p-4" style="border-color:#D991CD; background:#F2F2F2;">
                     <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-200">{{ $lesson->description }}</p>
                 </div>
             @endif

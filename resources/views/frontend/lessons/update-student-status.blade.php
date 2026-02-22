@@ -18,7 +18,7 @@
             <button
                 wire:click="incrementStatus"
                 class="rounded px-2 py-1 text-xs text-white transition-colors"
-                style="background:#6A1B9A;"
+                style="background:#A6128D;"
                 title="Mark as next status"
             >
                 Next
@@ -29,7 +29,7 @@
             <button
                 wire:click="markAsStarted"
                 class="rounded px-2 py-1 text-xs text-white transition-colors"
-                style="background:#4A1370;"
+                style="background:#8C0375;"
             >
                 Start
             </button>

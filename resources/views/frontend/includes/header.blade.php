@@ -1,5 +1,5 @@
 <nav
-    class="border-b-2 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-900"
+    class="border-b-2 border-[#8C0375] bg-[#A6128D] shadow-md dark:border-[#8C0375] dark:bg-[#A6128D]"
     role="navigation"
     aria-label="Main navigation"
 >
@@ -12,17 +12,17 @@
     </a>
 
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
-        <a class="soh-brand-lockup soh-brand-light" href="/" wire:navigate aria-label="Go to homepage">
-            <img class="soh-brand-image" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
+        <a class="soh-brand-lockup soh-brand-dark" href="/" wire:navigate aria-label="Go to homepage">
+            <span class="soh-monogram">SOH</span>
             <span class="soh-brand-wordmark hidden sm:flex">
-                <span class="soh-brand-title">SOHMC</span>
-                <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
+                <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
+                <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
             </span>
         </a>
         <div class="flex items-center justify-end space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
 @if (setting('show_theme_dropdown'))
             <button
-                class="rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-hidden dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                class="rounded-lg p-2 text-sm text-white hover:bg-white/15 focus:outline-hidden"
                 id="theme-toggle"
                 type="button"
                 aria-label="Toggle between light and dark theme"
@@ -55,7 +55,7 @@
 
 @if (setting('show_language_dropdown'))
             <button
-                class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:px-3 sm:py-2 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-3 sm:py-2"
                 data-dropdown-toggle="language-dropdown-menu"
                 type="button"
                 aria-label="Select language"
@@ -113,7 +113,7 @@
             @guest
                 @if (user_registration())
                     <a
-                        class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:px-4 sm:py-2 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                        class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-4 sm:py-2"
                         href="{{ route("register") }}"
                         wire:navigate
                     >
@@ -141,7 +141,7 @@
                 @endif
 
                 <a
-                    class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-gray-900 hover:bg-gray-100 sm:px-4 sm:py-2 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                    class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-4 sm:py-2"
                     href="{{ route("login") }}"
                     wire:navigate
                 >
@@ -170,7 +170,7 @@
 
             @auth
                 <button
-                    class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
+                    class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-white/15"
                     data-dropdown-toggle="user-dropdown-menu"
                     type="button"
                     aria-label="User menu"
@@ -389,7 +389,7 @@
             @endauth
 
             <button
-                class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-hidden md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-white hover:bg-white/15 focus:ring-2 focus:ring-white/30 focus:outline-hidden md:hidden"
                 data-collapse-toggle="navbar-language"
                 type="button"
                 aria-controls="navbar-language"

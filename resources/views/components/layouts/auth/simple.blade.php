@@ -3,8 +3,8 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen antialiased" style="background:#f7f7f9;">
-        <div class="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10" style="background:linear-gradient(180deg,#f6f2fa 0%,#f7f7f9 45%,#f7f7f9 100%);">
+    <body class="min-h-screen antialiased" style="background:#F2F2F2;">
+        <div class="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10" style="background:linear-gradient(180deg,#F2F2F2 0%,#F2F2F2 100%);">
             <div class="flex w-full max-w-sm flex-col gap-2">
                 <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                     <span class="soh-brand-lockup soh-brand-light mb-2">

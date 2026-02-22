@@ -2,11 +2,11 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center gap-4">
-                <a href="{{ route('dashboard') }}" class="soh-brand soh-brand-lockup soh-brand-dark">
-                    <img src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" class="soh-brand-image" />
+                <a href="{{ route('home') }}" class="soh-brand soh-brand-lockup soh-brand-dark" aria-label="Go to homepage">
+                    <span class="soh-monogram">SOH</span>
                     <span class="soh-brand-wordmark hidden md:flex">
-                        <span class="soh-brand-title">SOHMC</span>
-                        <span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>
+                        <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
+                        <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
                     </span>
                 </a>
 

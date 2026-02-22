@@ -39,7 +39,7 @@
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-xl font-semibold text-black">Notifications</h2>
             @if($notifications->isNotEmpty())
-                <button wire:click="markAllNotificationsAsRead" class="text-sm font-medium" style="color:#6A1B9A;">Mark all read</button>
+                <button wire:click="markAllNotificationsAsRead" class="text-sm font-medium" style="color:#A6128D;">Mark all read</button>
             @endif
         </div>
         @forelse($notifications as $notification)
@@ -48,7 +48,7 @@
                 <p class="text-sm text-gray-600">{{ $notification->data['message'] ?? '' }}</p>
                 <div class="mt-2 flex items-center gap-3">
                     @if(! empty($notification->data['url']))
-                        <a href="{{ $notification->data['url'] }}" class="text-sm font-medium" style="color:#6A1B9A;">View</a>
+                        <a href="{{ $notification->data['url'] }}" class="text-sm font-medium" style="color:#A6128D;">View</a>
                     @endif
                     <button wire:click="markNotificationAsRead('{{ $notification->id }}')" class="text-sm text-gray-500">Dismiss</button>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="border-b border-gray-200 py-2 last:border-b-0">
                     <div class="font-semibold text-black">{{ $assignment->lesson->title ?? 'Lesson' }}</div>
                     <div class="text-sm text-gray-600">Student: {{ $assignment->student->name ?? 'N/A' }}</div>
-                    <div class="mt-1 text-xs font-medium" style="color:#6A1B9A;">Due: {{ optional($assignment->due_date)->format('M d, Y') }}</div>
+                    <div class="mt-1 text-xs font-medium" style="color:#A6128D;">Due: {{ optional($assignment->due_date)->format('M d, Y') }}</div>
                 </div>
             @empty
                 <p class="text-gray-500">No upcoming assignment due dates.</p>

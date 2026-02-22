@@ -15,17 +15,17 @@
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
 
 :root {
-	--soh-purple: #6a1b9a;
-	--soh-purple-dark: #4a1370;
-	--soh-black: #000000;
-	--soh-white: #ffffff;
-	--soh-gray: #bdbdbd;
-	--soh-surface: #f7f7f9;
-	--soh-surface-dark: #0f0a18;
-	--soh-card-dark: #1a1227;
-	--soh-border-dark: #332545;
-	--soh-text-dark: #f3ecff;
-	--soh-muted-dark: #b7acc9;
+	--soh-purple: #A6128D;
+	--soh-purple-dark: #8C0375;
+	--soh-black: #0D0D0D;
+	--soh-white: #FFFFFF;
+	--soh-gray: #D991CD;
+	--soh-surface: #F2F2F2;
+	--soh-surface-dark: #0D0D0D;
+	--soh-card-dark: #0D0D0D;
+	--soh-border-dark: #D991CD;
+	--soh-text-dark: #F2F2F2;
+	--soh-muted-dark: #D991CD;
 }
 
 body {
@@ -40,11 +40,11 @@ body {
 
 .soh-app-shell {
 	min-height: 100vh;
-	background: linear-gradient(180deg, #f6f2fa 0%, #f7f7f9 28%, #f7f7f9 100%);
+	background: linear-gradient(180deg, #F2F2F2 0%, #F2F2F2 100%);
 }
 
 .dark .soh-app-shell {
-	background: linear-gradient(180deg, #120c1d 0%, #0f0a18 35%, #0f0a18 100%);
+	background: linear-gradient(180deg, #0D0D0D 0%, #0D0D0D 100%);
 }
 
 .soh-nav {
@@ -63,6 +63,7 @@ body {
 	color: rgba(255, 255, 255, 0.86);
 	border-radius: 0.75rem;
 	padding: 0.5rem 0.85rem;
+	font-weight: 700;
 	transition: background-color 0.18s ease, color 0.18s ease;
 }
 
@@ -77,13 +78,14 @@ body {
 	color: var(--soh-white);
 	border: 1px solid rgba(255, 255, 255, 0.2);
 	border-radius: 999px;
+	font-weight: 700;
 }
 
 .soh-card {
 	background: var(--soh-white);
-	border: 1px solid #e9e9ee;
+	border: 1px solid rgba(166, 18, 141, 0.2);
 	border-radius: 1rem;
-	box-shadow: 0 8px 30px rgba(106, 27, 154, 0.06);
+	box-shadow: 0 8px 30px rgba(166, 18, 141, 0.12);
 }
 
 .dark .soh-card {
@@ -94,7 +96,7 @@ body {
 
 .soh-stat-card {
 	background: var(--soh-white);
-	border: 1px solid #ececf2;
+	border: 1px solid rgba(166, 18, 141, 0.18);
 	border-radius: 1rem;
 	padding: 1.25rem;
 }
@@ -105,7 +107,7 @@ body {
 }
 
 .soh-kpi-label {
-	color: #5e5f67;
+	color: rgba(13, 13, 13, 0.68);
 	font-size: 0.85rem;
 }
 
@@ -146,7 +148,7 @@ body {
 	justify-content: center;
 	border-radius: 0.7rem;
 	border: 1px solid var(--soh-gray);
-	color: #2d2d32;
+	color: var(--soh-black);
 	padding: 0.6rem 1rem;
 	font-weight: 600;
 	transition: border-color 0.18s ease, color 0.18s ease;
@@ -158,13 +160,13 @@ body {
 }
 
 .dark .soh-btn-outline {
-	border-color: #6e6085;
-	color: #d8cfee;
+	border-color: rgba(217, 145, 205, 0.65);
+	color: var(--soh-text-dark);
 }
 
 .dark .soh-btn-outline:hover {
-	border-color: #b48add;
-	color: #e8d7ff;
+	border-color: var(--soh-gray);
+	color: var(--soh-white);
 }
 
 .soh-link {
@@ -177,11 +179,11 @@ body {
 }
 
 .dark .soh-link {
-	color: #d2a8ff;
+	color: var(--soh-gray);
 }
 
 .dark .soh-link:hover {
-	color: #edd9ff;
+	color: var(--soh-white);
 }
 
 .soh-input,
@@ -189,25 +191,25 @@ body {
 	margin-top: 0.25rem;
 	width: 100%;
 	border-radius: 0.5rem;
-	border: 1px solid #d1d5db;
+	border: 1px solid rgba(166, 18, 141, 0.22);
 	background: #fff;
 	padding: 0.5rem 1rem;
-	color: #374151;
+	color: var(--soh-black);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 	outline: none;
 }
 
 .dark .soh-input,
 .dark .soh-select {
-	border-color: #4e3a68;
-	background: #130e1f;
+	border-color: rgba(217, 145, 205, 0.65);
+	background: #0D0D0D;
 	color: var(--soh-text-dark);
 }
 
 .soh-input:focus,
 .soh-select:focus {
 	border-color: var(--soh-purple);
-	box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+	box-shadow: 0 0 0 3px rgba(166, 18, 141, 0.2);
 }
 
 .soh-file-input {
@@ -215,7 +217,7 @@ body {
 	display: block;
 	width: 100%;
 	font-size: 0.875rem;
-	color: #6b7280;
+	color: rgba(13, 13, 13, 0.6);
 }
 
 .dark .soh-file-input {
@@ -226,7 +228,7 @@ body {
 	margin-right: 0.75rem;
 	border: 0;
 	border-radius: 0.5rem;
-	background: rgba(106, 27, 154, 0.1);
+	background: rgba(166, 18, 141, 0.1);
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
 	font-weight: 600;
@@ -235,7 +237,7 @@ body {
 }
 
 .soh-file-input::file-selector-button:hover {
-	background: rgba(106, 27, 154, 0.15);
+	background: rgba(166, 18, 141, 0.15);
 }
 
 .soh-page-title {
@@ -250,7 +252,7 @@ body {
 }
 
 .soh-page-subtitle {
-	color: #65666d;
+	color: rgba(13, 13, 13, 0.62);
 	margin-top: 0.35rem;
 }
 
@@ -297,7 +299,7 @@ body {
 }
 
 .soh-brand-light .soh-brand-subtitle {
-	color: #5f5f66;
+	color: rgba(13, 13, 13, 0.72);
 }
 
 .dark .soh-brand-light .soh-brand-title {
@@ -312,24 +314,25 @@ body {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.1rem;
-	height: 2.1rem;
-	border-radius: 0.6rem;
-	background: var(--soh-purple);
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 0.75rem;
+	background: rgba(255, 255, 255, 0.14);
+	border: 1px solid rgba(255, 255, 255, 0.25);
 	color: #fff;
-	font-size: 0.74rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
+	font-size: 0.68rem;
+	font-weight: 800;
+	letter-spacing: 0.08em;
 }
 
 .dark nav[aria-label="Main navigation"] {
-	background: #140d22;
-	border-color: #322547;
+	background: #0D0D0D;
+	border-color: #8C0375;
 }
 
 .dark footer[aria-label="Site footer"] {
-	background: #120b1d;
-	border-top: 1px solid #322547;
+	background: #0D0D0D;
+	border-top: 1px solid #8C0375;
 }
 
 .dark .soh-card .text-black,

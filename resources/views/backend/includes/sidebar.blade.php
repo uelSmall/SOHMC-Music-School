@@ -16,9 +16,9 @@ $notifications_latest = optional($notifications)->take(5);
                 />
                 <span class="sidebar-brand-full d-none d-lg-flex flex-column lh-1 text-start">
                     <span style="font-size:0.82rem; font-weight:700; color:#fff;">SOHMC</span>
-                    <span style="font-size:0.64rem; color:#d8d8df;">Sounds of Harmony Music Centre</span>
+                    <span style="font-size:0.64rem; color:#D991CD;">Sounds of Harmony Music Centre</span>
                 </span>
-                <span class="sidebar-brand-narrow d-inline-flex align-items-center justify-content-center" style="width:34px; height:34px; border-radius:8px; background:#6A1B9A; color:#fff; font-size:0.68rem; font-weight:700; letter-spacing:0.04em;">SOHMC</span>
+                <span class="sidebar-brand-narrow d-inline-flex align-items-center justify-content-center" style="width:34px; height:34px; border-radius:8px; background:#A6128D; color:#fff; font-size:0.68rem; font-weight:700; letter-spacing:0.04em;">SOHMC</span>
             </a>
         </div>
         <button

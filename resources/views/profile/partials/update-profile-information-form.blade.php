@@ -53,7 +53,7 @@
                         <button
                             form="send-verification"
                             class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-hidden focus:ring-2"
-                            style="--tw-ring-color:#6A1B9A;"
+                            style="--tw-ring-color:#A6128D;"
                         >
                             {{ __("Click here to re-send the verification email.") }}
                         </button>

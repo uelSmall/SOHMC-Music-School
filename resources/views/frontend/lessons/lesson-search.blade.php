@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <!-- Flash Message -->
     @if (session()->has('message'))
-        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-green-800">
+        <div class="rounded-xl border p-4" style="border-color:#D991CD; background:#F2F2F2; color:#0D0D0D;">
             {{ session()->get('message') }}
         </div>
     @endif
@@ -16,7 +16,7 @@
                 wire:model.live="search"
                 placeholder="Search by title or description..."
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
-                style="--tw-ring-color:#6A1B9A;"
+                style="--tw-ring-color:#A6128D;"
             />
         </div>
 
@@ -28,7 +28,7 @@
                 <select
                     wire:model.live="filterInstrument"
                     class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
-                    style="--tw-ring-color:#6A1B9A;"
+                    style="--tw-ring-color:#A6128D;"
                 >
                     <option value="">All Instruments</option>
                     @foreach ($instruments as $instrument)
@@ -46,7 +46,7 @@
                     <select
                         wire:model.live="filterStatus"
                         class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2"
-                        style="--tw-ring-color:#6A1B9A;"
+                        style="--tw-ring-color:#A6128D;"
                     >
                         <option value="">All Statuses</option>
                         @foreach ($assignmentStatuses as $statusKey => $statusLabel)
@@ -64,8 +64,8 @@
             @foreach (['all' => 'All Lessons', 'assigned' => 'Assigned', 'completed' => 'Completed'] as $tabKey => $tabLabel)
                 <button
                     wire:click="$set('tab', '{{ $tabKey }}')"
-                    class="border-b-2 px-4 py-3 text-sm font-medium transition-colors {{ $tab === $tabKey ? 'text-purple-700' : 'border-transparent text-gray-600 hover:text-gray-900' }}"
-                    style="{{ $tab === $tabKey ? 'border-color:#6A1B9A;' : '' }}"
+                    class="border-b-2 px-4 py-3 text-sm font-medium transition-colors {{ $tab === $tabKey ? '' : 'border-transparent text-gray-600 hover:text-gray-900' }}"
+                    style="{{ $tab === $tabKey ? 'border-color:#A6128D; color:#A6128D;' : '' }}"
                 >
                     {{ $tabLabel }}
                 </button>
@@ -86,10 +86,10 @@
                         ->first();
 
                     $cardBorderClass = match($assignment?->status?->value) {
-                        'started' => 'border-blue-300',
-                        'in_progress' => 'border-yellow-300',
-                        'completed' => 'border-green-300',
-                        'assigned' => 'border-gray-300',
+                        'started' => 'border-[#A6128D]',
+                        'in_progress' => 'border-[#D991CD]',
+                        'completed' => 'border-[#8C0375]',
+                        'assigned' => 'border-[#D991CD]',
                         default => 'border-gray-200',
                     };
                 }
@@ -97,11 +97,14 @@
 
             <div class="soh-card overflow-hidden border-l-4 {{ $cardBorderClass }} transition hover:-translate-y-0.5 hover:shadow-lg">
                 <!-- Lesson Header -->
-                <div class="p-4" style="background:linear-gradient(90deg,#f4ebfb,#f8f8fb);">
-                    <h3 class="line-clamp-2 font-semibold text-black">{{ $lesson->title }}</h3>
-                    @if ($lesson->instrument)
-                        <p class="mt-1 text-xs text-gray-600">📚 {{ ucfirst($lesson->instrument) }}</p>
-                    @endif
+                <div class="min-h-[88px] p-4" style="background:#A6128D; border-bottom:1px solid #8C0375;">
+                    <h3 class="line-clamp-2 font-semibold text-white">{{ $lesson->title }}</h3>
+                    @php
+                        $categoryLabel = $lesson->instrument
+                            ? ucfirst($lesson->instrument)
+                            : (str_contains(strtolower($lesson->title), 'theory') ? 'Music Theory' : 'General');
+                    @endphp
+                    <p class="mt-1 text-xs font-medium" style="color:#F2F2F2;">📚 {{ $categoryLabel }}</p>
                 </div>
 
                 <!-- Lesson Body -->
@@ -120,25 +123,16 @@
                             <div class="mt-3 border-t border-gray-200 pt-3">
                                 @php
                                     $statusColors = [
-                                        'assigned' => 'gray',
-                                        'started' => 'blue',
-                                        'in_progress' => 'yellow',
-                                        'completed' => 'green',
+                                        'assigned' => 'bg-[#F2F2F2] text-[#0D0D0D] ring-[#D991CD]',
+                                        'started' => 'bg-[#D991CD] text-[#0D0D0D] ring-[#D991CD]',
+                                        'in_progress' => 'bg-[#A6128D] text-white ring-[#A6128D]',
+                                        'completed' => 'bg-[#8C0375] text-white ring-[#8C0375]',
                                     ];
-                                    $color = $statusColors[$assignment->status->value] ?? 'gray';
+                                    $statusClass = $statusColors[$assignment->status->value] ?? 'bg-[#F2F2F2] text-[#0D0D0D] ring-[#D991CD]';
                                 @endphp
 
                                 <div class="mb-2 text-[11px] font-semibold tracking-wide text-gray-500 uppercase">Status</div>
-                                <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full ring-1 ring-inset
-                                    {{ $color === 'gray' ? 'bg-gray-100 text-gray-800' : '' }}
-                                    {{ $color === 'blue' ? 'bg-blue-100 text-blue-800' : '' }}
-                                    {{ $color === 'yellow' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                    {{ $color === 'green' ? 'bg-green-100 text-green-800' : '' }}
-                                    {{ $color === 'gray' ? 'ring-gray-200' : '' }}
-                                    {{ $color === 'blue' ? 'ring-blue-200' : '' }}
-                                    {{ $color === 'yellow' ? 'ring-yellow-200' : '' }}
-                                    {{ $color === 'green' ? 'ring-green-200' : '' }}
-                                ">
+                                <span class="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">
                                     {{ ucfirst(str_replace('_', ' ', $assignment->status->value)) }}
                                 </span>
 
@@ -154,7 +148,7 @@
                     <div class="mt-4 flex items-center gap-2 border-t border-gray-200 pt-3">
                         <a
                             href="{{ route('lessons.show', $lesson) }}"
-                            class="inline-flex items-center rounded-md bg-purple-700 px-3 py-2 text-xs font-semibold text-white hover:bg-purple-800"
+                            class="inline-flex items-center rounded-md bg-[#A6128D] px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#8C0375]"
                         >
                             View Lesson
                         </a>
@@ -162,7 +156,7 @@
                         @if ($lesson->file_path)
                             <a
                                 href="{{ route('lessons.download', $lesson) }}"
-                                class="inline-flex items-center rounded-md border border-purple-700 px-3 py-2 text-xs font-semibold text-purple-700 hover:bg-purple-50"
+                                class="inline-flex items-center rounded-md border border-[#A6128D] px-3 py-2 text-xs font-semibold text-[#A6128D] transition-colors hover:bg-[#F2F2F2]"
                             >
                                 Download Material
                             </a>
