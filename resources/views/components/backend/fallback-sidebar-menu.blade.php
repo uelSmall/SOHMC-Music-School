@@ -19,27 +19,52 @@
         }
         
         // Find admin-sidebar menu
-        $adminMenu = collect($allMenus)
+        $menusCollection = collect($allMenus);
+
+        $adminMenu = $menusCollection
             ->where('location', 'admin-sidebar')
             ->where('is_active', true)
             ->where('is_visible', true)
             ->first();
         
         if ($adminMenu) {
+            $adminMenuId = $adminMenu['id'] ?? null;
+
+            if ($adminMenuId === null) {
+                $adminMenuIndex = $menusCollection->search(function ($menu) {
+                    return ($menu['location'] ?? null) === 'admin-sidebar'
+                        && ($menu['is_active'] ?? false)
+                        && ($menu['is_visible'] ?? false);
+                });
+
+                if ($adminMenuIndex !== false) {
+                    $adminMenuId = $adminMenuIndex + 1;
+                }
+            }
+
+            if ($adminMenuId === null) {
+                $adminMenuId = 3;
+            }
+
             // Get menu items for this menu
             $menuItems = collect($allMenuItems)
-                ->where('menu_id', $adminMenu['id'])
+                ->where('menu_id', $adminMenuId)
                 ->where('is_active', true)
                 ->where('is_visible', true)
-                ->sortBy('sort_order');
+                ->sortBy('sort_order')
+                ->values()
+                ->map(function ($item, $index) {
+                    $item['id'] = $item['id'] ?? ($index + 1);
+
+                    return $item;
+                });
             
             // Build hierarchy
-            $itemsById = $menuItems->keyBy('id');
             $fallbackMenuItems = $menuItems->where('parent_id', null)->values();
             
             // Add children to each parent item
             foreach ($fallbackMenuItems as $item) {
-                $children = $menuItems->where('parent_id', $item['id'])->sortBy('sort_order')->values();
+                $children = $menuItems->where('parent_id', $item['id'] ?? null)->sortBy('sort_order')->values();
                 $item['children'] = $children->toArray();
             }
         }
@@ -54,37 +79,37 @@
     @if($fallbackMenuItems->isNotEmpty())
         {{-- Render menu items from JSON data --}}
         @foreach($fallbackMenuItems as $item)
-            @if($item['type'] === 'divider')
+            @if(($item['type'] ?? null) === 'divider')
                 <li class="nav-divider"></li>
-            @elseif($item['type'] === 'heading')
-                <li class="nav-title">{{ $item['name'] }}</li>
-            @elseif($item['type'] === 'dropdown' && !empty($item['children']))
+            @elseif(($item['type'] ?? null) === 'heading')
+                <li class="nav-title">{{ $item['name'] ?? '' }}</li>
+            @elseif(($item['type'] ?? null) === 'dropdown' && !empty($item['children']))
                 <li class="nav-group">
                     <a class="nav-link nav-group-toggle" href="#">
                         <i class="nav-icon {{ $item['icon'] ?? 'fa-solid fa-link' }}"></i>
-                        &nbsp;{{ $item['name'] }}
+                        &nbsp;{{ $item['name'] ?? '' }}
                     </a>
                     <ul class="nav-group-items compact">
                         @foreach($item['children'] as $child)
                             @php
                                 $childUrl = '#';
-                                if ($child['route_name'] && \Illuminate\Support\Facades\Route::has($child['route_name'])) {
+                                if (($child['route_name'] ?? null) && \Illuminate\Support\Facades\Route::has($child['route_name'])) {
                                     try {
                                         $childUrl = route($child['route_name'], $child['route_parameters'] ?? []);
                                     } catch (\Exception $e) {
                                         $childUrl = $child['url'] ?? '#';
                                     }
-                                } elseif ($child['url']) {
+                                } elseif ($child['url'] ?? null) {
                                     $childUrl = $child['url'];
                                 }
-                                $childIsActive = $child['route_name'] && request()->routeIs($child['route_name']);
+                                $childIsActive = ($child['route_name'] ?? null) && request()->routeIs($child['route_name']);
                             @endphp
                             <li class="nav-item">
                                 <a class="nav-link @if($childIsActive) active @endif" 
                                    href="{{ $childUrl }}"
                                    @if($child['opens_new_tab'] ?? false) target="_blank" @endif>
                                     <i class="nav-icon {{ $child['icon'] ?? 'fa-solid fa-link' }}"></i>
-                                    &nbsp;{{ $child['name'] }}
+                                    &nbsp;{{ $child['name'] ?? '' }}
                                 </a>
                             </li>
                         @endforeach
@@ -93,26 +118,26 @@
             @else
                 @php
                     $itemUrl = '#';
-                    if ($item['route_name'] && \Illuminate\Support\Facades\Route::has($item['route_name'])) {
+                    if (($item['route_name'] ?? null) && \Illuminate\Support\Facades\Route::has($item['route_name'])) {
                         try {
                             $itemUrl = route($item['route_name'], $item['route_parameters'] ?? []);
                         } catch (\Exception $e) {
                             $itemUrl = $item['url'] ?? '#';
                         }
-                    } elseif ($item['url']) {
+                    } elseif ($item['url'] ?? null) {
                         $itemUrl = $item['url'];
                     }
-                    $itemIsActive = $item['route_name'] && request()->routeIs($item['route_name']);
+                    $itemIsActive = ($item['route_name'] ?? null) && request()->routeIs($item['route_name']);
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link @if($itemIsActive) active @endif" 
                        href="{{ $itemUrl }}"
                        @if($item['opens_new_tab'] ?? false) target="_blank" @endif>
                         <i class="nav-icon {{ $item['icon'] ?? 'fa-solid fa-link' }}"></i>
-                        &nbsp;{{ $item['name'] }}
+                        &nbsp;{{ $item['name'] ?? '' }}
                         
                         {{-- Special handling for notifications badge --}}
-                        @if($item['route_name'] === 'backend.notifications.index' && $notifications_count)
+                        @if(($item['route_name'] ?? null) === 'backend.notifications.index' && $notifications_count)
                             &nbsp;<span class="badge badge-sm bg-info ms-auto">{{ $notifications_count }}</span>
                         @endif
                     </a>

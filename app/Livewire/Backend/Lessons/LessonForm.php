@@ -16,6 +16,7 @@ class LessonForm extends Component
 
     public ?Lesson $lesson = null;
     public string $routePrefix = 'backend';
+    public bool $isTeacher = false;
 
     #[Validate('required|string|max:255')]
     public string $title = '';
@@ -49,9 +50,18 @@ class LessonForm extends Component
 
     public function mount(?Lesson $lesson = null, string $routePrefix = 'backend')
     {
+        $user = $this->currentUser();
+
         $this->routePrefix = $routePrefix;
+        $this->isTeacher = $user->hasRole('teacher');
+
+        abort_unless($this->canEnterLessonArea($user), 403);
 
         if ($lesson) {
+            if ($this->isTeacher && (int) $lesson->teacher_id !== (int) $user->id) {
+                abort(403);
+            }
+
             $this->lesson = $lesson;
             $this->title = $lesson->title ?? '';
             $this->slug = $lesson->slug ?? '';
@@ -60,13 +70,23 @@ class LessonForm extends Component
             $this->status = $lesson->status?->value ?? 'draft';
             $this->published_at = $lesson->published_at?->toDateString();
             $this->order = $lesson->order ?? 0;
-            $this->teacher_id = $lesson->teacher_id ?? null;
+            $this->teacher_id = $this->isTeacher ? $user->id : ($lesson->teacher_id ?? null);
             $this->student_ids = $lesson->students->pluck('id')->toArray();
+        } elseif ($this->isTeacher) {
+            $this->teacher_id = $user->id;
         }
     }
 
     public function save()
     {
+        $user = $this->currentUser();
+
+        abort_unless($this->canEnterLessonArea($user), 403);
+
+        if ($this->isTeacher && $this->lesson && (int) $this->lesson->teacher_id !== (int) $user->id) {
+            abort(403);
+        }
+
         $rules = [
             'title' => 'required|string|max:255',
             'slug' => [
@@ -87,6 +107,10 @@ class LessonForm extends Component
         ];
 
         $this->validate($rules);
+
+        if ($this->isTeacher) {
+            $this->teacher_id = $user->id;
+        }
 
         if ($this->lesson && $this->lesson->id) {
             $data = [
@@ -148,10 +172,22 @@ class LessonForm extends Component
             'statuses' => LessonStatus::cases(),
             'teachers' => User::query()->whereHas('roles', function ($q) {
                 $q->where('name', 'teacher');
+            })->when($this->isTeacher, function ($query) {
+                $query->whereKey($this->currentUser()->id);
             })->get(),
             'students' => User::query()->whereHas('roles', function ($q) {
                 $q->where('name', 'student');
             })->get(),
         ]);
+    }
+
+    private function currentUser(): User
+    {
+        return auth()->user();
+    }
+
+    private function canEnterLessonArea(User $user): bool
+    {
+        return $user->hasRole('super admin') || $user->hasRole('administrator') || $user->hasRole('teacher');
     }
 }

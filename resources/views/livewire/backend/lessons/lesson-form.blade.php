@@ -59,22 +59,24 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-2">
-                <label for="teacher_id" class="block font-semibold">Teacher</label>
-                <select
-                    id="teacher_id"
-                    wire:model.live="teacher_id"
-                    class="w-full rounded border border-gray-300 px-3 py-2 @error('teacher_id') border-red-500 @enderror"
-                >
-                    <option value="">Select a teacher</option>
-                    @foreach ($teachers as $teacher)
-                        <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-                    @endforeach
-                </select>
-                @error('teacher_id')
-                    <span class="text-sm text-red-600">{{ $message }}</span>
-                @enderror
-            </div>
+            @if (! $isTeacher)
+                <div class="space-y-2">
+                    <label for="teacher_id" class="block font-semibold">Teacher</label>
+                    <select
+                        id="teacher_id"
+                        wire:model.live="teacher_id"
+                        class="w-full rounded border border-gray-300 px-3 py-2 @error('teacher_id') border-red-500 @enderror"
+                    >
+                        <option value="">Select a teacher</option>
+                        @foreach ($teachers as $teacher)
+                            <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('teacher_id')
+                        <span class="text-sm text-red-600">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
 
             <div class="space-y-2">
                 <label for="status" class="block font-semibold">Status</label>

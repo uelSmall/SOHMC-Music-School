@@ -9,7 +9,11 @@ class StoreLessonRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('edit_backend');
+        $user = $this->user();
+
+        return $user
+            && $user->can('manage_lessons')
+            && ($user->hasRole('teacher') || $user->hasRole('administrator') || $user->hasRole('super admin'));
     }
 
     public function rules(): array
