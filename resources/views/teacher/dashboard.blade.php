@@ -29,7 +29,7 @@
             <a href="{{ route('teacher.lessons.index') }}" class="soh-btn-primary">
                 Manage Lessons
             </a>
-            <a href="{{ route('backend.assignments.index') }}" class="soh-btn-outline">
+            <a href="{{ route('teacher.assignments.index') }}" class="soh-btn-outline">
                 Manage Assignments
             </a>
         </div>

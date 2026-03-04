@@ -13,18 +13,20 @@ class LessonController extends Controller
     public function index()
     {
         abort_unless($this->canEnterLessonArea(request()->user()), 403);
+        $routePrefix = $this->resolveRoutePrefix();
 
-        return view('backend.lessons.index', [
-            'routePrefix' => $this->resolveRoutePrefix(),
+        return view($this->viewPath('index', $routePrefix), [
+            'routePrefix' => $routePrefix,
         ]);
     }
 
     public function create()
     {
         abort_unless($this->canEnterLessonArea(request()->user()), 403);
+        $routePrefix = $this->resolveRoutePrefix();
 
-        return view('backend.lessons.create', [
-            'routePrefix' => $this->resolveRoutePrefix(),
+        return view($this->viewPath('create', $routePrefix), [
+            'routePrefix' => $routePrefix,
         ]);
     }
 
@@ -60,7 +62,7 @@ class LessonController extends Controller
 
         $routePrefix = $this->resolveRoutePrefix();
 
-        return view('backend.lessons.show', compact('lesson', 'routePrefix'));
+        return view($this->viewPath('show', $routePrefix), compact('lesson', 'routePrefix'));
     }
 
     public function edit(Lesson $lesson)
@@ -69,7 +71,7 @@ class LessonController extends Controller
 
         $routePrefix = $this->resolveRoutePrefix();
 
-        return view('backend.lessons.edit', compact('lesson', 'routePrefix'));
+        return view($this->viewPath('edit', $routePrefix), compact('lesson', 'routePrefix'));
     }
 
     public function update(UpdateLessonRequest $request, Lesson $lesson)
@@ -120,6 +122,15 @@ class LessonController extends Controller
     private function resolveRoutePrefix(): string
     {
         return request()->routeIs('teacher.*') ? 'teacher' : 'backend';
+    }
+
+    private function viewPath(string $page, string $routePrefix): string
+    {
+        if ($routePrefix === 'teacher') {
+            return "teacher.lessons.{$page}";
+        }
+
+        return "backend.lessons.{$page}";
     }
 
     private function canAccessLesson(User $user, Lesson $lesson): bool

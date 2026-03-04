@@ -160,6 +160,9 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
 */
 Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lessons'])->group(function () {
     Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
+    Route::get('/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
+        ->name('assignments.index')
+        ->middleware('can:assign_lessons');
 });
 
 /*

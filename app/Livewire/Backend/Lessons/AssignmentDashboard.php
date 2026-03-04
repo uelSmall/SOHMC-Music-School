@@ -17,8 +17,10 @@ class AssignmentDashboard extends Component
             ->orderBy('assigned_at', 'desc')
             ->get();
 
+        $layout = request()->routeIs('teacher.*') ? 'layouts.app' : 'backend.layouts.app';
+
         return view('backend.lessons.assignments-dashboard', [
             'assignments' => $assignments,
-        ]);
+        ])->layout($layout);
     }
 }
