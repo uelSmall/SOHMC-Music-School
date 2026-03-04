@@ -12,12 +12,12 @@ class LessonController extends Controller
 {
     public function index()
     {
-        return view('lesson::lessons.index');
+        return view('backend.lessons.index');
     }
 
     public function create()
     {
-        return view('lesson::lessons.create');
+        return view('backend.lessons.create');
     }
 
     public function store(StoreLessonRequest $request)
@@ -41,12 +41,12 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
-        return view('lesson::lessons.show', compact('lesson'));
+        return view('backend.lessons.show', compact('lesson'));
     }
 
     public function edit(Lesson $lesson)
     {
-        return view('lesson::lessons.edit', compact('lesson'));
+        return view('backend.lessons.edit', compact('lesson'));
     }
 
     public function update(UpdateLessonRequest $request, Lesson $lesson)
