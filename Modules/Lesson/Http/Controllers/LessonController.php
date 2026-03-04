@@ -3,7 +3,6 @@
 namespace Modules\Lesson\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Lesson\Http\Requests\StoreLessonRequest;
 use Modules\Lesson\Http\Requests\UpdateLessonRequest;
 use Modules\Lesson\Models\Lesson;
@@ -12,12 +11,16 @@ class LessonController extends Controller
 {
     public function index()
     {
-        return view('backend.lessons.index');
+        return view('backend.lessons.index', [
+            'routePrefix' => $this->resolveRoutePrefix(),
+        ]);
     }
 
     public function create()
     {
-        return view('backend.lessons.create');
+        return view('backend.lessons.create', [
+            'routePrefix' => $this->resolveRoutePrefix(),
+        ]);
     }
 
     public function store(StoreLessonRequest $request)
@@ -36,17 +39,21 @@ class LessonController extends Controller
             $lesson->students()->sync($data['student_ids']);
         }
 
-        return redirect()->route('backend.lessons.index')->with('success', 'Lesson created successfully.');
+        return redirect()->route($this->resolveRoutePrefix().'.lessons.index')->with('success', 'Lesson created successfully.');
     }
 
     public function show(Lesson $lesson)
     {
-        return view('backend.lessons.show', compact('lesson'));
+        $routePrefix = $this->resolveRoutePrefix();
+
+        return view('backend.lessons.show', compact('lesson', 'routePrefix'));
     }
 
     public function edit(Lesson $lesson)
     {
-        return view('backend.lessons.edit', compact('lesson'));
+        $routePrefix = $this->resolveRoutePrefix();
+
+        return view('backend.lessons.edit', compact('lesson', 'routePrefix'));
     }
 
     public function update(UpdateLessonRequest $request, Lesson $lesson)
@@ -69,7 +76,7 @@ class LessonController extends Controller
             $lesson->students()->sync($data['student_ids']);
         }
 
-        return redirect()->route('backend.lessons.index')->with('success', 'Lesson updated successfully.');
+        return redirect()->route($this->resolveRoutePrefix().'.lessons.index')->with('success', 'Lesson updated successfully.');
     }
 
     public function destroy(Lesson $lesson)
@@ -81,6 +88,11 @@ class LessonController extends Controller
 
         $lesson->delete();
 
-        return redirect()->route('backend.lessons.index')->with('success', 'Lesson deleted successfully.');
+        return redirect()->route($this->resolveRoutePrefix().'.lessons.index')->with('success', 'Lesson deleted successfully.');
+    }
+
+    private function resolveRoutePrefix(): string
+    {
+        return request()->routeIs('teacher.*') ? 'teacher' : 'backend';
     }
 }

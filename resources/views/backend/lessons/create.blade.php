@@ -9,5 +9,5 @@
 @endsection
 
 @section('content')
-    <livewire:backend.lessons.lesson-form />
+    <livewire:backend.lessons.lesson-form :route-prefix="$routePrefix" />
 @endsection

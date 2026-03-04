@@ -17,8 +17,8 @@
                     <p class="text-muted mb-0">{{ $lesson->description }}</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('backend.lessons.edit', $lesson) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ route('backend.lessons.index') }}" class="btn btn-outline-secondary">Back</a>
+                    <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route($routePrefix.'.lessons.index') }}" class="btn btn-outline-secondary">Back</a>
                 </div>
             </div>
 

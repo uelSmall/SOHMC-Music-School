@@ -26,7 +26,7 @@
     <div class="soh-card p-6">
         <h2 class="mb-4 text-xl font-semibold text-black">Quick Actions</h2>
         <div class="flex flex-wrap gap-3">
-            <a href="{{ route('backend.lessons.index') }}" class="soh-btn-primary">
+            <a href="{{ route('teacher.lessons.index') }}" class="soh-btn-primary">
                 Manage Lessons
             </a>
             <a href="{{ route('backend.assignments.index') }}" class="soh-btn-outline">

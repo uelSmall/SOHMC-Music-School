@@ -10,10 +10,16 @@ class LessonList extends Component
 {
     use WithPagination;
 
+    public string $routePrefix = 'backend';
     public string $search = '';
     public string $sortBy = 'created_at';
     public string $sortDir = 'desc';
     public string $statusFilter = '';
+
+    public function mount(string $routePrefix = 'backend')
+    {
+        $this->routePrefix = $routePrefix;
+    }
 
     #[\Livewire\Attributes\Computed]
     public function lessons()

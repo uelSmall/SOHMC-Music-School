@@ -15,6 +15,7 @@ class LessonForm extends Component
     use WithFileUploads;
 
     public ?Lesson $lesson = null;
+    public string $routePrefix = 'backend';
 
     #[Validate('required|string|max:255')]
     public string $title = '';
@@ -46,8 +47,10 @@ class LessonForm extends Component
     #[Validate('nullable|array')]
     public array $student_ids = [];
 
-    public function mount(?Lesson $lesson = null)
+    public function mount(?Lesson $lesson = null, string $routePrefix = 'backend')
     {
+        $this->routePrefix = $routePrefix;
+
         if ($lesson) {
             $this->lesson = $lesson;
             $this->title = $lesson->title ?? '';

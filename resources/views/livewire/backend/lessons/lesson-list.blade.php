@@ -2,7 +2,7 @@
     <div class="mb-6 space-y-4">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h1 class="text-2xl font-bold">Lessons</h1>
-            <a href="{{ route('backend.lessons.create') }}" class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+            <a href="{{ route($routePrefix.'.lessons.create') }}" class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
                 Create Lesson
             </a>
         </div>
@@ -85,7 +85,7 @@
                             </td>
                             <td class="px-4 py-3">{{ $lesson->created_at->format('M d, Y') }}</td>
                             <td class="px-4 py-3 text-right">
-                                <a href="{{ route('backend.lessons.edit', $lesson) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="text-blue-600 hover:underline">
                                     Edit
                                 </a>
                                 <button wire:click="delete({{ $lesson->id }})" wire:confirm="Delete this lesson?" class="text-red-600 hover:underline">
@@ -103,7 +103,7 @@
         </div>
     @else
         <div class="rounded bg-gray-50 p-8 text-center">
-            <p class="text-gray-500">No lessons found. <a href="{{ route('backend.lessons.create') }}" class="text-blue-600 hover:underline">Create one</a></p>
+            <p class="text-gray-500">No lessons found. <a href="{{ route($routePrefix.'.lessons.create') }}" class="text-blue-600 hover:underline">Create one</a></p>
         </div>
     @endif
 </div>

@@ -169,7 +169,7 @@
                 <span wire:loading.remove>{{ $lesson ? 'Update' : 'Create' }} Lesson</span>
                 <span wire:loading>Saving...</span>
             </button>
-            <a href="{{ route('backend.lessons.index') }}" class="rounded bg-gray-300 px-6 py-2 hover:bg-gray-400">
+            <a href="{{ route($routePrefix.'.lessons.index') }}" class="rounded bg-gray-300 px-6 py-2 hover:bg-gray-400">
                 Cancel
             </a>
         </div>
