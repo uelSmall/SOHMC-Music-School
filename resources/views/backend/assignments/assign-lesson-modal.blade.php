@@ -2,7 +2,7 @@
     <!-- Open Modal Button -->
     <button
         wire:click="openModal"
-        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+        class="px-4 py-2 text-white font-medium rounded-lg transition-colors bg-[#A6128D] hover:bg-[#8C0375]"
     >
         + Assign Lesson
     </button>
@@ -31,7 +31,8 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Select Lesson</label>
                         <select
                             wire:model="selectedLessonId"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-transparent focus:ring-2"
+                            style="--tw-ring-color:#A6128D;"
                         >
                             <option value="">-- Choose a lesson --</option>
                             @foreach ($lessons as $lesson)
@@ -51,7 +52,8 @@
                         <input
                             type="date"
                             wire:model="dueDate"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-transparent focus:ring-2"
+                            style="--tw-ring-color:#A6128D;"
                         />
                         @error('dueDate')
                             <span class="text-xs text-red-600 mt-1">{{ $message }}</span>
@@ -68,7 +70,8 @@
                                         type="checkbox"
                                         wire:model="selectedStudentIds"
                                         value="{{ $student->id }}"
-                                        class="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                        class="w-4 h-4 border-gray-300 rounded focus:ring-2"
+                                        style="--tw-ring-color:#A6128D; accent-color:#A6128D;"
                                     />
                                     <span class="text-sm text-gray-700">{{ $student->name }}</span>
                                     <span class="text-xs text-gray-500">{{ $student->email }}</span>
@@ -93,7 +96,7 @@
                     </button>
                     <button
                         wire:click="assignLesson"
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                        class="px-4 py-2 text-white font-medium rounded-lg transition-colors bg-[#A6128D] hover:bg-[#8C0375]"
                     >
                         Assign to {{ count($selectedStudentIds) }} {{ count($selectedStudentIds) === 1 ? 'Student' : 'Students' }}
                     </button>

@@ -7,6 +7,6 @@
             <p class="soh-page-subtitle">Build a lesson and assign it to your students.</p>
         </div>
 
-        <livewire:backend.lessons.lesson-form :route-prefix="$routePrefix" />
+        <livewire:backend.lessons.lesson-form route-prefix="teacher" />
     </div>
 @endsection

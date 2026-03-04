@@ -24,7 +24,7 @@ class LessonAssignedNotification extends Notification
 
     public function toArray(object $notifiable): array
     {
-        $assignment = $this->assignment->loadMissing('lesson:id,title', 'lesson.teacher:id,name');
+        $assignment = $this->assignment->loadMissing('lesson:id,title,teacher_id', 'lesson.teacher:id,name');
 
         return [
             'type' => 'lesson_assigned',

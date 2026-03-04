@@ -237,6 +237,16 @@ class LessonLivewireTest extends TestCase
     }
 
     #[Test]
+    public function teacher_can_access_teacher_lesson_create_page()
+    {
+        $teacher = $this->createTeacherUser();
+
+        $this->actingAs($teacher)
+            ->get(route('teacher.lessons.create'))
+            ->assertOk();
+    }
+
+    #[Test]
     public function teacher_created_lesson_is_forced_to_current_teacher()
     {
         $teacher = $this->createTeacherUser();

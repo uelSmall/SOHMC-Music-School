@@ -4,7 +4,6 @@ namespace App\Livewire\Backend\Assignments;
 
 use App\Notifications\LessonAssignedNotification;
 use App\Models\User;
-use Illuminate\Pagination\Paginator;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Lesson\Models\Lesson;
@@ -21,7 +20,14 @@ class AssignLessonModal extends Component
 
     public function render()
     {
-        $lessons = Lesson::where('status', 'published')
+        $user = auth()->user();
+
+        $lessons = Lesson::query()
+            ->with('teacher:id,name')
+            ->where('status', 'published')
+            ->when($user?->hasRole('teacher'), function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })
             ->orderBy('title')
             ->get();
 

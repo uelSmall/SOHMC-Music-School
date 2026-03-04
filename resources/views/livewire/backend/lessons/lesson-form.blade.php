@@ -134,7 +134,7 @@
                 class="w-full rounded border border-gray-300 px-3 py-2 @error('file_path') border-red-500 @enderror"
             />
             @if ($lesson && $lesson->file_path)
-                <p class="text-sm text-gray-600">Current file: <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="text-blue-600 hover:underline">View</a></p>
+                <p class="text-sm text-gray-600">Current file: <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="text-[#A6128D] hover:underline">View</a></p>
             @endif
             @error('file_path')
                 <span class="text-sm text-red-600">{{ $message }}</span>
@@ -164,7 +164,7 @@
         <div class="flex gap-4 pt-4">
             <button
                 type="submit"
-                class="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+                class="rounded bg-[#A6128D] px-6 py-2 text-white hover:bg-[#8C0375]"
                 wire:loading.attr="disabled"
                 wire:loading.class="opacity-50"
             >

@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
     {
         // Check environment variable first
         if (env('SEED_DUMMY_DATA') !== null) {
-            return env('SEED_DUMMY_DATA', true);
+            return filter_var(env('SEED_DUMMY_DATA'), FILTER_VALIDATE_BOOLEAN);
         }
 
         // Check for command line option
@@ -60,8 +60,8 @@ class DatabaseSeeder extends Seeder
             return false;
         }
 
-        // Default to essential seeding only
-        return false;
+        // Default to dummy data in local/testing environments
+        return app()->environment(['local', 'testing']);
     }
 
     /**

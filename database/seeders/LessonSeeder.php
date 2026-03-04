@@ -69,7 +69,7 @@ class LessonSeeder extends Seeder
         ];
 
         foreach ($lessonsData as $index => $data) {
-            $lesson = Lesson::firstOrCreate(
+            $lesson = Lesson::updateOrCreate(
                 ['title' => $data['title']],
                 [
                     'slug' => str()->slug($data['title']),
@@ -83,11 +83,9 @@ class LessonSeeder extends Seeder
                 ]
             );
 
-            if (! $lesson->students()->exists()) {
-                $assignedCount = min(2, count($studentIds));
-                $assignedStudents = array_slice($studentIds, 0, $assignedCount);
-                $lesson->students()->syncWithoutDetaching($assignedStudents);
-            }
+            $assignedCount = min(2, count($studentIds));
+            $assignedStudents = array_slice($studentIds, 0, $assignedCount);
+            $lesson->students()->sync($assignedStudents);
         }
 
         $this->command->info('Lessons seeded successfully!');

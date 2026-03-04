@@ -153,7 +153,9 @@ class LessonController extends Controller
 
     private function canEnterLessonArea(User $user): bool
     {
-        return $this->canManageAllLessons($user) || $this->isTeacher($user);
+        return $this->canManageAllLessons($user)
+            || $this->isTeacher($user)
+            || $user->can('manage_lessons');
     }
 
     private function isTeacher(User $user): bool

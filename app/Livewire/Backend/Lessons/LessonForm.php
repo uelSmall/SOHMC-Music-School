@@ -55,9 +55,7 @@ class LessonForm extends Component
         $this->routePrefix = $routePrefix;
         $this->isTeacher = $user->hasRole('teacher');
 
-        abort_unless($this->canEnterLessonArea($user), 403);
-
-        if ($lesson) {
+        if ($lesson && $lesson->exists) {
             if ($this->isTeacher && (int) $lesson->teacher_id !== (int) $user->id) {
                 abort(403);
             }
@@ -81,9 +79,7 @@ class LessonForm extends Component
     {
         $user = $this->currentUser();
 
-        abort_unless($this->canEnterLessonArea($user), 403);
-
-        if ($this->isTeacher && $this->lesson && (int) $this->lesson->teacher_id !== (int) $user->id) {
+        if ($this->isTeacher && $this->lesson && $this->lesson->exists && (int) $this->lesson->teacher_id !== (int) $user->id) {
             abort(403);
         }
 
@@ -186,8 +182,4 @@ class LessonForm extends Component
         return auth()->user();
     }
 
-    private function canEnterLessonArea(User $user): bool
-    {
-        return $user->hasRole('super admin') || $user->hasRole('administrator') || $user->hasRole('teacher');
-    }
 }

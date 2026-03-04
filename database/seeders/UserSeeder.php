@@ -6,11 +6,16 @@ use App\Events\Backend\UserCreated;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement("SELECT setval(pg_get_serial_sequence('users', 'id'), COALESCE((SELECT MAX(id) FROM users), 1))");
+        }
+
         $users = [
             // Super Admin
             [
@@ -82,16 +87,12 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user_data) {
-            $user = User::firstOrCreate(
+            $user = User::updateOrCreate(
                 ['email' => $user_data['email']],
                 $user_data
             );
 
             event(new UserCreated($user));
-
-            if ($user->roles()->exists()) {
-                continue;
-            }
 
             // Assign roles based on email pattern
             if (str_contains($user_data['email'], 'teacher')) {

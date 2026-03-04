@@ -7,6 +7,6 @@
             <p class="soh-page-subtitle">Create, update, and manage your lessons in one place.</p>
         </div>
 
-        <livewire:backend.lessons.lesson-list :route-prefix="$routePrefix" />
+        <livewire:backend.lessons.lesson-list route-prefix="teacher" />
     </div>
 @endsection
