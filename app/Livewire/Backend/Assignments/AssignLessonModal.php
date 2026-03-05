@@ -96,8 +96,8 @@ class AssignLessonModal extends Component
         }
 
         $this->dispatch('assignmentCreated');
+        $this->dispatch('notify', message: 'Lessons assigned successfully.', type: 'success');
         $this->closeModal();
-        session()->flash('message', 'Lessons assigned successfully!');
     }
 
     private function resetForm(): void

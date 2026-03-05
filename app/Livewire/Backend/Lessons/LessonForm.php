@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Lessons;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -105,58 +106,71 @@ class LessonForm extends Component
             $this->lesson
         );
 
-        if ($this->lesson && $this->lesson->id) {
-            $data = [
-                'title' => $this->title,
-                'slug' => $this->generateUniqueSlug($this->title, $this->lesson->id),
-                'content' => $this->content,
-                'description' => $this->description,
-                'status' => $this->status,
-                'published_at' => $this->published_at,
-                'order' => $targetOrder,
-                'teacher_id' => $this->teacher_id,
-            ];
+        try {
+            if ($this->lesson && $this->lesson->id) {
+                $data = [
+                    'title' => $this->title,
+                    'slug' => $this->generateUniqueSlug($this->title, $this->lesson->id),
+                    'content' => $this->content,
+                    'description' => $this->description,
+                    'status' => $this->status,
+                    'published_at' => $this->published_at,
+                    'order' => $targetOrder,
+                    'teacher_id' => $this->teacher_id,
+                ];
 
-            if ($this->file_path) {
-                $data['file_path'] = $this->file_path->store('lessons', 'public');
-                if ($this->lesson->file_path) {
-                    \Storage::disk('public')->delete($this->lesson->file_path);
+                if ($this->file_path) {
+                    $data['file_path'] = $this->file_path->store('lessons', 'public');
+                    if ($this->lesson->file_path) {
+                        \Storage::disk('public')->delete($this->lesson->file_path);
+                    }
                 }
+
+                $this->lesson->update($data);
+
+                if (!empty($this->student_ids)) {
+                    $this->lesson->students()->sync($this->student_ids);
+                }
+
+                $message = 'Lesson updated successfully.';
+            } else {
+                $data = [
+                    'title' => $this->title,
+                    'slug' => $this->generateUniqueSlug($this->title),
+                    'content' => $this->content,
+                    'description' => $this->description,
+                    'status' => $this->status,
+                    'published_at' => $this->published_at,
+                    'order' => $targetOrder,
+                    'teacher_id' => $this->teacher_id,
+                ];
+
+                if ($this->file_path) {
+                    $data['file_path'] = $this->file_path->store('lessons', 'public');
+                }
+
+                $lesson = Lesson::create($data);
+
+                if (!empty($this->student_ids)) {
+                    $lesson->students()->sync($this->student_ids);
+                }
+
+                $message = 'Lesson created successfully.';
             }
 
-            $this->lesson->update($data);
+            session()->flash('notify', [
+                'message' => $message,
+                'type' => 'success',
+            ]);
 
-            if (!empty($this->student_ids)) {
-                $this->lesson->students()->sync($this->student_ids);
-            }
+            $this->redirectRoute($this->routePrefix.'.lessons.index', navigate: true);
 
-            $message = 'Lesson updated successfully.';
-        } else {
-            $data = [
-                'title' => $this->title,
-                'slug' => $this->generateUniqueSlug($this->title),
-                'content' => $this->content,
-                'description' => $this->description,
-                'status' => $this->status,
-                'published_at' => $this->published_at,
-                'order' => $targetOrder,
-                'teacher_id' => $this->teacher_id,
-            ];
+            return;
+        } catch (Throwable $exception) {
+            report($exception);
 
-            if ($this->file_path) {
-                $data['file_path'] = $this->file_path->store('lessons', 'public');
-            }
-
-            $lesson = Lesson::create($data);
-
-            if (!empty($this->student_ids)) {
-                $lesson->students()->sync($this->student_ids);
-            }
-
-            $message = 'Lesson created successfully.';
+            $this->dispatch('notify', message: 'Could not save the lesson. Please try again.', type: 'error');
         }
-
-        $this->dispatch('notify', message: $message);
     }
 
     public function render()

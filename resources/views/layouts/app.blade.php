@@ -35,5 +35,15 @@
                 @endisset
             </main>
         </div>
+
+        @if (session()->has('notify'))
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: @json(session('notify')),
+                    }));
+                });
+            </script>
+        @endif
     </body>
 </html>

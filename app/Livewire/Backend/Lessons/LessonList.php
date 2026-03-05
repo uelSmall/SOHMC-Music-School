@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Modules\Lesson\Models\Lesson;
+use Throwable;
 
 class LessonList extends Component
 {
@@ -57,8 +58,14 @@ class LessonList extends Component
             403
         );
 
-        $lesson->delete();
-        $this->dispatch('notify', message: 'Lesson deleted successfully.');
+        try {
+            $lesson->delete();
+            $this->dispatch('notify', message: 'Lesson deleted successfully.', type: 'success');
+        } catch (Throwable $exception) {
+            report($exception);
+
+            $this->dispatch('notify', message: 'Could not delete the lesson. Please try again.', type: 'error');
+        }
     }
 
     public function sort(string $column)

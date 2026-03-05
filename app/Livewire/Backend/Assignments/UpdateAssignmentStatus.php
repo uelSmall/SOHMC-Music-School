@@ -34,7 +34,7 @@ class UpdateAssignmentStatus extends Component
         $this->status = $newStatus;
 
         $this->dispatch('statusUpdated');
-        session()->flash('message', 'Assignment status updated!');
+        $this->dispatch('notify', message: 'Assignment status updated successfully.', type: 'success');
     }
 
     public function render()

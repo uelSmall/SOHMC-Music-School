@@ -14,12 +14,14 @@ class Dashboard extends Component
 
         if ($notification) {
             $notification->markAsRead();
+            $this->dispatch('notify', message: 'Notification dismissed.', type: 'success');
         }
     }
 
     public function markAllNotificationsAsRead(): void
     {
         auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+        $this->dispatch('notify', message: 'All notifications marked as read.', type: 'success');
     }
 
     public function render()
