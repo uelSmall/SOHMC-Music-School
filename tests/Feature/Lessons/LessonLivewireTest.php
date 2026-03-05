@@ -139,7 +139,6 @@ class LessonLivewireTest extends TestCase
         Livewire::actingAs($user)
             ->test(\App\Livewire\Backend\Lessons\LessonForm::class)
             ->set('title', 'New Lesson')
-            ->set('slug', 'new-lesson')
             ->set('content', 'Lesson content here')
             ->set('description', 'A new lesson')
             ->set('status', 'draft')
@@ -186,7 +185,6 @@ class LessonLivewireTest extends TestCase
         Livewire::actingAs($user)
             ->test(\App\Livewire\Backend\Lessons\LessonForm::class)
             ->set('title', 'New Lesson')
-            ->set('slug', 'new-lesson')
             ->set('content', 'Lesson content')
             ->set('status', 'draft')
             ->set('student_ids', $students->pluck('id')->toArray())
@@ -213,15 +211,21 @@ class LessonLivewireTest extends TestCase
     {
         $user = $this->createAdministratorUser();
 
-        Lesson::factory()->create(['slug' => 'existing-slug']);
+        Lesson::factory()->create([
+            'title' => 'New Lesson',
+            'slug' => 'new-lesson',
+        ]);
 
         Livewire::actingAs($user)
             ->test(\App\Livewire\Backend\Lessons\LessonForm::class)
             ->set('title', 'New Lesson')
-            ->set('slug', 'existing-slug')
             ->set('content', 'Content')
-            ->call('save')
-            ->assertHasErrors('slug');
+            ->call('save');
+
+        $this->assertDatabaseHas('lessons', [
+            'title' => 'New Lesson',
+            'slug' => 'new-lesson-1',
+        ]);
     }
 
     #[Test]
@@ -255,7 +259,6 @@ class LessonLivewireTest extends TestCase
         Livewire::actingAs($teacher)
             ->test(\App\Livewire\Backend\Lessons\LessonForm::class)
             ->set('title', 'Teacher Lesson')
-            ->set('slug', 'teacher-lesson')
             ->set('content', 'Teacher content')
             ->set('status', 'draft')
             ->set('teacher_id', $otherTeacher->id)

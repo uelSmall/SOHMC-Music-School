@@ -3,7 +3,8 @@
 namespace App\Livewire\Backend\Lessons;
 
 use App\Models\User;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -21,9 +22,6 @@ class LessonForm extends Component
     #[Validate('required|string|max:255')]
     public string $title = '';
 
-    #[Validate('required|string|max:255')]
-    public string $slug = '';
-
     #[Validate('required|string')]
     public string $content = '';
 
@@ -36,8 +34,8 @@ class LessonForm extends Component
     #[Validate('nullable|date')]
     public ?string $published_at = null;
 
-    #[Validate('nullable|integer|min:0')]
-    public int $order = 0;
+    #[Validate('nullable|integer|min:1')]
+    public ?int $order = null;
 
     #[Validate('nullable|exists:users,id')]
     public ?int $teacher_id = null;
@@ -62,12 +60,11 @@ class LessonForm extends Component
 
             $this->lesson = $lesson;
             $this->title = $lesson->title ?? '';
-            $this->slug = $lesson->slug ?? '';
             $this->content = $lesson->content ?? '';
             $this->description = $lesson->description ?? null;
             $this->status = $lesson->status?->value ?? 'draft';
             $this->published_at = $lesson->published_at?->toDateString();
-            $this->order = $lesson->order ?? 0;
+            $this->order = $lesson->order;
             $this->teacher_id = $this->isTeacher ? $user->id : ($lesson->teacher_id ?? null);
             $this->student_ids = $lesson->students->pluck('id')->toArray();
         } elseif ($this->isTeacher) {
@@ -85,17 +82,11 @@ class LessonForm extends Component
 
         $rules = [
             'title' => 'required|string|max:255',
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('lessons', 'slug')->ignore($this->lesson?->id),
-            ],
             'content' => 'required|string',
             'description' => 'nullable|string|max:500',
             'status' => 'required|in:draft,published,archived',
             'published_at' => 'nullable|date',
-            'order' => 'nullable|integer|min:0',
+            'order' => 'nullable|integer|min:1',
             'teacher_id' => 'nullable|exists:users,id',
             'file_path' => 'nullable|file|max:102400',
             'student_ids' => 'nullable|array',
@@ -108,15 +99,21 @@ class LessonForm extends Component
             $this->teacher_id = $user->id;
         }
 
+        $targetOrder = $this->prepareOrderForSave(
+            $this->order,
+            $this->teacher_id,
+            $this->lesson
+        );
+
         if ($this->lesson && $this->lesson->id) {
             $data = [
                 'title' => $this->title,
-                'slug' => $this->slug,
+                'slug' => $this->generateUniqueSlug($this->title, $this->lesson->id),
                 'content' => $this->content,
                 'description' => $this->description,
                 'status' => $this->status,
                 'published_at' => $this->published_at,
-                'order' => $this->order,
+                'order' => $targetOrder,
                 'teacher_id' => $this->teacher_id,
             ];
 
@@ -137,12 +134,12 @@ class LessonForm extends Component
         } else {
             $data = [
                 'title' => $this->title,
-                'slug' => $this->slug,
+                'slug' => $this->generateUniqueSlug($this->title),
                 'content' => $this->content,
                 'description' => $this->description,
                 'status' => $this->status,
                 'published_at' => $this->published_at,
-                'order' => $this->order,
+                'order' => $targetOrder,
                 'teacher_id' => $this->teacher_id,
             ];
 
@@ -180,6 +177,112 @@ class LessonForm extends Component
     private function currentUser(): User
     {
         return auth()->user();
+    }
+
+    private function generateUniqueSlug(string $title, ?int $ignoreLessonId = null): string
+    {
+        $baseSlug = Str::slug($title);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (
+            Lesson::query()
+                ->when($ignoreLessonId, fn ($query) => $query->whereKeyNot($ignoreLessonId))
+                ->where('slug', $slug)
+                ->exists()
+        ) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    private function prepareOrderForSave(?int $requestedOrder, ?int $teacherId, ?Lesson $existingLesson = null): int
+    {
+        return DB::transaction(function () use ($requestedOrder, $teacherId, $existingLesson) {
+            $existingLessonId = $existingLesson?->id;
+
+            $scopeQuery = Lesson::query()
+                ->when(
+                    $teacherId,
+                    fn ($query) => $query->where('teacher_id', $teacherId),
+                    fn ($query) => $query->whereNull('teacher_id')
+                );
+
+            if ($existingLessonId) {
+                $scopeQuery->whereKeyNot($existingLessonId);
+            }
+
+            $maxOrder = (int) $scopeQuery->max('order');
+            $normalizedOrder = $requestedOrder && $requestedOrder > 0
+                ? min($requestedOrder, $maxOrder + 1)
+                : $maxOrder + 1;
+
+            if (! $existingLessonId) {
+                Lesson::query()
+                    ->when(
+                        $teacherId,
+                        fn ($query) => $query->where('teacher_id', $teacherId),
+                        fn ($query) => $query->whereNull('teacher_id')
+                    )
+                    ->where('order', '>=', $normalizedOrder)
+                    ->increment('order');
+
+                return $normalizedOrder;
+            }
+
+            $previousTeacherId = $existingLesson?->teacher_id;
+            $previousOrder = (int) ($existingLesson?->order ?? 0);
+
+            if ($previousTeacherId === $teacherId && $previousOrder === $normalizedOrder) {
+                return $previousOrder;
+            }
+
+            if ($previousTeacherId === $teacherId) {
+                if ($normalizedOrder < $previousOrder) {
+                    Lesson::query()
+                        ->when(
+                            $teacherId,
+                            fn ($query) => $query->where('teacher_id', $teacherId),
+                            fn ($query) => $query->whereNull('teacher_id')
+                        )
+                        ->whereBetween('order', [$normalizedOrder, $previousOrder - 1])
+                        ->increment('order');
+                } elseif ($normalizedOrder > $previousOrder) {
+                    Lesson::query()
+                        ->when(
+                            $teacherId,
+                            fn ($query) => $query->where('teacher_id', $teacherId),
+                            fn ($query) => $query->whereNull('teacher_id')
+                        )
+                        ->whereBetween('order', [$previousOrder + 1, $normalizedOrder])
+                        ->decrement('order');
+                }
+
+                return $normalizedOrder;
+            }
+
+            Lesson::query()
+                ->when(
+                    $previousTeacherId,
+                    fn ($query) => $query->where('teacher_id', $previousTeacherId),
+                    fn ($query) => $query->whereNull('teacher_id')
+                )
+                ->where('order', '>', $previousOrder)
+                ->decrement('order');
+
+            Lesson::query()
+                ->when(
+                    $teacherId,
+                    fn ($query) => $query->where('teacher_id', $teacherId),
+                    fn ($query) => $query->whereNull('teacher_id')
+                )
+                ->where('order', '>=', $normalizedOrder)
+                ->increment('order');
+
+            return $normalizedOrder;
+        });
     }
 
 }

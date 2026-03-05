@@ -17,20 +17,6 @@
         </div>
 
         <div class="space-y-2">
-            <label for="slug" class="block font-semibold">Slug</label>
-            <input
-                type="text"
-                id="slug"
-                wire:model.live="slug"
-                placeholder="lesson-slug"
-                class="w-full rounded border border-gray-300 px-3 py-2 @error('slug') border-red-500 @enderror"
-            />
-            @error('slug')
-                <span class="text-sm text-red-600">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <div class="space-y-2">
             <label for="description" class="block font-semibold">Description</label>
             <textarea
                 id="description"
@@ -49,10 +35,10 @@
             <textarea
                 id="content"
                 wire:model.live="content"
-                placeholder="Lesson content (markdown supported)"
                 rows="8"
                 class="w-full rounded border border-gray-300 px-3 py-2 font-mono text-sm @error('content') border-red-500 @enderror"
             ></textarea>
+            <p class="text-xs text-gray-500">What to enter: lesson notes, key steps, exercises, or take-home tasks.</p>
             @error('content')
                 <span class="text-sm text-red-600">{{ $message }}</span>
             @enderror
@@ -115,10 +101,11 @@
                     type="number"
                     id="order"
                     wire:model.live="order"
-                    placeholder="0"
-                    min="0"
+                    placeholder="Auto"
+                    min="1"
                     class="w-full rounded border border-gray-300 px-3 py-2 @error('order') border-red-500 @enderror"
                 />
+                <p class="text-xs text-gray-500">Leave empty to auto-place at the end. If order conflicts, lessons are re-ordered automatically.</p>
                 @error('order')
                     <span class="text-sm text-red-600">{{ $message }}</span>
                 @enderror
@@ -131,7 +118,7 @@
                 type="file"
                 id="file_path"
                 wire:model="file_path"
-                class="w-full rounded border border-gray-300 px-3 py-2 @error('file_path') border-red-500 @enderror"
+                class="w-full rounded border border-gray-300 px-3 py-2 file:mr-4 file:rounded file:border-0 file:bg-[#A6128D] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#8C0375] @error('file_path') border-red-500 @enderror"
             />
             @if ($lesson && $lesson->file_path)
                 <p class="text-sm text-gray-600">Current file: <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="text-[#A6128D] hover:underline">View</a></p>

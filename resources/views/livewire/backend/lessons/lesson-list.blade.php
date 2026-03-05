@@ -52,6 +52,10 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-2 border-t border-gray-200 pt-3">
+                            <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="inline-flex h-9 items-center rounded-md border border-[#A6128D] px-3.5 text-xs font-semibold text-[#A6128D] transition-all duration-200 hover:bg-[#F2F2F2]">
+                                View
+                            </a>
+
                             <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="inline-flex h-9 items-center rounded-md bg-[#A6128D] px-3.5 text-xs font-semibold text-white transition-all duration-200 hover:bg-[#8C0375]">
                                 Edit
                             </a>
@@ -169,6 +173,9 @@
                                 </td>
                                 <td class="px-4 py-3">{{ $lesson->created_at->format('M d, Y') }}</td>
                                 <td class="px-4 py-3 text-right">
+                                    <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="text-[#A6128D] hover:underline mr-3">
+                                        View
+                                    </a>
                                     <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="text-[#A6128D] hover:underline">
                                         Edit
                                     </a>
