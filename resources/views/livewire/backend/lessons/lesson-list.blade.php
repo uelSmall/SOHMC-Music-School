@@ -3,10 +3,10 @@
         <section class="soh-card space-y-4 p-5 sm:p-6 shadow-sm">
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div class="flex gap-2">
-                    <button wire:click="sort('title')" class="rounded-md border px-3 py-2 text-xs font-semibold" style="border-color:#D991CD; color:#0D0D0D; background:#F2F2F2;">
+                    <button wire:click="sort('title')" class="rounded-md border border-[color:var(--soh-gray)] bg-[var(--soh-surface)] px-3 py-2 text-xs font-semibold text-[color:var(--soh-black)]">
                         Title {{ $sortBy === 'title' ? ($sortDir === 'asc' ? '↑' : '↓') : '' }}
                     </button>
-                    <button wire:click="sort('created_at')" class="rounded-md border px-3 py-2 text-xs font-semibold" style="border-color:#D991CD; color:#0D0D0D; background:#F2F2F2;">
+                    <button wire:click="sort('created_at')" class="rounded-md border border-[color:var(--soh-gray)] bg-[var(--soh-surface)] px-3 py-2 text-xs font-semibold text-[color:var(--soh-black)]">
                         Created {{ $sortBy === 'created_at' ? ($sortDir === 'asc' ? '↑' : '↓') : '' }}
                     </button>
                 </div>
@@ -21,11 +21,10 @@
                     type="text"
                     wire:model.live="search"
                     placeholder="Search your lessons..."
-                    class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2"
-                    style="--tw-ring-color:#A6128D;"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2 focus:ring-[color:var(--soh-purple)]"
                 />
 
-                <select wire:model.live="statusFilter" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2" style="--tw-ring-color:#A6128D;">
+                <select wire:model.live="statusFilter" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2 focus:ring-[color:var(--soh-purple)]">
                     <option value="">All Statuses</option>
                     <option value="draft">Draft</option>
                     <option value="published">Published</option>
@@ -36,9 +35,9 @@
 
         <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             @forelse ($this->lessons as $lesson)
-                <article class="soh-card relative overflow-hidden p-0 shadow-sm" style="border-color:rgba(217,145,205,0.35);">
-                    <span class="absolute top-0 bottom-0 left-0 w-1.5" style="background:#D991CD;"></span>
-                    <div class="min-h-[88px] p-4 sm:p-5" style="background:rgba(140,3,117,0.92); border-bottom:1px solid #D991CD;">
+                <article class="soh-card relative overflow-hidden border-[color:rgb(217_145_205_/_0.35)] p-0 shadow-sm">
+                    <span class="absolute top-0 bottom-0 left-0 w-1.5 bg-[var(--soh-gray)]"></span>
+                    <div class="min-h-[88px] border-b border-[color:var(--soh-gray)] bg-[color:rgb(140_3_117_/_0.92)] p-4 sm:p-5">
                         <h3 class="line-clamp-2 text-lg font-semibold leading-snug text-white sm:text-xl">{{ $lesson->title }}</h3>
                         <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-white/80">{{ ucfirst($lesson->status->value) }}</p>
                     </div>
@@ -52,16 +51,16 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-2 border-t border-gray-200 pt-3">
-                            <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="inline-flex h-9 items-center rounded-md border border-[#A6128D] px-3.5 text-xs font-semibold text-[#A6128D] transition-all duration-200 hover:bg-[#F2F2F2]">
+                            <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="soh-btn-outline inline-flex h-9 items-center px-3.5 text-xs">
                                 View
                             </a>
 
-                            <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="inline-flex h-9 items-center rounded-md bg-[#A6128D] px-3.5 text-xs font-semibold text-white transition-all duration-200 hover:bg-[#8C0375]">
+                            <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="soh-btn-primary inline-flex h-9 items-center px-3.5 text-xs">
                                 Edit
                             </a>
 
                             @if ($lesson->file_path)
-                                <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="inline-flex h-9 items-center rounded-md border border-[#A6128D] px-3.5 text-xs font-semibold text-[#A6128D] transition-all duration-200 hover:bg-[#F2F2F2]">
+                                <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="soh-btn-outline inline-flex h-9 items-center px-3.5 text-xs">
                                     View Material
                                 </a>
                             @endif
@@ -73,7 +72,7 @@
                     </div>
                 </article>
             @empty
-                <div class="col-span-full rounded-2xl border px-6 py-12 text-center" style="border-color:#D991CD; background:#F2F2F2;">
+                <div class="col-span-full rounded-2xl border border-[color:var(--soh-gray)] bg-[var(--soh-surface)] px-6 py-12 text-center">
                     <p class="text-lg font-semibold text-black">No lessons found</p>
                     <p class="mt-1 text-sm text-gray-600">Create your first lesson to get started.</p>
                     <a href="{{ route($routePrefix.'.lessons.create') }}" class="soh-btn-primary mt-4 inline-flex">Create Lesson</a>
@@ -90,7 +89,7 @@
         <div class="mb-6 space-y-4">
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <h1 class="text-2xl font-bold">Lessons</h1>
-                <a href="{{ route($routePrefix.'.lessons.create') }}" class="rounded bg-[#A6128D] px-4 py-2 text-white hover:bg-[#8C0375]">
+                <a href="{{ route($routePrefix.'.lessons.create') }}" class="soh-btn-primary">
                     Create Lesson
                 </a>
             </div>
@@ -155,7 +154,7 @@
                                 </td>
                                 <td class="px-4 py-3">
                                     @if ($lesson->file_path)
-                                        <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="text-[#A6128D] hover:underline text-sm">
+                                        <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="soh-link text-sm">
                                             View File
                                         </a>
                                     @else
@@ -164,7 +163,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($lesson->students->count() > 0)
-                                        <span class="inline-block rounded px-2 py-1" style="background:#F2F2F2; color:#A6128D; border:1px solid #D991CD;">
+                                        <span class="inline-block rounded border border-[color:var(--soh-gray)] bg-[var(--soh-surface)] px-2 py-1 text-[color:var(--soh-purple)]">
                                             {{ $lesson->students->count() }}
                                         </span>
                                     @else
@@ -173,10 +172,10 @@
                                 </td>
                                 <td class="px-4 py-3">{{ $lesson->created_at->format('M d, Y') }}</td>
                                 <td class="px-4 py-3 text-right">
-                                    <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="text-[#A6128D] hover:underline mr-3">
+                                    <a href="{{ route($routePrefix.'.lessons.show', $lesson) }}" class="soh-link mr-3">
                                         View
                                     </a>
-                                    <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="text-[#A6128D] hover:underline">
+                                    <a href="{{ route($routePrefix.'.lessons.edit', $lesson) }}" class="soh-link">
                                         Edit
                                     </a>
                                     <button wire:click="delete({{ $lesson->id }})" wire:confirm="Delete this lesson?" class="text-red-600 hover:underline">
@@ -194,7 +193,7 @@
             </div>
         @else
             <div class="rounded bg-gray-50 p-8 text-center">
-                <p class="text-gray-500">No lessons found. <a href="{{ route($routePrefix.'.lessons.create') }}" class="text-[#A6128D] hover:underline">Create one</a></p>
+                <p class="text-gray-500">No lessons found. <a href="{{ route($routePrefix.'.lessons.create') }}" class="soh-link">Create one</a></p>
             </div>
         @endif
     @endif

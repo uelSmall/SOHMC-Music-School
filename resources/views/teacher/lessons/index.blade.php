@@ -11,9 +11,6 @@
         <div class="mb-6">
             <h1 class="soh-page-title">My Lessons</h1>
             <p class="soh-page-subtitle">Create, update, and manage your lessons in one place.</p>
-            <div class="mt-3">
-                <a href="{{ route('teacher.dashboard') }}" class="soh-btn-outline">Back to Dashboard</a>
-            </div>
         </div>
 
         <livewire:backend.lessons.lesson-list route-prefix="teacher" />
