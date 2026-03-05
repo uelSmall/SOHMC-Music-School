@@ -118,10 +118,10 @@
                 type="file"
                 id="file_path"
                 wire:model="file_path"
-                class="w-full rounded border border-gray-300 px-3 py-2 file:mr-4 file:rounded file:border-0 file:bg-[#A6128D] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#8C0375] @error('file_path') border-red-500 @enderror"
+                class="soh-file-input @error('file_path') border-red-500 @enderror"
             />
             @if ($lesson && $lesson->file_path)
-                <p class="text-sm text-gray-600">Current file: <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="text-[#A6128D] hover:underline">View</a></p>
+                <p class="text-sm text-gray-600">Current file: <a href="{{ Storage::url($lesson->file_path) }}" target="_blank" class="soh-link">View</a></p>
             @endif
             @error('file_path')
                 <span class="text-sm text-red-600">{{ $message }}</span>
@@ -151,14 +151,14 @@
         <div class="flex gap-4 pt-4">
             <button
                 type="submit"
-                class="rounded bg-[#A6128D] px-6 py-2 text-white hover:bg-[#8C0375]"
+                class="soh-btn-primary px-6 py-2"
                 wire:loading.attr="disabled"
                 wire:loading.class="opacity-50"
             >
                 <span wire:loading.remove>{{ $lesson ? 'Update' : 'Create' }} Lesson</span>
                 <span wire:loading>Saving...</span>
             </button>
-            <a href="{{ route($routePrefix.'.lessons.index') }}" class="rounded bg-gray-300 px-6 py-2 hover:bg-gray-400">
+            <a href="{{ route($routePrefix.'.lessons.index') }}" class="soh-btn-outline px-6 py-2">
                 Cancel
             </a>
         </div>
