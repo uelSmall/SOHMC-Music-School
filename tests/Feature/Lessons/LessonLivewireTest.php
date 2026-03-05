@@ -270,6 +270,49 @@ class LessonLivewireTest extends TestCase
         ]);
     }
 
+    #[Test]
+    public function lesson_form_redirects_with_success_flash_after_backend_create(): void
+    {
+        $admin = $this->createAdministratorUser();
+        $teacher = $this->createTeacherUser();
+
+        Livewire::actingAs($admin)
+            ->test(\App\Livewire\Backend\Lessons\LessonForm::class, ['routePrefix' => 'backend'])
+            ->set('title', 'Redirect Test Lesson')
+            ->set('content', 'Redirect content')
+            ->set('status', 'draft')
+            ->set('teacher_id', $teacher->id)
+            ->call('save')
+            ->assertRedirect(route('backend.lessons.index', absolute: false));
+
+        $this->assertSame('Lesson created successfully.', session('notify.message'));
+        $this->assertSame('success', session('notify.type'));
+    }
+
+    #[Test]
+    public function lesson_form_redirects_with_success_flash_after_teacher_update(): void
+    {
+        $teacher = $this->createTeacherUser();
+        $lesson = Lesson::factory()->create([
+            'teacher_id' => $teacher->id,
+            'title' => 'Original Title',
+        ]);
+
+        Livewire::actingAs($teacher)
+            ->test(\App\Livewire\Backend\Lessons\LessonForm::class, [
+                'lesson' => $lesson,
+                'routePrefix' => 'teacher',
+            ])
+            ->set('title', 'Updated By Teacher')
+            ->set('content', 'Updated lesson content')
+            ->set('status', 'published')
+            ->call('save')
+            ->assertRedirect(route('teacher.lessons.index', absolute: false));
+
+        $this->assertSame('Lesson updated successfully.', session('notify.message'));
+        $this->assertSame('success', session('notify.type'));
+    }
+
     private function createAdministratorUser(): User
     {
         $user = User::factory()->create();
