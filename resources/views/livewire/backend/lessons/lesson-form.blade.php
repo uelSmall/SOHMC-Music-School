@@ -9,7 +9,7 @@
                 id="title"
                 wire:model.live="title"
                 placeholder="Lesson title"
-                class="w-full rounded border border-gray-300 px-3 py-2 @error('title') border-red-500 @enderror"
+                class="soh-input @error('title') border-red-500 @enderror"
             />
             @error('title')
                 <span class="text-sm text-red-600">{{ $message }}</span>
@@ -23,7 +23,7 @@
                 wire:model.live="description"
                 placeholder="Brief lesson description"
                 rows="2"
-                class="w-full rounded border border-gray-300 px-3 py-2 @error('description') border-red-500 @enderror"
+                class="soh-input @error('description') border-red-500 @enderror"
             ></textarea>
             @error('description')
                 <span class="text-sm text-red-600">{{ $message }}</span>
@@ -36,7 +36,7 @@
                 id="content"
                 wire:model.live="content"
                 rows="8"
-                class="w-full rounded border border-gray-300 px-3 py-2 font-mono text-sm @error('content') border-red-500 @enderror"
+                class="soh-input font-mono text-sm @error('content') border-red-500 @enderror"
             ></textarea>
             <p class="text-xs text-gray-500">What to enter: lesson notes, key steps, exercises, or take-home tasks.</p>
             @error('content')
@@ -51,7 +51,7 @@
                     <select
                         id="teacher_id"
                         wire:model.live="teacher_id"
-                        class="w-full rounded border border-gray-300 px-3 py-2 @error('teacher_id') border-red-500 @enderror"
+                        class="soh-select @error('teacher_id') border-red-500 @enderror"
                     >
                         <option value="">Select a teacher</option>
                         @foreach ($teachers as $teacher)
@@ -69,7 +69,7 @@
                 <select
                     id="status"
                     wire:model.live="status"
-                    class="w-full rounded border border-gray-300 px-3 py-2 @error('status') border-red-500 @enderror"
+                    class="soh-select @error('status') border-red-500 @enderror"
                 >
                     @foreach ($statuses as $stat)
                         <option value="{{ $stat->value }}">{{ ucfirst($stat->value) }}</option>
@@ -88,7 +88,7 @@
                     type="date"
                     id="published_at"
                     wire:model.live="published_at"
-                    class="w-full rounded border border-gray-300 px-3 py-2 @error('published_at') border-red-500 @enderror"
+                    class="soh-input @error('published_at') border-red-500 @enderror"
                 />
                 @error('published_at')
                     <span class="text-sm text-red-600">{{ $message }}</span>
@@ -103,7 +103,7 @@
                     wire:model.live="order"
                     placeholder="Auto"
                     min="1"
-                    class="w-full rounded border border-gray-300 px-3 py-2 @error('order') border-red-500 @enderror"
+                    class="soh-input @error('order') border-red-500 @enderror"
                 />
                 <p class="text-xs text-gray-500">Leave empty to auto-place at the end. If order conflicts, lessons are re-ordered automatically.</p>
                 @error('order')
@@ -137,7 +137,7 @@
                             type="checkbox"
                             value="{{ $student->id }}"
                             wire:model.live="student_ids"
-                            class="rounded"
+                            class="rounded accent-[color:var(--soh-purple)]"
                         />
                         <span>{{ $student->name }}</span>
                     </label>
