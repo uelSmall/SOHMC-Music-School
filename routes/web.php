@@ -54,6 +54,9 @@ Route::get('privacy', Privacy::class)->name('privacy');
 
 Route::group(['as' => 'frontend.'], function () {
     Route::get('/', Home::class)->name('index');
+    Route::view('about', 'frontend.about')->name('about');
+    Route::view('gallery', 'frontend.gallery')->name('gallery');
+    Route::view('contact', 'frontend.contact')->name('contact');
 
     Route::group(['middleware' => ['auth']], function () {
         /*

@@ -416,7 +416,44 @@
         </div>
 
         <div class="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto" id="navbar-language">
-            <x-frontend.dynamic-menu location="frontend-header" />
+            <ul class="flex flex-col rounded-lg p-4 font-medium md:mt-0 md:flex-row md:space-x-1 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse">
+                <li>
+                    <a
+                        href="{{ route('frontend.index') }}"
+                        class="soh-nav-link {{ request()->routeIs('home') || request()->routeIs('frontend.index') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Home') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.about') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.about') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('About') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.gallery') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.gallery') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Gallery') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.contact') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.contact') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Contact') }}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
