@@ -19,10 +19,10 @@
                 <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
             </span>
         </a>
-        <div class="flex items-center justify-end space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
+        <div class="flex items-center justify-end space-x-1 text-white/90 md:order-2 md:space-x-0 rtl:space-x-reverse">
 @if (setting('show_theme_dropdown'))
             <button
-                class="rounded-lg p-2 text-sm text-white hover:bg-white/15 focus:outline-hidden"
+                class="rounded-lg p-2 text-sm text-white/90 hover:bg-white/10 hover:text-white focus:outline-hidden"
                 id="theme-toggle"
                 type="button"
                 aria-label="Toggle between light and dark theme"
@@ -55,7 +55,7 @@
 
 @if (setting('show_language_dropdown'))
             <button
-                class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-3 sm:py-2"
+                class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white sm:px-3 sm:py-2"
                 data-dropdown-toggle="language-dropdown-menu"
                 type="button"
                 aria-label="Select language"
@@ -113,7 +113,7 @@
             @guest
                 @if (user_registration())
                     <a
-                        class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-4 sm:py-2"
+                        class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white sm:px-4 sm:py-2"
                         href="{{ route("register") }}"
                         wire:navigate
                     >
@@ -141,7 +141,7 @@
                 @endif
 
                 <a
-                    class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white hover:bg-white/15 sm:px-4 sm:py-2"
+                    class="inline-flex cursor-pointer items-center justify-center rounded-sm p-2 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white sm:px-4 sm:py-2"
                     href="{{ route("login") }}"
                     wire:navigate
                 >
@@ -170,7 +170,7 @@
 
             @auth
                 <button
-                    class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-white/15"
+                    class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white"
                     data-dropdown-toggle="user-dropdown-menu"
                     type="button"
                     aria-label="User menu"
