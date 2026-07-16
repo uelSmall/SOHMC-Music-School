@@ -15,7 +15,7 @@ class Profile extends Component
 {
     public User $user;
 
-    public string $username;
+    public string $username = '';
 
     /**
      * Mount the component.
@@ -23,14 +23,14 @@ class Profile extends Component
     public function mount(?string $username = null)
     {
         $authUser = Auth::user();
+        $resolvedUsername = $username ?? $authUser?->username ?? (string) ($authUser?->id ?? '');
 
-        if (! $authUser instanceof User) {
-            $this->username = $username ?? '';
-        } else {
-            $this->username = $username ?? $authUser->username;
-        }
+        $this->username = $resolvedUsername;
 
-        $this->user = User::whereUsername($this->username)->firstOrFail();
+        $this->user = User::query()
+            ->where('username', $this->username)
+            ->orWhere('id', $this->username)
+            ->firstOrFail();
     }
 
     /**

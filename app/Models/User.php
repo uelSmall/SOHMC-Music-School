@@ -21,6 +21,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasRoles {
         hasRole as hasRoleOriginal;
         hasPermissionTo as hasPermissionToOriginal;
+        getAllPermissions as getAllPermissionsOriginal;
     }
     use Notifiable;
     use SoftDeletes;
@@ -290,7 +291,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function getAllPermissions(): \Illuminate\Support\Collection
     {
         if (! static::$useCachedPermissions) {
-            return parent::getAllPermissions();
+            return $this->getAllPermissionsOriginal();
         }
 
         // Get direct permissions (cached)

@@ -6,6 +6,8 @@ use App\Http\Controllers\Backend\NotificationsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\UserController as BackendUserController;
+use App\Http\Controllers\Backend\GalleryItemController;
+use App\Http\Controllers\Frontend\GalleryController;
 use App\Http\Controllers\Frontend\UserController as FrontendUserController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\Frontend\Home;
@@ -55,7 +57,7 @@ Route::get('privacy', Privacy::class)->name('privacy');
 Route::group(['as' => 'frontend.'], function () {
     Route::get('/', Home::class)->name('index');
     Route::view('about', 'frontend.about')->name('about');
-    Route::view('gallery', 'frontend.gallery')->name('gallery');
+    Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
     Route::view('contact', 'frontend.contact')->name('contact');
 
     Route::group(['middleware' => ['auth']], function () {
@@ -100,6 +102,13 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
         $module_name = 'settings';
         Route::get("{$module_name}", [SettingController::class, 'index'])->name("{$module_name}.index");
         Route::post("{$module_name}", [SettingController::class, 'store'])->name("{$module_name}.store");
+    });
+
+    Route::group(['middleware' => ['can:edit_backend']], function () {
+        Route::resource('gallery-items', GalleryItemController::class)->except(['show']);
+        Route::patch('gallery-items/{galleryItem}/move/{direction}', [GalleryItemController::class, 'move'])
+            ->where('direction', 'up|down')
+            ->name('gallery-items.move');
     });
 
     /*

@@ -29,6 +29,9 @@ class LessonForm extends Component
     #[Validate('nullable|string|max:500')]
     public ?string $description = null;
 
+    #[Validate('nullable|string|max:255')]
+    public ?string $instrument = null;
+
     #[Validate('required|in:draft,published,archived')]
     public string $status = 'draft';
 
@@ -63,6 +66,7 @@ class LessonForm extends Component
             $this->title = $lesson->title ?? '';
             $this->content = $lesson->content ?? '';
             $this->description = $lesson->description ?? null;
+            $this->instrument = $lesson->instrument;
             $this->status = $lesson->status?->value ?? 'draft';
             $this->published_at = $lesson->published_at?->toDateString();
             $this->order = $lesson->order;
@@ -85,6 +89,7 @@ class LessonForm extends Component
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'description' => 'nullable|string|max:500',
+            'instrument' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published,archived',
             'published_at' => 'nullable|date',
             'order' => 'nullable|integer|min:1',
@@ -113,6 +118,7 @@ class LessonForm extends Component
                     'slug' => $this->generateUniqueSlug($this->title, $this->lesson->id),
                     'content' => $this->content,
                     'description' => $this->description,
+                    'instrument' => $this->instrument,
                     'status' => $this->status,
                     'published_at' => $this->published_at,
                     'order' => $targetOrder,
@@ -139,6 +145,7 @@ class LessonForm extends Component
                     'slug' => $this->generateUniqueSlug($this->title),
                     'content' => $this->content,
                     'description' => $this->description,
+                    'instrument' => $this->instrument,
                     'status' => $this->status,
                     'published_at' => $this->published_at,
                     'order' => $targetOrder,
@@ -177,6 +184,7 @@ class LessonForm extends Component
     {
         return view('livewire.backend.lessons.lesson-form', [
             'statuses' => LessonStatus::cases(),
+            'instrumentOptions' => $this->instrumentOptions(),
             'teachers' => User::query()->whereHas('roles', function ($q) {
                 $q->where('name', 'teacher');
             })->when($this->isTeacher, function ($query) {
@@ -186,6 +194,17 @@ class LessonForm extends Component
                 $q->where('name', 'student');
             })->get(),
         ]);
+    }
+
+    private function instrumentOptions(): array
+    {
+        return [
+            'piano',
+            'guitar',
+            'vocals',
+            'percussion',
+            'steel pan',
+        ];
     }
 
     private function currentUser(): User

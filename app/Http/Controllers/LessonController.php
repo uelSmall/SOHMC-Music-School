@@ -124,8 +124,17 @@ class LessonController extends Controller
         }
 
         if ($user->hasRole('student')) {
-            return $lesson->assignedStudents()
+            // Support both assignment records and direct lesson_student pivot assignments.
+            $hasAssignmentRecord = $lesson->assignedStudents()
                 ->where('student_id', $user->id)
+                ->exists();
+
+            if ($hasAssignmentRecord) {
+                return true;
+            }
+
+            return $lesson->students()
+                ->where('users.id', $user->id)
                 ->exists();
         }
 

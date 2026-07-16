@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 UserSeeder::class,
                 LessonSeeder::class,
+                GallerySeeder::class,
             ]);
 
             $this->callDummyDataSeeders();

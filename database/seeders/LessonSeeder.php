@@ -66,6 +66,13 @@ class LessonSeeder extends Seeder
                 'status' => 'archived',
                 'instrument' => 'percussion',
             ],
+            [
+                'title' => 'Steel Pan Essentials',
+                'description' => 'Introduction to steel pan techniques and tone control',
+                'content' => 'Learn steel pan setup, stick control, note layout familiarization, and foundational rhythm patterns.',
+                'status' => 'published',
+                'instrument' => 'steel pan',
+            ],
         ];
 
         foreach ($lessonsData as $index => $data) {

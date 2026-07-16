@@ -9,6 +9,9 @@ Welcome to the Laravel Starter Music School project. This guide helps you naviga
 **New to the project?**
 → Read [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) for a 2-minute overview.
 
+**Need one up-to-date baseline summary?**
+→ Read [docs/CURRENT_STATE_SUMMARY.md](docs/CURRENT_STATE_SUMMARY.md) first.
+
 **Want to get started immediately?**
 → Run [QUICKSTART.sh](QUICKSTART.sh) for automated setup.
 

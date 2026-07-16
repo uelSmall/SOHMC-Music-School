@@ -31,6 +31,23 @@
         </div>
 
         <div class="space-y-2">
+            <label for="instrument" class="block font-semibold">Instrument (optional)</label>
+            <select
+                id="instrument"
+                wire:model.live="instrument"
+                class="soh-select @error('instrument') border-red-500 @enderror"
+            >
+                <option value="">Select instrument</option>
+                @foreach ($instrumentOptions as $instrumentOption)
+                    <option value="{{ $instrumentOption }}">{{ ucfirst($instrumentOption) }}</option>
+                @endforeach
+            </select>
+            @error('instrument')
+                <span class="text-sm text-red-600">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="space-y-2">
             <label for="content" class="block font-semibold">Content</label>
             <textarea
                 id="content"

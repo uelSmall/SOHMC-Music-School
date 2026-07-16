@@ -92,6 +92,7 @@ class LessonSearch extends Component
     {
         return Lesson::query()
             ->whereNotNull('instrument')
+            ->whereRaw('LOWER(instrument) <> ?', ['general'])
             ->distinct()
             ->pluck('instrument')
             ->sort()

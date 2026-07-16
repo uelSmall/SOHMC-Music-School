@@ -19,8 +19,8 @@ class TestTest extends TestCase
         $this->seed();
         // Artisan::call('db:seed');
 
-        // Get Super Admin
-        $user = User::whereId(1)->first();
+        // Get seeded Super Admin regardless of sequence state.
+        $user = User::where('email', 'super@admin.com')->firstOrFail();
 
         $this->actingAs($user);
     }

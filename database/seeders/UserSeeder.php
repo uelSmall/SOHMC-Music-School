@@ -92,6 +92,11 @@ class UserSeeder extends Seeder
                 $user_data
             );
 
+            if (empty($user->username) && isset($user_data['username'])) {
+                $user->username = $user_data['username'];
+                $user->save();
+            }
+
             event(new UserCreated($user));
 
             // Assign roles based on email pattern
