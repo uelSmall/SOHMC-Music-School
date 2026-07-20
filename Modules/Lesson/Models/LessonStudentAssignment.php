@@ -4,6 +4,8 @@ namespace Modules\Lesson\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\User;
 use Modules\Lesson\Enums\AssignmentStatus;
 use Spatie\Activitylog\LogOptions;
@@ -49,6 +51,16 @@ class LessonStudentAssignment extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'student_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(LessonAssignmentComment::class, 'lesson_student_assignment_id');
+    }
+
+    public function latestComment(): HasOne
+    {
+        return $this->hasOne(LessonAssignmentComment::class, 'lesson_student_assignment_id')->latestOfMany();
     }
 
     public function scopeCompletedByStudent($query, User $student): void

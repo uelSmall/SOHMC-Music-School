@@ -39,6 +39,42 @@
         </div>
     </div>
 
+    @if ($commentAssignmentId)
+        @php
+            $commentAssignment = $assignments->firstWhere('id', $commentAssignmentId);
+        @endphp
+
+        @if ($commentAssignment)
+            <div class="soh-card p-6">
+                <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-xl font-semibold text-black">Teacher Note</h2>
+                        <p class="text-sm text-gray-600">Add feedback for {{ $commentAssignment->student->name }} on {{ $commentAssignment->lesson->title }}.</p>
+                    </div>
+                    <button type="button" wire:click="cancelComment" class="soh-btn-outline">Close</button>
+                </div>
+
+                <div class="space-y-4">
+                    <textarea
+                        wire:model.defer="commentBody"
+                        rows="5"
+                        class="soh-input w-full"
+                        placeholder="Write a short progress note, encouragement, or next step..."
+                    ></textarea>
+
+                    @error('commentBody')
+                        <p class="text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+
+                    <div class="flex gap-3">
+                        <button type="button" wire:click="saveComment" class="soh-btn-primary">Save Note</button>
+                        <button type="button" wire:click="cancelComment" class="soh-btn-outline">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endif
+
     <div class="soh-card overflow-hidden p-0">
         <div class="overflow-x-auto">
             <table class="w-full">
@@ -48,6 +84,7 @@
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Student</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Due Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Teacher Note</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Assigned</th>
                     </tr>
                 </thead>
@@ -75,13 +112,28 @@
                                     <span class="text-gray-400">—</span>
                                 @endif
                             </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                <div class="space-y-2">
+                                    @if ($assignment->latestComment)
+                                        <p class="max-w-xs text-sm text-gray-700 line-clamp-2">{{ $assignment->latestComment->body }}</p>
+                                        <p class="text-xs text-gray-500">
+                                            {{ $assignment->latestComment->teacher->name ?? 'Teacher' }} · {{ $assignment->latestComment->created_at->format('M d, Y') }}
+                                        </p>
+                                    @else
+                                        <span class="text-gray-400">No note yet</span>
+                                    @endif
+                                    <button type="button" wire:click="startComment({{ $assignment->id }})" class="soh-link text-xs font-medium">
+                                        {{ $assignment->latestComment ? 'Edit Note' : 'Add Note' }}
+                                    </button>
+                                </div>
+                            </td>
                             <td class="px-6 py-4 text-sm text-gray-600">
                                 {{ $assignment->assigned_at->format('M d, Y') }}
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-12 text-center">
+                            <td colspan="6" class="px-6 py-12 text-center">
                                 <p class="text-gray-500">No assignments yet. Click “Assign Lesson” to get started.</p>
                             </td>
                         </tr>

@@ -1,68 +1,76 @@
 <div class="mx-auto max-w-7xl space-y-7">
+    @php
+        $isParentUser = auth()->user()->hasRole('parent');
+    @endphp
+
     @if (session()->has('message'))
         <div class="rounded-xl border p-4 text-sm font-medium" style="border-color:#D991CD; background:#F2F2F2; color:#0D0D0D;">
             {{ session()->get('message') }}
         </div>
     @endif
 
-    <section class="soh-card space-y-4 p-5 sm:p-6 shadow-sm">
-        <div>
-            <label class="mb-2 block text-sm font-semibold text-gray-700">Search Lessons</label>
-            <input
-                type="text"
-                wire:model.live="search"
-                placeholder="Search by title or description..."
-                class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2"
-                style="--tw-ring-color:#A6128D;"
-            />
-        </div>
-
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    @unless ($isParentUser)
+        <section class="soh-card space-y-4 p-5 sm:p-6 shadow-sm">
             <div>
-                <label class="mb-2 block text-sm font-semibold text-gray-700">Instrument</label>
-                <select
-                    wire:model.live="filterInstrument"
+                <label class="mb-2 block text-sm font-semibold text-gray-700">Search Lessons</label>
+                <input
+                    type="text"
+                    wire:model.live="search"
+                    placeholder="Search by title or description..."
                     class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2"
                     style="--tw-ring-color:#A6128D;"
-                >
-                    <option value="">All Instruments</option>
-                    @foreach ($instruments as $instrument)
-                        <option value="{{ $instrument }}">{{ ucfirst($instrument) }}</option>
-                    @endforeach
-                </select>
+                />
             </div>
 
-            @if ($tab !== 'all')
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <label class="mb-2 block text-sm font-semibold text-gray-700">Status</label>
+                    <label class="mb-2 block text-sm font-semibold text-gray-700">Instrument</label>
                     <select
-                        wire:model.live="filterStatus"
+                        wire:model.live="filterInstrument"
                         class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2"
                         style="--tw-ring-color:#A6128D;"
                     >
-                        <option value="">All Statuses</option>
-                        @foreach ($assignmentStatuses as $statusKey => $statusLabel)
-                            <option value="{{ $statusKey }}">{{ $statusLabel }}</option>
+                        <option value="">All Instruments</option>
+                        @foreach ($instruments as $instrument)
+                            <option value="{{ $instrument }}">{{ ucfirst($instrument) }}</option>
                         @endforeach
                     </select>
                 </div>
-            @endif
-        </div>
-    </section>
 
-    <div class="border-b border-gray-200">
-        <div class="flex gap-6 sm:gap-8">
-            @foreach (['all' => 'All Lessons', 'assigned' => 'Assigned', 'completed' => 'Completed'] as $tabKey => $tabLabel)
-                <button
-                    wire:click="$set('tab', '{{ $tabKey }}')"
-                    class="border-b-2 px-2 py-2.5 text-sm font-semibold transition-all duration-200 {{ $tab === $tabKey ? '' : 'border-transparent text-gray-600 hover:text-gray-900' }}"
-                    style="{{ $tab === $tabKey ? 'border-color:#A6128D; color:#A6128D;' : '' }}"
-                >
-                    {{ $tabLabel }}
-                </button>
-            @endforeach
+                @if ($tab !== 'all')
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-gray-700">Status</label>
+                        <select
+                            wire:model.live="filterStatus"
+                            class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:border-transparent focus:ring-2"
+                            style="--tw-ring-color:#A6128D;"
+                        >
+                            <option value="">All Statuses</option>
+                            @foreach ($assignmentStatuses as $statusKey => $statusLabel)
+                                <option value="{{ $statusKey }}">{{ $statusLabel }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+            </div>
+        </section>
+    @endunless
+
+    @unless ($isParentUser)
+        <div class="border-b border-gray-200">
+            <div class="flex gap-6 sm:gap-8">
+                @foreach (['all' => 'All Lessons', 'assigned' => 'Assigned', 'completed' => 'Completed'] as $tabKey => $tabLabel)
+                    <button
+                        wire:click="$set('tab', '{{ $tabKey }}')"
+                        class="border-b-2 px-2 py-2.5 text-sm font-semibold transition-all duration-200 {{ $tab === $tabKey ? '' : 'border-transparent text-gray-600 hover:text-gray-900' }}"
+                        style="{{ $tab === $tabKey ? 'border-color:#A6128D; color:#A6128D;' : '' }}"
+                    >
+                        {{ $tabLabel }}
+                    </button>
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endunless
 
     <div
         wire:loading.flex
@@ -178,7 +186,7 @@
         @empty
             <div class="col-span-full rounded-2xl border px-6 py-12 text-center" style="border-color:#D991CD; background:#F2F2F2;">
                 <p class="text-lg font-semibold text-black">No lessons found</p>
-                <p class="mt-1 text-sm text-gray-600">Try adjusting your search or filter options.</p>
+                <p class="mt-1 text-sm text-gray-600">{{ $isParentUser ? 'No child-linked lessons are available yet.' : 'Try adjusting your search or filter options.' }}</p>
             </div>
         @endforelse
     </div>

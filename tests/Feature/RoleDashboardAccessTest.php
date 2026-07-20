@@ -46,6 +46,15 @@ class RoleDashboardAccessTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_parent_can_access_parent_dashboard(): void
+    {
+        $parent = User::where('email', 'parent1@example.com')->firstOrFail();
+
+        $response = $this->actingAs($parent)->get('/parent/dashboard');
+
+        $response->assertStatus(200);
+    }
+
     public function test_teacher_cannot_access_student_dashboard(): void
     {
         $teacher = User::where('email', 'teacher1@example.com')->firstOrFail();
@@ -84,5 +93,16 @@ class RoleDashboardAccessTest extends TestCase
 
         $response->assertHasNoErrors()
             ->assertRedirect(route('student.dashboard', absolute: false));
+    }
+
+    public function test_parent_login_redirects_to_parent_dashboard(): void
+    {
+        $response = Livewire::test(Login::class)
+            ->set('email', 'parent1@example.com')
+            ->set('password', 'password')
+            ->call('login');
+
+        $response->assertHasNoErrors()
+            ->assertRedirect(route('parent.dashboard', absolute: false));
     }
 }

@@ -22,6 +22,10 @@ class LessonController extends Controller
             $lessonsQuery = Lesson::whereHas('students', function ($q) use ($user) {
                 $q->where('users.id', $user->id);
             });
+        } elseif ($user->hasRole('parent')) {
+            $lessonsQuery = Lesson::whereHas('students.parents', function ($q) use ($user) {
+                $q->where('users.id', $user->id);
+            });
         } elseif ($user->hasRole('teacher')) {
             $lessonsQuery = Lesson::where('teacher_id', $user->id);
         } else {
@@ -52,10 +56,15 @@ class LessonController extends Controller
 
         abort_unless($this->canAccessLesson($user, $lesson), 403);
 
+        $childrenIds = $user->hasRole('parent')
+            ? $user->children()->pluck('users.id')
+            : collect([$user->id]);
+
         $lesson->load([
             'teacher:id,name',
-            'assignedStudents' => function ($query) use ($user) {
-                $query->where('student_id', $user->id);
+            'assignedStudents' => function ($query) use ($childrenIds) {
+                $query->whereIn('student_id', $childrenIds)
+                    ->with('student:id,name', 'latestComment.teacher:id,name');
             },
         ]);
 
@@ -135,6 +144,14 @@ class LessonController extends Controller
 
             return $lesson->students()
                 ->where('users.id', $user->id)
+                ->exists();
+        }
+
+        if ($user->hasRole('parent')) {
+            return $lesson->students()
+                ->whereHas('parents', function ($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                })
                 ->exists();
         }
 

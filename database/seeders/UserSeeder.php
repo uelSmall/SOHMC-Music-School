@@ -37,6 +37,16 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'),
                 'email_verified_at' => Carbon::now(),
             ],
+            // Parent
+            [
+                'username' => '100003',
+                'first_name' => 'Patricia',
+                'last_name' => 'Jones',
+                'name' => 'Parent One',
+                'email' => 'parent1@example.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => Carbon::now(),
+            ],
             // Teachers
             [
                 'username' => '100006',
@@ -104,6 +114,8 @@ class UserSeeder extends Seeder
                 $user->syncRoles(['teacher']);
             } elseif (str_contains($user_data['email'], 'student')) {
                 $user->syncRoles(['student']);
+            } elseif (str_contains($user_data['email'], 'parent')) {
+                $user->syncRoles(['parent']);
             } elseif (str_contains($user_data['email'], 'admin')) {
                 if ($user_data['email'] === 'super@admin.com') {
                     $user->syncRoles(['super admin']);

@@ -29,6 +29,9 @@ class LessonForm extends Component
     #[Validate('nullable|string|max:500')]
     public ?string $description = null;
 
+    #[Validate('nullable|string|max:5000')]
+    public ?string $global_note = null;
+
     #[Validate('nullable|string|max:255')]
     public ?string $instrument = null;
 
@@ -66,6 +69,7 @@ class LessonForm extends Component
             $this->title = $lesson->title ?? '';
             $this->content = $lesson->content ?? '';
             $this->description = $lesson->description ?? null;
+            $this->global_note = $lesson->global_note ?? null;
             $this->instrument = $lesson->instrument;
             $this->status = $lesson->status?->value ?? 'draft';
             $this->published_at = $lesson->published_at?->toDateString();
@@ -89,6 +93,7 @@ class LessonForm extends Component
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'description' => 'nullable|string|max:500',
+            'global_note' => 'nullable|string|max:5000',
             'instrument' => 'nullable|string|max:255',
             'status' => 'required|in:draft,published,archived',
             'published_at' => 'nullable|date',
@@ -118,6 +123,7 @@ class LessonForm extends Component
                     'slug' => $this->generateUniqueSlug($this->title, $this->lesson->id),
                     'content' => $this->content,
                     'description' => $this->description,
+                    'global_note' => $this->global_note,
                     'instrument' => $this->instrument,
                     'status' => $this->status,
                     'published_at' => $this->published_at,
@@ -145,6 +151,7 @@ class LessonForm extends Component
                     'slug' => $this->generateUniqueSlug($this->title),
                     'content' => $this->content,
                     'description' => $this->description,
+                    'global_note' => $this->global_note,
                     'instrument' => $this->instrument,
                     'status' => $this->status,
                     'published_at' => $this->published_at,

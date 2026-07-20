@@ -48,6 +48,11 @@ class PermissionRoleTableSeeder extends Seeder
             'assign_lessons',
         ]);
 
+        $parent = Role::firstOrCreate(['name' => 'parent']);
+        $parent->syncPermissions([
+            'view_assigned_lessons',
+        ]);
+
         $student = Role::firstOrCreate(['name' => 'student']);
         $student->syncPermissions(['view_assigned_lessons']);
     }

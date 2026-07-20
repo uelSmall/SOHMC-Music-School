@@ -29,6 +29,7 @@ class Lesson extends BaseModel
         'slug',
         'content',
         'description',
+        'global_note',
         'status',
         'published_at',
         'order',

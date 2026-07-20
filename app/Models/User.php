@@ -6,6 +6,7 @@ use App\Models\Presenters\UserPresenter;
 use App\Models\Traits\HasHashedMediaTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -76,6 +77,24 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
+     * Get the students linked to this parent/guardian.
+     */
+    public function children(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'parent_student', 'parent_id', 'student_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the parents linked to this student.
+     */
+    public function parents(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'parent_student', 'student_id', 'parent_id')
+            ->withTimestamps();
+    }
+
+    /**
      * Resolve preferred dashboard route name based on user role.
      */
     public function dashboardRouteName(): string
@@ -90,6 +109,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         if ($this->hasRole('student')) {
             return 'student.dashboard';
+        }
+
+        if ($this->hasRole('parent')) {
+            return 'parent.dashboard';
         }
 
         return 'frontend.index';

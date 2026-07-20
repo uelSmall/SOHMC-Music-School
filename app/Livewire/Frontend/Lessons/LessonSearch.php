@@ -48,9 +48,27 @@ class LessonSearch extends Component
     {
         $user = auth()->user();
         $query = Lesson::query();
+        $accessibleStudentIds = collect();
+        $isParent = $user->hasRole('parent');
+
+        if ($user->hasRole('student')) {
+            $accessibleStudentIds = collect([$user->id]);
+        } elseif ($user->hasRole('parent')) {
+            $accessibleStudentIds = $user->children()->pluck('users.id');
+        }
+
+        if (($user->hasRole('student') || $user->hasRole('parent')) && $accessibleStudentIds->isEmpty()) {
+            return collect();
+        }
+
+        if ($user->hasRole('student') || $user->hasRole('parent')) {
+            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
+                $q->whereIn('student_id', $accessibleStudentIds);
+            });
+        }
 
         // Search filter
-        if ($this->search) {
+        if (! $isParent && $this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%');
@@ -58,26 +76,26 @@ class LessonSearch extends Component
         }
 
         // Instrument filter
-        if ($this->filterInstrument) {
+        if (! $isParent && $this->filterInstrument) {
             $query->where('instrument', $this->filterInstrument);
         }
 
         // Tab filtering
-        if ($this->tab === 'assigned') {
-            $query->whereHas('assignedStudents', function ($q) use ($user) {
-                $q->where('student_id', $user->id);
+        if (! $isParent && $this->tab === 'assigned') {
+            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
+                $q->whereIn('student_id', $accessibleStudentIds);
             });
-        } elseif ($this->tab === 'completed') {
-            $query->whereHas('assignedStudents', function ($q) use ($user) {
-                $q->where('student_id', $user->id)
+        } elseif (! $isParent && $this->tab === 'completed') {
+            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
+                $q->whereIn('student_id', $accessibleStudentIds)
                     ->where('status', 'completed');
             });
         }
 
         // Status filter (for assignments)
-        if ($this->filterStatus && $this->tab !== 'all') {
-            $query->whereHas('assignedStudents', function ($q) use ($user) {
-                $q->where('student_id', $user->id)
+        if (! $isParent && $this->filterStatus && $this->tab !== 'all') {
+            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
+                $q->whereIn('student_id', $accessibleStudentIds)
                     ->where('status', $this->filterStatus);
             });
         }

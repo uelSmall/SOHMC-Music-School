@@ -61,6 +61,21 @@
             @enderror
         </div>
 
+        <div class="space-y-2">
+            <label for="global_note" class="block font-semibold">Global Lesson Note (for all assigned students)</label>
+            <textarea
+                id="global_note"
+                wire:model.live="global_note"
+                rows="4"
+                class="soh-input @error('global_note') border-red-500 @enderror"
+                placeholder="Add shared guidance like weekly goal, common mistakes, and practice focus."
+            ></textarea>
+            <p class="text-xs text-gray-500">This note appears to every student and parent assigned to this lesson.</p>
+            @error('global_note')
+                <span class="text-sm text-red-600">{{ $message }}</span>
+            @enderror
+        </div>
+
         <div class="grid grid-cols-2 gap-4">
             @if (! $isTeacher)
                 <div class="space-y-2">

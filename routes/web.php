@@ -17,6 +17,7 @@ use App\Livewire\Frontend\Users\ChangePassword;
 use App\Livewire\Frontend\Users\Profile;
 use App\Livewire\Frontend\Users\ProfileEdit;
 use App\Livewire\Student\Dashboard as StudentDashboard;
+use App\Livewire\Parents\Dashboard as ParentDashboard;
 use App\Livewire\Teacher\Dashboard as TeacherDashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -175,6 +176,16 @@ Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lesson
     Route::get('/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
         ->name('assignments.index')
         ->middleware('can:assign_lessons');
+});
+
+/*
+*
+* Parent Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::prefix('parent')->as('parent.')->middleware(['auth', 'role:parent'])->group(function () {
+    Route::get('/dashboard', ParentDashboard::class)->name('dashboard');
 });
 
 /*

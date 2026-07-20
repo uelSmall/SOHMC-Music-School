@@ -19,6 +19,10 @@
                         <a href="{{ route('teacher.dashboard') }}" class="soh-nav-link {{ request()->routeIs('teacher.dashboard') ? 'active' : '' }}">Teacher</a>
                     @endif
 
+                    @if (auth()->user()->hasRole('parent'))
+                        <a href="{{ route('parent.dashboard') }}" class="soh-nav-link {{ request()->routeIs('parent.dashboard') ? 'active' : '' }}">Parent</a>
+                    @endif
+
                     @if (auth()->user()->hasRole('student'))
                         <a href="{{ route('student.dashboard') }}" class="soh-nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">Dashboard</a>
                         <a href="{{ route('lessons.index') }}" class="soh-nav-link {{ request()->routeIs('lessons.index') ? 'active' : '' }}">My Lessons</a>
@@ -57,6 +61,10 @@
 
             @if (auth()->user()->hasRole('teacher'))
                 <a href="{{ route('teacher.dashboard') }}" class="soh-nav-link block">Teacher Dashboard</a>
+            @endif
+
+            @if (auth()->user()->hasRole('parent'))
+                <a href="{{ route('parent.dashboard') }}" class="soh-nav-link block">Parent Dashboard</a>
             @endif
 
             @if (auth()->user()->hasRole('student'))

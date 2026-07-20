@@ -64,6 +64,50 @@
                     </div>
                 </div>
             @endif
+
+            @if ($assignment && $assignment->latestComment)
+                <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</p>
+                    <p class="mt-2 text-sm text-gray-700">{{ $assignment->latestComment->body }}</p>
+                </div>
+            @elseif (! empty($lesson->global_note))
+                <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">Global Lesson Note</p>
+                    <p class="mt-2 text-sm text-gray-700">{{ $lesson->global_note }}</p>
+                </div>
+            @endif
+        @elseif (auth()->user()->hasRole('parent'))
+            @if ($lesson->assignedStudents->isNotEmpty())
+                <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">Children’s Progress</p>
+                    <div class="mt-3 space-y-3">
+                        @foreach ($lesson->assignedStudents as $assignment)
+                            <div class="rounded-lg border border-gray-200 bg-white p-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3">
+                                    <div>
+                                        <div class="font-semibold text-black">{{ $assignment->student->name ?? 'Child' }}</div>
+                                        <div class="text-sm text-gray-600">Status: {{ ucfirst(str_replace('_', ' ', $assignment->status->value)) }}</div>
+                                    </div>
+                                    @if ($assignment->due_date)
+                                        <div class="text-xs font-medium" style="color:#A6128D;">Due {{ $assignment->due_date->format('M d, Y') }}</div>
+                                    @endif
+                                </div>
+                                @if ($assignment->latestComment)
+                                    <div class="mt-3 rounded-lg border border-gray-200 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-3 text-sm text-gray-700">
+                                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</div>
+                                        <p class="mt-2">{{ $assignment->latestComment->body }}</p>
+                                    </div>
+                                @elseif (! empty($lesson->global_note))
+                                    <div class="mt-3 rounded-lg border border-gray-200 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-3 text-sm text-gray-700">
+                                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Global Lesson Note</div>
+                                        <p class="mt-2">{{ $lesson->global_note }}</p>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         @endif
 
         <div class="soh-card p-4 sm:p-6">

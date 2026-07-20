@@ -24,6 +24,8 @@ class UserRoleTableSeeder extends Seeder
         User::where('email', 'teacher1@example.com')->first()?->syncRoles('teacher');
         User::where('email', 'teacher2@example.com')->first()?->syncRoles('teacher');
 
+        User::where('email', 'parent1@example.com')->first()?->syncRoles('parent');
+
         User::where('email', 'student1@example.com')->first()?->syncRoles('student');
         User::where('email', 'student2@example.com')->first()?->syncRoles('student');
         User::where('email', 'student3@example.com')->first()?->syncRoles('student');
