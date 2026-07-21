@@ -1,4 +1,5 @@
 <nav
+    x-data="{ profileMenu: false }"
     class="border-b-2 border-[#8C0375] bg-[#A6128D] shadow-md dark:border-[#8C0375] dark:bg-[#A6128D]"
     role="navigation"
     aria-label="Main navigation"
@@ -76,254 +77,62 @@
             @endguest
 
             @auth
-                <button
-                    class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-white/90 hover:bg-white/10 hover:text-white"
-                    data-dropdown-toggle="user-dropdown-menu"
-                    type="button"
-                    aria-label="User menu"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                >
-                    <img
-                        class="h-9 rounded-md"
-                        src="{{ asset(Auth::user()->avatar) }}"
-                        alt="{{ Auth::user()->name }}'s profile picture"
-                    />
-                    <span class="ms-2 hidden sm:block">
-                        {{ Auth::user()->last_name }}
-                    </span>
-                </button>
-                <!-- Dropdown:user-dropdown-menu -->
-                <div
-                    class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow-sm dark:bg-gray-700"
-                    id="user-dropdown-menu"
-                    role="menu"
-                    aria-label="User account menu"
-                >
-                    <ul class="py-2 font-medium" role="none">
-                        @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
-                            <li class="border-b-2 border-gray-200">
-                                <a
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    href="{{ route("backend.dashboard") }}"
-                                    role="menuitem"
-                                    wire:navigate
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"
-                                            />
-                                            <path
-                                                d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"
-                                            />
-                                            <path
-                                                d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"
-                                            />
-                                            <path
-                                                d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"
-                                            />
-                                        </svg>
-                                        {{ __("Admin Dashboard") }}
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
+                <div class="relative" @click.outside="profileMenu = false">
+                    <button
+                        @click="profileMenu = ! profileMenu"
+                        type="button"
+                        class="soh-avatar-chip inline-flex items-center gap-3 px-3 py-2 text-sm font-medium"
+                        aria-haspopup="true"
+                        x-bind:aria-expanded="profileMenu.toString()"
+                    >
+                        <img
+                            class="h-9 w-9 rounded-full border border-white/25 object-cover"
+                            src="{{ asset(Auth::user()->avatar) }}"
+                            alt="{{ Auth::user()->name }}"
+                        />
+                        <span class="hidden flex-col items-start leading-tight sm:flex">
+                            <span class="font-semibold text-white">{{ Auth::user()->name }}</span>
+                            <span class="text-xs text-white/75">{{ str(auth()->user()->dashboardRouteName())->before('.')->headline() }}</span>
+                        </span>
+                        <svg class="h-4 w-4 text-white/80 transition-transform" x-bind:class="profileMenu ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.51a.75.75 0 0 1-1.08 0l-4.25-4.51a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
 
-                        @if (auth()->user()->hasRole('teacher'))
-                            <li class="border-b-2 border-gray-200">
-                                <a
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    href="{{ route("teacher.dashboard") }}"
-                                    role="menuitem"
-                                    wire:navigate
-                                >
-                                    <div class="inline-flex items-center">
-                                        <i class="fa-solid fa-chalkboard-user me-2"></i>
-                                        {{ __("Teacher Dashboard") }}
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
+                    <div
+                        x-cloak
+                        x-show="profileMenu"
+                        x-transition.origin.top.right
+                        class="absolute right-0 top-[calc(100%+0.75rem)] z-50 w-72 overflow-hidden rounded-2xl border border-[color:var(--soh-gray)]/35 bg-white shadow-[0_22px_50px_rgba(13,13,13,0.16)]"
+                    >
+                        <div class="border-b border-[color:var(--soh-gray)]/25 bg-[linear-gradient(180deg,rgba(166,18,141,0.08)_0%,rgba(217,145,205,0.12)_100%)] px-5 py-4">
+                            <p class="text-sm font-semibold text-[color:var(--soh-black)]">{{ Auth::user()->name }}</p>
+                            <p class="mt-1 text-xs uppercase tracking-[0.14em] text-[color:var(--soh-purple)]">{{ str(auth()->user()->dashboardRouteName())->before('.')->headline() }}</p>
+                        </div>
 
-                        @if (auth()->user()->hasRole('parent'))
-                            <li class="border-b-2 border-gray-200">
-                                <a
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    href="{{ route("parent.dashboard") }}"
-                                    role="menuitem"
-                                    wire:navigate
-                                >
-                                    <div class="inline-flex items-center">
-                                        <i class="fa-solid fa-people-roof me-2"></i>
-                                        {{ __("Parent Dashboard") }}
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-
-                        @if (auth()->user()->hasRole('parent'))
-                            <li class="border-b-2 border-gray-200">
-                                <a
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    href="{{ route("parent.dashboard") }}"
-                                    role="menuitem"
-                                    wire:navigate
-                                >
-                                    <div class="inline-flex items-center">
-                                        <i class="fa-solid fa-people-roof me-2"></i>
-                                        {{ __("Parent Dashboard") }}
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-
-                        @if (auth()->user()->hasRole('student'))
-                            <li class="border-b-2 border-gray-200">
-                                <a
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    href="{{ route("student.dashboard") }}"
-                                    role="menuitem"
-                                    wire:navigate
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard me-2"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v8h-6z" />
-                                            <path d="M4 16h6v4h-6z" />
-                                            <path d="M14 12h6v8h-6z" />
-                                            <path d="M14 4h6v4h-6z" />
-                                        </svg>
-                                        {{ __("Student Dashboard") }}
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-
-                        <li>
-                            <a
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                href="{{ route("frontend.users.profile") }}"
-                                role="menuitem"
-                                wire:navigate
-                            >
-                                <div class="inline-flex items-center">
-                                    <svg
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-user-bolt me-2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.267 0 .529 .026 .781 .076" />
-                                        <path d="M19 16l-2 3h4l-2 3" />
-                                    </svg>
-                                    {{ Auth::user()->name }}
-                                </div>
+                        <div class="px-3 py-3">
+                            <a href="{{ route(auth()->user()->dashboardRouteName()) }}" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]" wire:navigate>
+                                Dashboard
                             </a>
-                        </li>
-                        <li>
-                            <a
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                href="{{ route("frontend.users.profileEdit") }}"
-                                role="menuitem"
-                                wire:navigate
-                            >
-                                <div class="inline-flex items-center">
-                                    <svg
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-settings-cog me-2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M12.003 21c-.732 .001 -1.465 -.438 -1.678 -1.317a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c.886 .215 1.325 .957 1.318 1.694"
-                                        />
-                                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                        <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                        <path d="M19.001 15.5v1.5" />
-                                        <path d="M19.001 21v1.5" />
-                                        <path d="M22.032 17.25l-1.299 .75" />
-                                        <path d="M17.27 20l-1.3 .75" />
-                                        <path d="M15.97 17.25l1.3 .75" />
-                                        <path d="M20.733 20l1.3 .75" />
-                                    </svg>
-                                    {{ __("Settings") }}
-                                </div>
+
+                            @if (auth()->user()->hasRole('student'))
+                                <a href="{{ route('lessons.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]" wire:navigate>
+                                    My Lessons
+                                </a>
+                            @endif
+
+                            <a href="{{ route('frontend.users.profileEdit') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]" wire:navigate>
+                                Profile Settings
                             </a>
-                        </li>
-                        <li>
-                            <a
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                href="{{ route("logout") }}"
-                                role="menuitem"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            >
-                                <div class="inline-flex items-center">
-                                    <svg
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-logout me-2"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    >
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
-                                        />
-                                        <path d="M9 12h12l-3 -3" />
-                                        <path d="M18 15l3 -3" />
-                                    </svg>
-                                    {{ __("Logout") }}
-                                </div>
-                            </a>
-                        </li>
-                        <form id="logout-form" style="display: none" action="{{ route("logout") }}" method="POST">
-                            {{ csrf_field() }}
-                        </form>
-                    </ul>
+
+                            <form method="POST" action="{{ route('logout') }}" class="mt-2 border-t border-[color:var(--soh-gray)]/20 pt-2">
+                                @csrf
+                                <button type="submit" class="block w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             @endauth
 

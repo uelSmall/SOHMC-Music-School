@@ -22,11 +22,21 @@
 
         @vite(["resources/sass/app-backend.scss", "resources/js/app-backend.js"])
 
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+Bengali+UI&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
         <style>
             body {
-                font-family: Ubuntu, 'Noto Sans Bengali UI', Arial, Helvetica, sans-serif;
+                font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            .navbar-brand,
+            .card-title {
+                font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
             }
         </style>
 

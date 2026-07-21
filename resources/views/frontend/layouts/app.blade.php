@@ -10,6 +10,7 @@
         <meta name="description" content="{{ setting("meta_description") }}" />
         <meta name="keyword" content="{{ setting("meta_keyword") }}" />
         @include("frontend.includes.meta")
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
         <!-- Shortcut Icon -->
         <link href="{{ asset("img/favicon.png") }}" rel="shortcut icon" />

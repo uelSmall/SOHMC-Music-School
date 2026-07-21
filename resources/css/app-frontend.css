@@ -15,6 +15,8 @@
 /* @import '/node_modules/@fortawesome/fontawesome-free/css/all.min.css'; */
 
 :root {
+	--soh-font-body: "Manrope", "Segoe UI", Arial, sans-serif;
+	--soh-font-heading: "Sora", "Segoe UI", Arial, sans-serif;
 	--soh-purple: #A6128D;
 	--soh-purple-dark: #8C0375;
 	--soh-black: #0D0D0D;
@@ -29,8 +31,21 @@
 }
 
 body {
+	font-family: var(--soh-font-body);
 	background: var(--soh-surface);
 	color: var(--soh-black);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.soh-brand-wordmark,
+.soh-brand-title,
+.soh-brand-subtitle {
+	font-family: var(--soh-font-heading);
 }
 
 .dark body {
