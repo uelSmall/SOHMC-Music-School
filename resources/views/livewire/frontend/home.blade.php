@@ -2,7 +2,7 @@
     <section class="relative overflow-hidden rounded-[2rem] border border-[color:var(--soh-gray)]/45 bg-[linear-gradient(160deg,#FDFBFD_0%,#F1D8EC_100%)] p-3 shadow-[0_30px_80px_rgba(140,3,117,0.14)] sm:p-4">
         <div class="pointer-events-none absolute inset-0 opacity-35" style="background-image: linear-gradient(rgba(166,18,141,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(166,18,141,0.07) 1px, transparent 1px); background-size: 52px 52px;"></div>
 
-        <div class="relative grid grid-cols-1 gap-3 lg:grid-cols-[1.24fr_0.76fr] lg:items-stretch">
+        <div class="relative grid grid-cols-1 gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
             <div class="relative min-h-[430px] overflow-hidden rounded-[1.4rem] border border-[color:var(--soh-gray)]/45 bg-[radial-gradient(120%_85%_at_20%_18%,rgba(166,18,141,0.22)_0%,rgba(242,226,238,0.95)_46%,rgba(230,198,222,0.92)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_20px_46px_rgba(140,3,117,0.22)] lg:min-h-[640px]">
                 <img
                     class="absolute inset-0 h-full w-full object-cover object-center"
@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-col rounded-[1.4rem] border border-[color:var(--soh-gray)]/45 bg-white/96 p-8 shadow-[0_18px_44px_rgba(140,3,117,0.1)] backdrop-blur-sm sm:p-10 lg:min-h-[640px]">
+            <div class="flex flex-col justify-center rounded-[1.4rem] border border-[color:var(--soh-gray)]/45 bg-white/96 p-8 shadow-[0_18px_44px_rgba(140,3,117,0.1)] backdrop-blur-sm sm:p-10 lg:min-h-[640px]">
                 <p class="text-xs font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">Sounds of Harmony Music Centre</p>
 
                 <h1 class="mt-4 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl sm:leading-tight">{{ __('Welcome to SOHMC Portal') }}</h1>

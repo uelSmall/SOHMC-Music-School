@@ -28,7 +28,6 @@
     </head>
 
     <body>
-        <x-selected-theme />
 
         @include("frontend.includes.header")
 

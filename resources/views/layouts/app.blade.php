@@ -13,7 +13,6 @@
     </head>
 
     <body class="font-sans antialiased">
-        <x-selected-theme />
         <div class="soh-app-shell">
             @include("layouts.navigation")
 

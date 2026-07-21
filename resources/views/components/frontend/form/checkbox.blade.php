@@ -18,16 +18,16 @@ $field_lable = $label == "" ? label_case($field_name) : $label;
     <div class="flex items-center">
         <input
             wire:model="{{ $field_name }}"
-            id="checkbox-2"
+            id="{{ $field_name }}"
             type="checkbox"
             value=""
-            class="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+            class="h-4 w-4 rounded-sm border-gray-300 bg-white text-[#A6128D] focus:ring-2 focus:ring-[#A6128D]"
             {{ $disabled ? "disabled" : "" }}
             {{ $required ? "required" : "" }}
             {{ $attributes->merge(["wire:model" => $name]) }}
             {{ $checked ? "checked" : "" }}
         />
-        <label for="checkbox-2" class="ms-2 text-sm font-semibold tracking-widest text-gray-900 dark:text-gray-300">
+        <label for="{{ $field_name }}" class="ms-2 text-sm font-semibold tracking-widest text-gray-900">
             {{ $label }}
         </label>
     </div>

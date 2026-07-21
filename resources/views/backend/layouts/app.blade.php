@@ -38,7 +38,6 @@
     </head>
 
     <body>
-        <x-selected-theme />
 
         <!-- Sidebar -->
         @include("backend.includes.sidebar")
