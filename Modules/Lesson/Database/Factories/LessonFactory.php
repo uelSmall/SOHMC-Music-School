@@ -13,7 +13,7 @@ class LessonFactory extends Factory
 
     public function definition(): array
     {
-        $instruments = ['piano', 'guitar', 'vocals', 'percussion', 'steel pan', null];
+        $instruments = ['Piano', 'Guitar', 'Saxophone', 'Voice / Singing', 'Violin', 'Keyboard', 'Steelpan', 'Music Theory', null];
 
         return [
             'title' => $this->faker->sentence(4),

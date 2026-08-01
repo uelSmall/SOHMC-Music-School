@@ -39,7 +39,7 @@ class LessonLifecycleManagementTest extends TestCase
         $lesson = $this->createBookedLesson($teacher, $this->createStudent());
 
         $this->actingAs($teacher)
-            ->get(route('teacher.lesson-management.index'))
+            ->get(route('teacher.booking-management.index'))
             ->assertOk()
             ->assertSee($lesson->student->name)
             ->assertSee($lesson->instrument->name);
@@ -54,7 +54,7 @@ class LessonLifecycleManagementTest extends TestCase
         $lesson = $this->createBookedLesson($teacher, $student);
 
         $this->actingAs($student)
-            ->get(route('student.lesson-management.index'))
+            ->get(route('student.booking-management.index'))
             ->assertOk()
             ->assertSee($lesson->teacher->name)
             ->assertSee($lesson->instrument->name);
@@ -69,8 +69,8 @@ class LessonLifecycleManagementTest extends TestCase
         $lesson = $this->createBookedLesson($teacher, $this->createStudent());
 
         $this->actingAs($teacher)
-            ->patch(route('teacher.lesson-management.complete', $lesson))
-            ->assertRedirect(route('teacher.lesson-management.show', $lesson));
+            ->patch(route('teacher.booking-management.complete', $lesson))
+            ->assertRedirect(route('teacher.booking-management.show', $lesson));
 
         $this->assertDatabaseHas('booked_lessons', [
             'id' => $lesson->id,
@@ -88,10 +88,10 @@ class LessonLifecycleManagementTest extends TestCase
         $lesson = $this->createBookedLesson($teacher, $this->createStudent());
 
         $this->actingAs($teacher)
-            ->patch(route('teacher.lesson-management.cancel', $lesson), [
+            ->patch(route('teacher.booking-management.cancel', $lesson), [
                 'cancellation_reason' => 'Teacher unavailable.',
             ])
-            ->assertRedirect(route('teacher.lesson-management.show', $lesson));
+            ->assertRedirect(route('teacher.booking-management.show', $lesson));
 
         $lesson->refresh();
 
@@ -114,12 +114,12 @@ class LessonLifecycleManagementTest extends TestCase
         ]);
 
         $this->actingAs($teacher)
-            ->patch(route('teacher.lesson-management.reschedule', $lesson), [
+            ->patch(route('teacher.booking-management.reschedule', $lesson), [
                 'new_date' => Carbon::now()->addDays(4)->toDateString(),
                 'new_start_time' => '11:00',
                 'new_end_time' => '11:30',
             ])
-            ->assertRedirect(route('teacher.lesson-management.show', $lesson));
+            ->assertRedirect(route('teacher.booking-management.show', $lesson));
 
         $lesson->refresh();
 
@@ -148,7 +148,7 @@ class LessonLifecycleManagementTest extends TestCase
         ]);
 
         $this->actingAs($teacher)
-            ->patch(route('teacher.lesson-management.reschedule', $lesson), [
+            ->patch(route('teacher.booking-management.reschedule', $lesson), [
                 'new_date' => Carbon::now()->addDays(6)->toDateString(),
                 'new_start_time' => '12:20',
                 'new_end_time' => '12:50',
@@ -164,11 +164,11 @@ class LessonLifecycleManagementTest extends TestCase
         $lesson = $this->createBookedLesson($teacher, $student);
 
         $this->actingAs($student)
-            ->get(route('teacher.lesson-management.index'))
+            ->get(route('teacher.booking-management.index'))
             ->assertForbidden();
 
         $this->actingAs($student)
-            ->patch(route('teacher.lesson-management.complete', $lesson))
+            ->patch(route('teacher.booking-management.complete', $lesson))
             ->assertForbidden();
     }
 

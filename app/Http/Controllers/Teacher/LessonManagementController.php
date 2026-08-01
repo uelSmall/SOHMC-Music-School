@@ -85,7 +85,7 @@ class LessonManagementController extends Controller
             'completed_at' => now(),
         ]);
 
-        return redirect()->route('teacher.lesson-management.show', $lesson)->with('notify', [
+        return redirect()->route('teacher.booking-management.show', $lesson)->with('notify', [
             'message' => 'Lesson marked as completed.',
             'type' => 'success',
         ]);
@@ -103,7 +103,7 @@ class LessonManagementController extends Controller
 
         $notifications->notifyStudentLessonCancelled($lesson);
 
-        return redirect()->route('teacher.lesson-management.show', $lesson)->with('notify', [
+        return redirect()->route('teacher.booking-management.show', $lesson)->with('notify', [
             'message' => 'Lesson cancelled successfully.',
             'type' => 'success',
         ]);
@@ -122,7 +122,7 @@ class LessonManagementController extends Controller
             && $lesson->lesson_start_time === $newStartTime
             && $lesson->lesson_end_time === $newEndTime
         ) {
-            return redirect()->route('teacher.lesson-management.show', $lesson)->with('notify', [
+            return redirect()->route('teacher.booking-management.show', $lesson)->with('notify', [
                 'message' => 'Lesson already uses that schedule.',
                 'type' => 'info',
             ]);
@@ -138,7 +138,7 @@ class LessonManagementController extends Controller
         $notifications->notifyStudentLessonRescheduled($lesson);
         $notifications->notifyTeacherLessonRescheduled($lesson);
 
-        return redirect()->route('teacher.lesson-management.show', $lesson)->with('notify', [
+        return redirect()->route('teacher.booking-management.show', $lesson)->with('notify', [
             'message' => 'Lesson rescheduled successfully.',
             'type' => 'success',
         ]);

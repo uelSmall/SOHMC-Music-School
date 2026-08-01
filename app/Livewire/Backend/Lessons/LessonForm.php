@@ -206,11 +206,14 @@ class LessonForm extends Component
     private function instrumentOptions(): array
     {
         return [
-            'piano',
-            'guitar',
-            'vocals',
-            'percussion',
-            'steel pan',
+            'Piano',
+            'Guitar',
+            'Saxophone',
+            'Voice / Singing',
+            'Violin',
+            'Keyboard',
+            'Steelpan',
+            'Music Theory',
         ];
     }
 

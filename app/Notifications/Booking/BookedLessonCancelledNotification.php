@@ -24,6 +24,6 @@ class BookedLessonCancelledNotification extends LessonLifecycleNotification
 
     protected function actionUrl(): string
     {
-        return route('student.lesson-management.show', $this->lesson);
+        return route('student.booking-management.show', $this->lesson);
     }
 }

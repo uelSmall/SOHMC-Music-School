@@ -4,11 +4,11 @@
     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <x-frontend.breadcrumbs :items="[
             ['label' => 'Teacher Dashboard', 'route' => route('teacher.dashboard')],
-            ['label' => 'Lesson Management', 'current' => true],
+            ['label' => 'Booking Management', 'current' => true],
         ]" />
 
         <div class="flex flex-col gap-3">
-            <h1 class="soh-page-title">Lesson Management</h1>
+            <h1 class="soh-page-title">Booking Management</h1>
             <p class="soh-page-subtitle">Manage scheduled lessons through completion, cancellation, and rescheduling.</p>
         </div>
 
@@ -62,7 +62,7 @@
                                     <div>Date: {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                     <div>Time: {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                     <div>Duration: {{ $lesson->lesson_duration }} minutes</div>
-                                    <div><a href="{{ route('teacher.lesson-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
+                                    <div><a href="{{ route('teacher.booking-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
                                 </div>
                             </article>
                         @empty

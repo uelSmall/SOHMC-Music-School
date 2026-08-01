@@ -37,8 +37,8 @@
             <a href="{{ route('lessons.index') }}" class="soh-btn-primary">
                 Go to My Lessons
             </a>
-            <a href="{{ route('student.lesson-management.index') }}" class="soh-btn-outline">
-                My Scheduled Lessons
+            <a href="{{ route('student.booking-management.index') }}" class="soh-btn-outline">
+                Booking Management
             </a>
             <a href="{{ route('student.lesson-requests.create') }}" class="soh-btn-outline">
                 Book a Lesson

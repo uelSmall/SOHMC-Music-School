@@ -4,12 +4,12 @@
     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <x-frontend.breadcrumbs :items="[
             ['label' => 'Student Dashboard', 'route' => route('student.dashboard')],
-            ['label' => 'My Lessons', 'route' => route('student.lesson-management.index')],
+            ['label' => 'Booking Management', 'route' => route('student.booking-management.index')],
             ['label' => 'Lesson Details', 'current' => true],
         ]" />
 
         <div class="flex flex-col gap-3">
-            <a href="{{ route('student.lesson-management.index') }}" class="soh-link text-sm">&larr; Back to My Lessons</a>
+            <a href="{{ route('student.booking-management.index') }}" class="soh-link text-sm">&larr; Back to Booking Management</a>
             <div>
                 <h1 class="soh-page-title">Lesson Details</h1>
                 <p class="soh-page-subtitle">Review the lesson information and notes from the lesson request.</p>
@@ -80,7 +80,7 @@
                 <p class="mt-2 text-sm text-gray-600">Students can review lesson details here, but cannot edit lesson information.</p>
 
                 <div class="mt-4 space-y-3">
-                    <a href="{{ route('student.lesson-management.index') }}" class="soh-btn-outline w-full">Back to My Lessons</a>
+                    <a href="{{ route('student.booking-management.index') }}" class="soh-btn-outline w-full">Back to Booking Management</a>
                     <a href="{{ route('student.lesson-requests.index') }}" class="soh-btn-primary w-full">View Lesson Requests</a>
                 </div>
             </section>

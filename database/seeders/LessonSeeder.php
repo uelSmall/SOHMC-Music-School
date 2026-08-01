@@ -37,7 +37,7 @@ class LessonSeeder extends Seeder
                 'content' => 'In this comprehensive lesson, you will learn: proper hand positioning, basic music theory, and fundamental piano techniques.',
                 'global_note' => 'Practice hands separately first, then combine slowly with a metronome at a steady pace.',
                 'status' => 'published',
-                'instrument' => 'piano',
+                'instrument' => 'Piano',
             ],
             [
                 'title' => 'Vocal Training Techniques',
@@ -45,7 +45,7 @@ class LessonSeeder extends Seeder
                 'content' => 'This lesson covers breathing techniques, vocal exercises, pitch control, and stage presence for singers.',
                 'global_note' => 'Focus on breath support and consistent posture before pushing for volume.',
                 'status' => 'published',
-                'instrument' => 'vocals',
+                'instrument' => 'Voice / Singing',
             ],
             [
                 'title' => 'Guitar Fundamentals',
@@ -53,7 +53,7 @@ class LessonSeeder extends Seeder
                 'content' => 'Start your guitar journey with proper grip, basic chords, strumming patterns, and your first songs.',
                 'global_note' => 'Keep your strumming hand relaxed and prioritize clean chord transitions over speed.',
                 'status' => 'published',
-                'instrument' => 'guitar',
+                'instrument' => 'Guitar',
             ],
             [
                 'title' => 'Music Theory Basics',
@@ -69,7 +69,7 @@ class LessonSeeder extends Seeder
                 'content' => 'Learn rhythm patterns, percussion basics, and how to maintain perfect timing in ensemble settings.',
                 'global_note' => 'Count out loud while practicing to lock timing before increasing complexity.',
                 'status' => 'archived',
-                'instrument' => 'percussion',
+                'instrument' => 'Music Theory',
             ],
             [
                 'title' => 'Steel Pan Essentials',
@@ -77,7 +77,7 @@ class LessonSeeder extends Seeder
                 'content' => 'Learn steel pan setup, stick control, note layout familiarization, and foundational rhythm patterns.',
                 'global_note' => 'Aim for even stick rebound and clear note articulation across all zones of the pan.',
                 'status' => 'published',
-                'instrument' => 'steel pan',
+                'instrument' => 'Steelpan',
             ],
         ];
 

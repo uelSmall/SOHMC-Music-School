@@ -70,8 +70,8 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <article class="soh-card p-5">
             <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Teaching')</p>
-            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Lesson Management')</h3>
-            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Organize curriculum, assign teachers, and structure learning by category.')</p>
+            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Booking Management')</h3>
+            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Track scheduled lessons and manage completion, cancellation, and rescheduling.')</p>
         </article>
         <article class="soh-card p-5">
             <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Learning')</p>

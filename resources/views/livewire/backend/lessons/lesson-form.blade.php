@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="save" class="space-y-6 rounded shadow p-6" enctype="multipart/form-data">
+    <form wire:submit="save" class="soh-card space-y-6 bg-white p-6 sm:p-8" enctype="multipart/form-data">
         <h2 class="text-xl font-bold">{{ $lesson ? 'Edit Lesson' : 'Create Lesson' }}</h2>
 
         <div class="space-y-2">
@@ -39,7 +39,7 @@
             >
                 <option value="">Select instrument</option>
                 @foreach ($instrumentOptions as $instrumentOption)
-                    <option value="{{ $instrumentOption }}">{{ ucfirst($instrumentOption) }}</option>
+                    <option value="{{ $instrumentOption }}">{{ $instrumentOption }}</option>
                 @endforeach
             </select>
             @error('instrument')

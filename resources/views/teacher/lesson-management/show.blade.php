@@ -4,12 +4,12 @@
     <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         <x-frontend.breadcrumbs :items="[
             ['label' => 'Teacher Dashboard', 'route' => route('teacher.dashboard')],
-            ['label' => 'Lesson Management', 'route' => route('teacher.lesson-management.index')],
+            ['label' => 'Booking Management', 'route' => route('teacher.booking-management.index')],
             ['label' => 'Lesson Details', 'current' => true],
         ]" />
 
         <div class="flex flex-col gap-3">
-            <a href="{{ route('teacher.lesson-management.index') }}" class="soh-link text-sm">&larr; Back to Lesson Management</a>
+            <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-sm">&larr; Back to Booking Management</a>
             <div>
                 <h1 class="soh-page-title">Lesson Details</h1>
                 <p class="soh-page-subtitle">Review the lesson and manage its lifecycle.</p>
@@ -88,7 +88,7 @@
                     <h2 class="text-lg font-semibold text-black">Complete Lesson</h2>
                     <p class="mt-2 text-sm text-gray-600">Mark the lesson as completed once it has finished.</p>
 
-                    <form method="POST" action="{{ route('teacher.lesson-management.complete', $lesson) }}" class="mt-4">
+                    <form method="POST" action="{{ route('teacher.booking-management.complete', $lesson) }}" class="mt-4">
                         @csrf
                         @method('PATCH')
                         <button type="submit" class="soh-btn-primary w-full" @disabled($lesson->status !== \Modules\Booking\Enums\LessonStatus::Scheduled)>
@@ -101,7 +101,7 @@
                     <h2 class="text-lg font-semibold text-black">Cancel Lesson</h2>
                     <p class="mt-2 text-sm text-gray-600">Cancel this lesson with an optional reason.</p>
 
-                    <form method="POST" action="{{ route('teacher.lesson-management.cancel', $lesson) }}" class="mt-4 space-y-3">
+                    <form method="POST" action="{{ route('teacher.booking-management.cancel', $lesson) }}" class="mt-4 space-y-3">
                         @csrf
                         @method('PATCH')
 
@@ -120,7 +120,7 @@
                     <h2 class="text-lg font-semibold text-black">Reschedule Lesson</h2>
                     <p class="mt-2 text-sm text-gray-600">Choose a new date and time for this scheduled lesson.</p>
 
-                    <form method="POST" action="{{ route('teacher.lesson-management.reschedule', $lesson) }}" class="mt-4 space-y-3">
+                    <form method="POST" action="{{ route('teacher.booking-management.reschedule', $lesson) }}" class="mt-4 space-y-3">
                         @csrf
                         @method('PATCH')
 

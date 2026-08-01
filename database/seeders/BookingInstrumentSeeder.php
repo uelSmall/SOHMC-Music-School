@@ -13,12 +13,17 @@ class BookingInstrumentSeeder extends Seeder
         $defaultInstruments = [
             ['name' => 'Piano', 'description' => 'Keyboard technique, sight reading, and repertoire.'],
             ['name' => 'Guitar', 'description' => 'Acoustic and electric guitar fundamentals.'],
-            ['name' => 'Vocals', 'description' => 'Voice training, breathing, and performance.'],
-            ['name' => 'Percussion', 'description' => 'Rhythm studies and percussion technique.'],
+            ['name' => 'Saxophone', 'description' => 'Tone production, breath control, and melodic phrasing.'],
+            ['name' => 'Voice / Singing', 'description' => 'Voice training, breathing, and performance.'],
             ['name' => 'Violin', 'description' => 'String fundamentals and musical expression.'],
-            ['name' => 'Drums', 'description' => 'Drum kit coordination and groove development.'],
-            ['name' => 'Steel Pan', 'description' => 'Steel pan technique, tone control, and repertoire.'],
+            ['name' => 'Keyboard', 'description' => 'Modern keyboard skills, chords, voicing, and accompaniment.'],
+            ['name' => 'Steelpan', 'description' => 'Steelpan technique, tone control, and repertoire.'],
+            ['name' => 'Music Theory', 'description' => 'Foundational theory, notation, harmony, and ear training.'],
         ];
+
+        $defaultInstrumentNames = collect($defaultInstruments)
+            ->pluck('name')
+            ->all();
 
         foreach ($defaultInstruments as $instrumentData) {
             Instrument::query()->updateOrCreate(
@@ -29,6 +34,10 @@ class BookingInstrumentSeeder extends Seeder
                 ]
             );
         }
+
+        Instrument::query()
+            ->whereNotIn('name', $defaultInstrumentNames)
+            ->update(['is_active' => false]);
 
         $instrumentIds = Instrument::query()->active()->pluck('id');
 
