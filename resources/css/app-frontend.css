@@ -30,6 +30,10 @@
 	--soh-muted-dark: #D991CD;
 }
 
+[x-cloak] {
+	display: none !important;
+}
+
 body {
 	font-family: var(--soh-font-body);
 	background: var(--soh-surface);
@@ -317,6 +321,46 @@ h6,
 
 .soh-brand-light .soh-brand-title {
 	color: var(--soh-black);
+}
+
+.soh-calendar {
+	border: 1px solid rgba(166, 18, 141, 0.15);
+	border-radius: 0.9rem;
+	padding: 0.6rem;
+	background: #fff;
+}
+
+.soh-calendar .fc-toolbar-title {
+	font-family: var(--soh-font-heading);
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--soh-black);
+}
+
+.soh-calendar .fc-button {
+	background: var(--soh-purple);
+	border-color: var(--soh-purple);
+	text-transform: capitalize;
+}
+
+.soh-calendar .fc-button:hover,
+.soh-calendar .fc-button:focus {
+	background: var(--soh-purple-dark);
+	border-color: var(--soh-purple-dark);
+}
+
+.soh-calendar .fc-button-primary:not(:disabled).fc-button-active {
+	background: var(--soh-purple-dark);
+	border-color: var(--soh-purple-dark);
+}
+
+.soh-calendar .fc-event {
+	border-width: 1px;
+	border-radius: 0.45rem;
+	font-size: 0.78rem;
+	font-weight: 600;
+	padding: 0.15rem 0.25rem;
+	cursor: pointer;
 }
 
 .soh-brand-light .soh-brand-subtitle {

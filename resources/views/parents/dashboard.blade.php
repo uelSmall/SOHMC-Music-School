@@ -1,4 +1,8 @@
 <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <x-frontend.breadcrumbs :items="[
+        ['label' => 'Parent Dashboard', 'current' => true],
+    ]" />
+
     <div>
         <h1 class="soh-page-title">Parent Dashboard</h1>
         <p class="soh-page-subtitle">Monitor your children’s lesson progress, due dates, and teacher updates in one place.</p>

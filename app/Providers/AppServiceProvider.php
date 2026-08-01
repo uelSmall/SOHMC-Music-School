@@ -3,11 +3,15 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Policies\BookedLessonPolicy;
+use App\Policies\LessonRequestPolicy;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Modules\Booking\Models\BookedLesson;
+use Modules\Booking\Models\LessonRequest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,6 +60,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });
+
+        Gate::policy(BookedLesson::class, BookedLessonPolicy::class);
+        Gate::policy(LessonRequest::class, LessonRequestPolicy::class);
     }
 
     public function registerEventListeners()

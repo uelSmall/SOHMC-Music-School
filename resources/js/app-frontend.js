@@ -1,5 +1,6 @@
 import './bootstrap';
 import 'flowbite';
+import { initializeLessonCalendars } from './calendar/lesson-calendar';
 
 let toastContainer = null;
 
@@ -93,14 +94,17 @@ function bindLivewireNotifyEvents() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     bindLivewireNotifyEvents();
+    initializeLessonCalendars();
 });
 
 // Re-initialize Flowbite components after Livewire navigation (SPA-like page transitions)
 document.addEventListener('livewire:navigated', () => {
     initFlowbite();
+    initializeLessonCalendars();
 });
 
 // Re-initialize Flowbite components after Livewire updates the DOM (for dynamic content)
 document.addEventListener('livewire:update', () => {
     initFlowbite();
+    initializeLessonCalendars();
 });

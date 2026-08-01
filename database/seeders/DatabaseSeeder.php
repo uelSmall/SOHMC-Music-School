@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         // Always run essential seeders
         $this->call([
             AuthTableSeeder::class,
+            BookingInstrumentSeeder::class,
         ]);
 
         // Always run Menu seeder (essential for navigation)

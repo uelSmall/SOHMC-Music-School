@@ -36,6 +36,7 @@ class Lesson extends BaseModel
         'teacher_id',
         'file_path',
         'instrument',
+        'lesson_duration',
         'created_by',
         'updated_by',
     ];
@@ -50,6 +51,7 @@ class Lesson extends BaseModel
         return [
             'status' => LessonStatus::class,
             'published_at' => 'datetime',
+            'lesson_duration' => 'integer',
         ];
     }
 

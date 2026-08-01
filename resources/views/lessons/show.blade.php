@@ -2,6 +2,36 @@
 
 @section('content')
     <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        @php
+            if (auth()->user()->hasRole('student')) {
+                $breadcrumbItems = [
+                    ['label' => 'Student Dashboard', 'route' => route('student.dashboard')],
+                    ['label' => 'My Lessons', 'route' => route('lessons.index')],
+                    ['label' => $lesson->title, 'current' => true],
+                ];
+            } elseif (auth()->user()->hasRole('parent')) {
+                $breadcrumbItems = [
+                    ['label' => 'Parent Dashboard', 'route' => route('parent.dashboard')],
+                    ['label' => 'Children’s Lessons', 'route' => route('lessons.index')],
+                    ['label' => $lesson->title, 'current' => true],
+                ];
+            } elseif (auth()->user()->hasRole('teacher')) {
+                $breadcrumbItems = [
+                    ['label' => 'Teacher Dashboard', 'route' => route('teacher.dashboard')],
+                    ['label' => 'My Lessons', 'route' => route('lessons.index')],
+                    ['label' => $lesson->title, 'current' => true],
+                ];
+            } else {
+                $breadcrumbItems = [
+                    ['label' => 'Admin Dashboard', 'route' => route('backend.dashboard')],
+                    ['label' => 'Lessons', 'route' => route('lessons.index')],
+                    ['label' => $lesson->title, 'current' => true],
+                ];
+            }
+        @endphp
+
+        <x-frontend.breadcrumbs :items="$breadcrumbItems" />
+
         @if (session('message'))
             <div class="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 dark:border-green-700 dark:bg-green-900/30 dark:text-green-200">
                 {{ session('message') }}

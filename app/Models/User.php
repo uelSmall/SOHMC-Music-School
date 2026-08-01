@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Booking\Models\BookedLesson;
+use Modules\Booking\Models\Instrument;
+use Modules\Booking\Models\LessonRequest;
+use Modules\Booking\Models\TeacherAvailability;
 use Modules\Lesson\Models\LessonStudentAssignment;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
@@ -74,6 +78,55 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function assignedLessons(): HasMany
     {
         return $this->hasMany(LessonStudentAssignment::class, 'student_id');
+    }
+
+    /**
+     * Get the instruments this teacher can teach.
+     */
+    public function teachingInstruments(): BelongsToMany
+    {
+        return $this->belongsToMany(Instrument::class, 'instrument_teacher', 'teacher_id', 'instrument_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get lesson requests where the user is the student.
+     */
+    public function lessonRequestsAsStudent(): HasMany
+    {
+        return $this->hasMany(LessonRequest::class, 'student_id');
+    }
+
+    /**
+     * Get lesson requests where the user is the teacher.
+     */
+    public function lessonRequestsAsTeacher(): HasMany
+    {
+        return $this->hasMany(LessonRequest::class, 'teacher_id');
+    }
+
+    /**
+     * Get booked lessons where the user is the student.
+     */
+    public function bookedLessonsAsStudent(): HasMany
+    {
+        return $this->hasMany(BookedLesson::class, 'student_id');
+    }
+
+    /**
+     * Get booked lessons where the user is the teacher.
+     */
+    public function bookedLessonsAsTeacher(): HasMany
+    {
+        return $this->hasMany(BookedLesson::class, 'teacher_id');
+    }
+
+    /**
+     * Get the teacher's weekly availability windows.
+     */
+    public function teacherAvailabilities(): HasMany
+    {
+        return $this->hasMany(TeacherAvailability::class, 'teacher_id');
     }
 
     /**

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, profileMenu: false }" class="soh-nav">
+<nav x-data="{ open: false, profileMenu: false }" @keydown.escape.window="open = false; profileMenu = false" class="soh-nav">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center gap-4">
@@ -18,6 +18,8 @@
                     @if (auth()->user()->hasRole('parent'))
                         <a href="{{ route('parent.dashboard') }}" class="soh-nav-link {{ request()->routeIs('parent.dashboard') ? 'active' : '' }}">Parent</a>
                     @endif
+
+                    <livewire:notifications.notification-bell />
 
                 </div>
             </div>
@@ -56,13 +58,15 @@
                     </div>
 
                     <div class="px-3 py-3">
-                        <a href="{{ route(auth()->user()->dashboardRouteName()) }}" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Dashboard</a>
+                        <a @click="profileMenu = false" href="{{ route(auth()->user()->dashboardRouteName()) }}" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Dashboard</a>
+
+                        <a @click="profileMenu = false" href="{{ route('notifications.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">My Notifications</a>
 
                         @if (auth()->user()->hasRole('student'))
-                            <a href="{{ route('lessons.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">My Lessons</a>
+                            <a @click="profileMenu = false" href="{{ route('lessons.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">My Lessons</a>
                         @endif
 
-                        <a href="{{ route('profile.edit') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Profile Settings</a>
+                        <a @click="profileMenu = false" href="{{ route('profile.edit') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Profile Settings</a>
 
                         <form method="POST" action="{{ route('logout') }}" class="mt-2 border-t border-[color:var(--soh-gray)]/20 pt-2">
                             @csrf
@@ -72,7 +76,9 @@
                 </div>
             </div>
 
-            <div class="flex items-center sm:hidden">
+            <div class="flex items-center gap-2 sm:hidden">
+                <livewire:notifications.notification-bell />
+
                 <button @click="open = ! open" class="rounded-md p-2 text-white">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -86,14 +92,16 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden border-t border-white/20 sm:hidden">
         <div class="space-y-1 px-4 py-3">
             @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
-                <a href="{{ route('backend.dashboard') }}" class="soh-nav-link block">Admin Dashboard</a>
+                <a @click="open = false" href="{{ route('backend.dashboard') }}" class="soh-nav-link block">Admin Dashboard</a>
             @endif
 
             @if (auth()->user()->hasRole('parent'))
-                <a href="{{ route('parent.dashboard') }}" class="soh-nav-link block">Parent Dashboard</a>
+                <a @click="open = false" href="{{ route('parent.dashboard') }}" class="soh-nav-link block">Parent Dashboard</a>
             @endif
 
-            <a href="{{ route('profile.edit') }}" class="soh-nav-link block">Profile</a>
+            <a @click="open = false" href="{{ route('notifications.index') }}" class="soh-nav-link block">My Notifications</a>
+
+            <a @click="open = false" href="{{ route('profile.edit') }}" class="soh-nav-link block">Profile</a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

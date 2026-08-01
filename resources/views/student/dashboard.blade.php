@@ -1,4 +1,8 @@
 <div class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <x-frontend.breadcrumbs :items="[
+        ['label' => 'Student Dashboard', 'current' => true],
+    ]" />
+
     <div>
         <h1 class="soh-page-title">Student Dashboard</h1>
         <p class="soh-page-subtitle">Track assignments, due dates, and progress in one place.</p>
@@ -29,10 +33,28 @@
 
     <div class="soh-card p-6">
         <h2 class="mb-4 text-xl font-semibold text-black">Quick Actions</h2>
-        <a href="{{ route('lessons.index') }}" class="soh-btn-primary">
-            Go to My Lessons
-        </a>
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ route('lessons.index') }}" class="soh-btn-primary">
+                Go to My Lessons
+            </a>
+            <a href="{{ route('student.lesson-management.index') }}" class="soh-btn-outline">
+                My Scheduled Lessons
+            </a>
+            <a href="{{ route('student.lesson-requests.create') }}" class="soh-btn-outline">
+                Book a Lesson
+            </a>
+            <a href="{{ route('student.lesson-requests.index') }}" class="soh-btn-outline">
+                My Lesson Requests
+            </a>
+        </div>
     </div>
+
+    @include('partials.lesson-calendar', [
+        'title' => 'My Lesson Calendar',
+        'description' => 'Confirmed lessons only. Click an event to view details.',
+        'eventsUrl' => route('student.calendar.events'),
+        'viewerRole' => 'student',
+    ])
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div class="soh-card p-6">
