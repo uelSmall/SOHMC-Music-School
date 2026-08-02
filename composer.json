@@ -25,7 +25,7 @@
         "nasirkhan/module-manager": "^4.0",
         "opcodesio/log-viewer": "^3.21",
         "spatie/laravel-activitylog": "^4.10",
-        "spatie/laravel-backup": "^9.2",
+        "spatie/laravel-backup": "9.2.9",
         "spatie/laravel-html": "^3.12",
         "spatie/laravel-medialibrary": "^11.12",
         "spatie/laravel-permission": "^6.16",
