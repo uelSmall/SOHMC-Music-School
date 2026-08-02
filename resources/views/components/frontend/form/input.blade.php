@@ -23,15 +23,15 @@ $field_placeholder = $placeholder == "" ? label_case($field_lable) : $placeholde
 
     @switch($type)
         @case("email")
-            {{ html()->email($field_name)->placeholder($field_placeholder)->class("mt-1 border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-300 rounded-sm border shadow-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
+            {{ html()->email($field_name)->placeholder($field_placeholder)->class("soh-input")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
 
             @break
         @case("number")
-            {{ html()->number($field_name)->placeholder($field_placeholder)->class("mt-1 border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-300 rounded-sm border shadow-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
+            {{ html()->number($field_name)->placeholder($field_placeholder)->class("soh-input")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
 
             @break
         @case("password")
-            {{ html()->password($field_name)->placeholder($field_placeholder)->value("")->class("mt-1 border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-300 rounded-sm border shadow-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
+            {{ html()->password($field_name)->placeholder($field_placeholder)->value("")->class("soh-input")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
 
             @break
         @case("value")
@@ -44,7 +44,7 @@ $field_placeholder = $placeholder == "" ? label_case($field_lable) : $placeholde
 
             @break
         @default
-            {{ html()->text($field_name)->placeholder($field_placeholder)->class("mt-1 border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-300 rounded-sm border shadow-sm focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
+                {{ html()->text($field_name)->placeholder($field_placeholder)->class("soh-input")->attributes(["$required", $disabled, "wire:model" => $field_name]) }}
     @endswitch
 
     @foreach ($errors->get($field_name) as $message)

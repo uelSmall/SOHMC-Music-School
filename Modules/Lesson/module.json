@@ -1,0 +1,14 @@
+{
+    "name": "Lesson",
+    "alias": "lesson",
+    "description": "Lesson module for managing course lessons",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Lesson\\Providers\\LessonServiceProvider",
+        "Modules\\Lesson\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

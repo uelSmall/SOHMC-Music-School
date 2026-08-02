@@ -1,131 +1,112 @@
-<nav x-data="{ open: false }" class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
-    <!-- Primary Navigation Menu -->
+<nav x-data="{ open: false, profileMenu: false }" @keydown.escape.window="open = false; profileMenu = false" class="soh-nav">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 justify-between">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="flex shrink-0 items-center">
-                    <a href="{{ route("dashboard") }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+        <div class="flex h-16 items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="{{ route('home') }}" class="inline-flex items-center" aria-label="Go to homepage">
+                    <img
+                        src="{{ asset('img/sohmc-logo.png') }}"
+                        alt="Sounds of Harmony Music Centre"
+                        class="h-11 w-auto rounded-sm bg-white px-2 py-1 shadow-[0_8px_22px_rgba(13,13,13,0.2)]"
+                    />
+                </a>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __("Dashboard") }}
-                    </x-nav-link>
+                <div class="hidden items-center gap-2 sm:flex">
+                    @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
+                        <a href="{{ route('backend.dashboard') }}" class="soh-nav-link {{ request()->routeIs('backend.dashboard') ? 'active' : '' }}">Admin</a>
+                    @endif
+
+                    @if (auth()->user()->hasRole('parent'))
+                        <a href="{{ route('parent.dashboard') }}" class="soh-nav-link {{ request()->routeIs('parent.dashboard') ? 'active' : '' }}">Parent</a>
+                    @endif
+
+                    <livewire:notifications.notification-bell />
+
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-hidden dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
-                        >
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg
-                                    class="h-4 w-4 fill-current"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __("Profile") }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route("logout") }}">
-                            @csrf
-
-                            <x-dropdown-link
-                                :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();"
-                            >
-                                {{ __("Log Out") }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="relative hidden items-center sm:flex" @click.outside="profileMenu = false">
                 <button
-                    @click="open = ! open"
-                    class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-hidden dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
+                    @click="profileMenu = ! profileMenu"
+                    type="button"
+                    class="soh-avatar-chip inline-flex items-center gap-3 px-3 py-2 text-sm font-medium"
+                    aria-haspopup="true"
+                    x-bind:aria-expanded="profileMenu.toString()"
                 >
+                    <img
+                        class="h-9 w-9 rounded-full border border-white/25 object-cover"
+                        src="{{ asset(Auth::user()->avatar) }}"
+                        alt="{{ Auth::user()->name }}"
+                    />
+                    <span class="flex flex-col items-start leading-tight">
+                        <span class="font-semibold text-white">{{ Auth::user()->name }}</span>
+                        <span class="text-xs text-white/75">{{ str(auth()->user()->dashboardRouteName())->before('.')->headline() }}</span>
+                    </span>
+                    <svg class="h-4 w-4 text-white/80 transition-transform" x-bind:class="profileMenu ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.51a.75.75 0 0 1-1.08 0l-4.25-4.51a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <div
+                    x-cloak
+                    x-show="profileMenu"
+                    x-transition.origin.top.right
+                    class="absolute right-0 top-[calc(100%+0.75rem)] z-50 w-72 overflow-hidden rounded-2xl border border-[color:var(--soh-gray)]/35 bg-white shadow-[0_22px_50px_rgba(13,13,13,0.16)]"
+                >
+                    <div class="border-b border-[color:var(--soh-gray)]/25 bg-[linear-gradient(180deg,rgba(166,18,141,0.08)_0%,rgba(217,145,205,0.12)_100%)] px-5 py-4">
+                        <p class="text-sm font-semibold text-[color:var(--soh-black)]">{{ Auth::user()->name }}</p>
+                        <p class="mt-1 text-xs uppercase tracking-[0.14em] text-[color:var(--soh-purple)]">{{ str(auth()->user()->dashboardRouteName())->before('.')->headline() }}</p>
+                    </div>
+
+                    <div class="px-3 py-3">
+                        <a @click="profileMenu = false" href="{{ route(auth()->user()->dashboardRouteName()) }}" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Dashboard</a>
+
+                        <a @click="profileMenu = false" href="{{ route('notifications.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">My Notifications</a>
+
+                        @if (auth()->user()->hasRole('student'))
+                            <a @click="profileMenu = false" href="{{ route('lessons.index') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">My Lessons</a>
+                        @endif
+
+                        <a @click="profileMenu = false" href="{{ route('profile.edit') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Profile Settings</a>
+
+                        <form method="POST" action="{{ route('logout') }}" class="mt-2 border-t border-[color:var(--soh-gray)]/20 pt-2">
+                            @csrf
+                            <button type="submit" class="block w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:hidden">
+                <livewire:notifications.notification-bell />
+
+                <button @click="open = ! open" class="rounded-md p-2 text-white">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path
-                            :class="{ 'hidden': open, 'inline-flex': !open }"
-                            class="inline-flex"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                        <path
-                            :class="{ 'hidden': !open, 'inline-flex': open }"
-                            class="hidden"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="space-y-1 pb-3 pt-2">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __("Dashboard") }}
-            </x-responsive-nav-link>
-        </div>
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden border-t border-white/20 sm:hidden">
+        <div class="space-y-1 px-4 py-3">
+            @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
+                <a @click="open = false" href="{{ route('backend.dashboard') }}" class="soh-nav-link block">Admin Dashboard</a>
+            @endif
 
-        <!-- Responsive Settings Options -->
-        <div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
-            <div class="px-4">
-                <div class="text-base font-medium text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="text-sm font-medium text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            @if (auth()->user()->hasRole('parent'))
+                <a @click="open = false" href="{{ route('parent.dashboard') }}" class="soh-nav-link block">Parent Dashboard</a>
+            @endif
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __("Profile") }}
-                </x-responsive-nav-link>
+            <a @click="open = false" href="{{ route('notifications.index') }}" class="soh-nav-link block">My Notifications</a>
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route("logout") }}">
-                    @csrf
+            <a @click="open = false" href="{{ route('profile.edit') }}" class="soh-nav-link block">Profile</a>
 
-                    <x-responsive-nav-link
-                        :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();"
-                    >
-                        {{ __("Log Out") }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="soh-nav-link w-full text-left">Logout</button>
+            </form>
         </div>
     </div>
 </nav>

@@ -1,0 +1,6 @@
+{
+    "name": "nasirkhan/lesson-module",
+    "description": "Lesson module for Laravel Starter",
+    "type": "library",
+    "require": {}
+}

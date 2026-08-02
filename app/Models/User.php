@@ -6,10 +6,16 @@ use App\Models\Presenters\UserPresenter;
 use App\Models\Traits\HasHashedMediaTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Booking\Models\BookedLesson;
+use Modules\Booking\Models\Instrument;
+use Modules\Booking\Models\LessonRequest;
+use Modules\Booking\Models\TeacherAvailability;
+use Modules\Lesson\Models\LessonStudentAssignment;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -20,6 +26,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     use HasRoles {
         hasRole as hasRoleOriginal;
         hasPermissionTo as hasPermissionToOriginal;
+        getAllPermissions as getAllPermissionsOriginal;
     }
     use Notifiable;
     use SoftDeletes;
@@ -66,11 +73,110 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
+     * Get lesson assignments for a student.
+     */
+    public function assignedLessons(): HasMany
+    {
+        return $this->hasMany(LessonStudentAssignment::class, 'student_id');
+    }
+
+    /**
+     * Get the instruments this teacher can teach.
+     */
+    public function teachingInstruments(): BelongsToMany
+    {
+        return $this->belongsToMany(Instrument::class, 'instrument_teacher', 'teacher_id', 'instrument_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get lesson requests where the user is the student.
+     */
+    public function lessonRequestsAsStudent(): HasMany
+    {
+        return $this->hasMany(LessonRequest::class, 'student_id');
+    }
+
+    /**
+     * Get lesson requests where the user is the teacher.
+     */
+    public function lessonRequestsAsTeacher(): HasMany
+    {
+        return $this->hasMany(LessonRequest::class, 'teacher_id');
+    }
+
+    /**
+     * Get booked lessons where the user is the student.
+     */
+    public function bookedLessonsAsStudent(): HasMany
+    {
+        return $this->hasMany(BookedLesson::class, 'student_id');
+    }
+
+    /**
+     * Get booked lessons where the user is the teacher.
+     */
+    public function bookedLessonsAsTeacher(): HasMany
+    {
+        return $this->hasMany(BookedLesson::class, 'teacher_id');
+    }
+
+    /**
+     * Get the teacher's weekly availability windows.
+     */
+    public function teacherAvailabilities(): HasMany
+    {
+        return $this->hasMany(TeacherAvailability::class, 'teacher_id');
+    }
+
+    /**
+     * Get the students linked to this parent/guardian.
+     */
+    public function children(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'parent_student', 'parent_id', 'student_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the parents linked to this student.
+     */
+    public function parents(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'parent_student', 'student_id', 'parent_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Resolve preferred dashboard route name based on user role.
+     */
+    public function dashboardRouteName(): string
+    {
+        if ($this->hasRole('super admin') || $this->hasRole('administrator')) {
+            return 'backend.dashboard';
+        }
+
+        if ($this->hasRole('teacher')) {
+            return 'teacher.dashboard';
+        }
+
+        if ($this->hasRole('student')) {
+            return 'student.dashboard';
+        }
+
+        if ($this->hasRole('parent')) {
+            return 'parent.dashboard';
+        }
+
+        return 'frontend.index';
+    }
+
+    /**
      * Toggle for using cached permissions.
      *
      * @var bool
      */
-    public static $useCachedPermissions = true;
+    public static $useCachedPermissions = false;
 
     /**
      * Clear the user's permission cache.
@@ -88,7 +194,27 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function hasRole($roles, ?string $guard = null): bool
     {
         if (! static::$useCachedPermissions) {
-            return $this->hasRoleOriginal($roles, $guard);
+            $hasRole = $this->hasRoleOriginal($roles, $guard);
+
+            if ($hasRole) {
+                return true;
+            }
+
+            $roleNames = $this->getRoleNames();
+
+            if (is_string($roles)) {
+                return $roleNames->contains($roles);
+            }
+
+            if (is_array($roles)) {
+                foreach ($roles as $role) {
+                    if (is_string($role) && $roleNames->contains($role)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         $userRoles = $this->roles; // Uses cached accessor
@@ -134,7 +260,21 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function hasPermissionTo($permission, $guardName = null): bool
     {
         if (! static::$useCachedPermissions) {
-            return $this->hasPermissionToOriginal($permission, $guardName);
+            $hasPermission = $this->hasPermissionToOriginal($permission, $guardName);
+
+            if ($hasPermission) {
+                return true;
+            }
+
+            $permissionName = $permission instanceof \Spatie\Permission\Contracts\Permission
+                ? $permission->name
+                : (string) $permission;
+
+            return $this->roles()
+                ->whereHas('permissions', function ($query) use ($permissionName) {
+                    $query->where('name', $permissionName);
+                })
+                ->exists();
         }
 
         $permissionName = $permission instanceof \Spatie\Permission\Contracts\Permission
@@ -227,7 +367,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function getAllPermissions(): \Illuminate\Support\Collection
     {
         if (! static::$useCachedPermissions) {
-            return parent::getAllPermissions();
+            return $this->getAllPermissionsOriginal();
         }
 
         // Get direct permissions (cached)

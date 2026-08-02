@@ -24,18 +24,37 @@ class PermissionRoleTableSeeder extends Seeder
         /**
          * Create Roles and Assign Permissions to Roles.
          */
-        $super_admin = Role::create(['id' => '1', 'name' => 'super admin']);
+        $super_admin = Role::firstOrCreate(['name' => 'super admin']);
+        $super_admin->syncPermissions([
+            'view_backend',
+            'edit_settings',
+            'manage_lessons',
+            'assign_lessons',
+            'view_assigned_lessons',
+        ]);
 
-        $admin = Role::create(['id' => '2', 'name' => 'administrator']);
-        $admin->givePermissionTo(['view_backend', 'edit_settings']);
+        $admin = Role::firstOrCreate(['name' => 'administrator']);
+        $admin->syncPermissions([
+            'view_backend',
+            'edit_settings',
+            'manage_lessons',
+            'assign_lessons',
+        ]);
 
-        $manager = Role::create(['id' => '3', 'name' => 'manager']);
-        $manager->givePermissionTo('view_backend');
+        $teacher = Role::firstOrCreate(['name' => 'teacher']);
+        $teacher->syncPermissions([
+            'view_backend',
+            'manage_lessons',
+            'assign_lessons',
+        ]);
 
-        $executive = Role::create(['id' => '4', 'name' => 'executive']);
-        $executive->givePermissionTo('view_backend');
+        $parent = Role::firstOrCreate(['name' => 'parent']);
+        $parent->syncPermissions([
+            'view_assigned_lessons',
+        ]);
 
-        $user = Role::create(['id' => '5', 'name' => 'user']);
+        $student = Role::firstOrCreate(['name' => 'student']);
+        $student->syncPermissions(['view_assigned_lessons']);
     }
 
     public function CreateDefaultPermissions()
@@ -44,8 +63,7 @@ class PermissionRoleTableSeeder extends Seeder
         $permissions = Permission::defaultPermissions();
 
         foreach ($permissions as $permission) {
-            $permission = Permission::make(['name' => $permission]);
-            $permission->saveOrFail();
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         Artisan::call('auth:permissions', [

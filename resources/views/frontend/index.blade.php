@@ -5,125 +5,114 @@
 @endsection
 
 @section("content")
-    <section class="bg-white dark:bg-gray-800">
-        <div class="mx-auto max-w-screen-xl px-4 py-24 text-center sm:px-12">
-            <div class="m-6 flex justify-center">
-                <img class="h-24 rounded" src="{{ asset("img/logo-square.jpg") }}" alt="{{ app_name() }}" />
-            </div>
-            <h1
-                class="mb-6 text-4xl leading-none font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white"
-            >
-                {{ app_name() }}
-            </h1>
-            <p class="mb-10 text-lg font-normal text-gray-500 sm:px-16 sm:text-2xl xl:px-48 dark:text-gray-400">
-                {!! setting("app_description") !!}
-            </p>
-            <div class="mb-8 flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 lg:mb-16">
-                <a
-                    class="inline-flex items-center justify-center rounded-lg bg-gray-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
-                    href="https://github.com/nasirkhan/laravel-starter"
-                    target="_blank"
-                >
-                    <svg
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
-                        />
-                    </svg>
-                    <span class="ms-2">Github</span>
-                </a>
-                <a
-                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-center text-base font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:border-gray-700 dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-800"
-                    href="https://nasirkhn.com"
-                    target="_blank"
-                >
-                    <svg
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-world-www"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
-                        <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
-                        <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4" />
-                        <path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
-                        <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
-                        <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4" />
-                        <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
-                        <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
-                        <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
-                    </svg>
-                    <span class="ms-2">Website</span>
-                </a>
+    <section class="relative overflow-hidden bg-[radial-gradient(circle_at_12%_20%,rgba(166,18,141,0.2),transparent_44%),radial-gradient(circle_at_88%_80%,rgba(166,18,141,0.14),transparent_40%),linear-gradient(180deg,#ECEEF3_0%,#F3F5F9_100%)] px-4 py-18 sm:px-8 lg:px-12">
+        <div class="pointer-events-none absolute inset-0 opacity-35" style="background-image: linear-gradient(rgba(13,13,13,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(13,13,13,0.08) 1px, transparent 1px); background-size: 48px 48px;"></div>
+
+        <div class="relative mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
+            <div class="relative overflow-hidden rounded-[1.9rem] border border-[color:var(--soh-gray)]/60 bg-[linear-gradient(160deg,#FFFFFF_0%,#F5EAF3_100%)] p-6 shadow-[0_16px_48px_rgba(140,3,117,0.14)] sm:p-8">
+                <div class="absolute -inset-10 bg-[radial-gradient(circle_at_35%_20%,rgba(166,18,141,0.2),transparent_60%)]"></div>
+                <div class="relative flex min-h-[450px] items-center justify-center lg:min-h-[560px]">
+                    <img
+                        class="max-h-[520px] w-full object-contain"
+                        src="{{ asset('img/sohmc-logo-wordmark.jpg') }}"
+                        alt="Sounds of Harmony Music Centre logo"
+                    />
+                </div>
             </div>
 
-            @include("frontend.includes.messages")
-        </div>
-    </section>
+            <div class="flex h-full flex-col justify-center rounded-[1.9rem] border border-[color:var(--soh-gray)]/50 bg-white/85 p-8 shadow-[0_16px_48px_rgba(140,3,117,0.1)] backdrop-blur-sm sm:p-10 lg:min-h-[560px]">
+                <span class="inline-flex w-fit items-center rounded-full border border-[color:var(--soh-gray)] bg-white px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">
+                    Sounds of Harmony Music Centre
+                </span>
 
-    <section class="bg-gray-100 py-20 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-        <div class="container mx-auto flex flex-col items-center justify-center px-5">
-            <div class="w-full text-center lg:w-2/3">
-                <h1 class="mb-4 text-3xl font-medium text-gray-800 sm:text-4xl dark:text-gray-200">
-                    {{ __("Screenshots of the project") }}
+                <h1 class="mt-5 text-4xl leading-tight font-semibold text-[color:var(--soh-black)] sm:text-5xl">
+                    Welcome to SOHMC
                 </h1>
 
-                <p class="mb-8 leading-relaxed">
-                    In the following section we listed a number of screenshots of different parts of the project,
-                    Laravel Starter.
+                <p class="mt-5 max-w-2xl text-base leading-relaxed text-gray-700 sm:text-lg">
+                    Your central portal for lessons, assignments, and progress tracking.
+                    Students, teachers, and administrators each have dedicated dashboards designed for their day-to-day workflow.
                 </p>
+
+                <div class="mt-8 flex flex-wrap items-center gap-3">
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="soh-btn-primary px-6 py-3">{{ __('Go to Dashboard') }}</a>
+                    @else
+                        <a href="{{ route('login') }}" class="soh-btn-primary px-6 py-3">{{ __('Sign In') }}</a>
+                        <a href="{{ route('register') }}" class="soh-btn-outline px-6 py-3">{{ __('Sign Up') }}</a>
+                    @endauth
+                </div>
+
+                <p class="mt-4 text-sm text-gray-600">{{ __('Need help accessing your account? Contact the school office for support.') }}</p>
+            </div>
+        </div>
+
+        @include("frontend.includes.messages")
+    </section>
+
+    <section class="px-4 py-16 sm:px-8 lg:px-12">
+        <div class="mx-auto max-w-7xl">
+            <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <p class="text-xs font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">Portal Overview</p>
+                    <h2 class="mt-2 text-3xl font-semibold text-[color:var(--soh-black)]">Role-Based Dashboards That Keep Everyone Connected</h2>
+                </div>
+                <a href="{{ route('login') }}" class="soh-link text-sm">{{ __('Access your account') }}</a>
+            </div>
+
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+                <article class="soh-card p-6">
+                    <h3 class="text-xl font-semibold text-[color:var(--soh-black)]">Student Dashboard</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                        Review assigned lessons, track homework progress, and update activity status in a focused learning space.
+                    </p>
+                    <a href="{{ route('login') }}" class="soh-link mt-5 inline-block text-sm">{{ __('Student Login') }}</a>
+                </article>
+
+                <article class="soh-card p-6">
+                    <h3 class="text-xl font-semibold text-[color:var(--soh-black)]">Teacher Dashboard</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                        Upload materials, create lessons, assign coursework, and monitor student completion from one workflow.
+                    </p>
+                    <a href="{{ route('login') }}" class="soh-link mt-5 inline-block text-sm">{{ __('Teacher Login') }}</a>
+                </article>
+
+                <article class="soh-card p-6">
+                    <h3 class="text-xl font-semibold text-[color:var(--soh-black)]">Admin Dashboard</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                        Manage users, oversee school operations, and keep platform content organized with role-aware controls.
+                    </p>
+                    <a href="{{ route('login') }}" class="soh-link mt-5 inline-block text-sm">{{ __('Admin Login') }}</a>
+                </article>
             </div>
         </div>
     </section>
 
-    <section class="bg-gray-50 pb-20 dark:bg-gray-700">
-        <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/1cf5ce5a-f374-4bae-b5a3-69e8d7ff684d"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/93341711-60dd-4624-8cd7-82f1c611287d"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/0f6b8201-6f6a-429f-894b-4e491cc5eba4"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/f8131011-2ecc-4a11-961f-85e02cb8f7a1"
-                    alt="Page preview"
-                />
-            </div>
+    <section class="bg-white/80 px-4 py-16 sm:px-8 lg:px-12">
+        <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
+            <article class="soh-card p-6">
+                <h3 class="text-lg font-semibold text-[color:var(--soh-black)]">About SOHMC</h3>
+                <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                    Learn about our learning philosophy, school values, and how we support musical development at every level.
+                </p>
+                <a href="{{ url('/about') }}" class="soh-link mt-4 inline-block text-sm">{{ __('Read More') }}</a>
+            </article>
+
+            <article class="soh-card p-6">
+                <h3 class="text-lg font-semibold text-[color:var(--soh-black)]">Gallery</h3>
+                <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                    Explore moments from classes, rehearsals, and student performances that reflect life at SOHMC.
+                </p>
+                <a href="{{ url('/gallery') }}" class="soh-link mt-4 inline-block text-sm">{{ __('View Gallery') }}</a>
+            </article>
+
+            <article class="soh-card p-6">
+                <h3 class="text-lg font-semibold text-[color:var(--soh-black)]">Contact</h3>
+                <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                    Reach the school directly for schedule details, general information, and platform support.
+                </p>
+                <a href="{{ url('/contact') }}" class="soh-link mt-4 inline-block text-sm">{{ __('Get In Touch') }}</a>
+            </article>
         </div>
     </section>
 @endsection

@@ -83,8 +83,8 @@ class ProfileEdit extends Component
         $this->date_of_birth = $this->user->date_of_birth?->format('Y-m-d') ?? null;
         $this->address = $this->user->address ?? '';
         $this->bio = $this->user->bio ?? '';
-        $this->url = $this->user->url ?? '';
-        $this->url_text = $this->user->url_text ?? '';
+        $this->url = $this->user->url_website ?? '';
+        $this->url_text = $this->user->social_profiles['website_text'] ?? '';
     }
 
     /**
@@ -94,7 +94,12 @@ class ProfileEdit extends Component
     {
         $this->validate();
 
+        $socialProfiles = is_array($this->user->social_profiles) ? $this->user->social_profiles : [];
+        $socialProfiles['website_url'] = $this->url;
+        $socialProfiles['website_text'] = $this->url_text;
+
         $this->user->update([
+            'name' => trim($this->first_name.' '.$this->last_name),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'mobile' => $this->mobile,
@@ -102,8 +107,7 @@ class ProfileEdit extends Component
             'date_of_birth' => $this->date_of_birth,
             'address' => $this->address,
             'bio' => $this->bio,
-            'url' => $this->url,
-            'url_text' => $this->url_text,
+            'social_profiles' => $socialProfiles,
         ]);
 
         // Handle Avatar upload

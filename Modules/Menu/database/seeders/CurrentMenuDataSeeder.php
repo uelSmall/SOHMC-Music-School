@@ -24,7 +24,6 @@ class CurrentMenuDataSeeder extends Seeder
             } else {
                 echo $message.PHP_EOL;
             }
-
             return;
         }
 
@@ -34,12 +33,12 @@ class CurrentMenuDataSeeder extends Seeder
             echo 'Seeding menus and menu items from PHP data...'.PHP_EOL;
         }
 
-        // Disable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        // Truncate existing data
-        MenuItem::truncate();
-        Menu::truncate();
+        // Disable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = replica;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        }
 
         $allMenus = [];
         $allMenuItems = [];
@@ -55,17 +54,27 @@ class CurrentMenuDataSeeder extends Seeder
             }
         }
 
-        // Seed menus
+        // Seed menus safely
         foreach ($allMenus as $menuData) {
-            Menu::create($menuData);
+            Menu::updateOrCreate(
+                ['slug' => $menuData['slug']], // unique key
+                $menuData
+            );
         }
 
-        // Seed menu items
+        // Seed menu items safely
         foreach ($allMenuItems as $itemData) {
-            MenuItem::create($itemData);
+            MenuItem::updateOrCreate(
+                ['slug' => $itemData['slug'], 'menu_id' => $itemData['menu_id']], // composite unique key
+                $itemData
+            );
         }
 
-        // Re-enable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // Re-enable foreign key constraints (database-specific)
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SET session_replication_role = DEFAULT;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
     }
 }

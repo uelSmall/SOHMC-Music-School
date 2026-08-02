@@ -66,16 +66,16 @@
         />
 
         <div class="flex items-center justify-end">
-            <x-button class="w-full" variant="primary" type="submit">
+            <x-button class="w-full bg-[#A6128D] hover:bg-[#8C0375] focus:ring-[#D991CD]" type="submit">
                 {{ __('Create account') }}
             </x-button>
         </div>
     </form>
 
-    <div class="space-x-1 text-center text-sm text-zinc-600 tracking-widest dark:text-zinc-400">
+    <div class="space-x-1 text-center text-sm text-gray-600 tracking-widest">
         {{ __('Already have an account?') }}
 
-        <x-frontend.link class="text-sm" :href="route('login')" wire:navigate>
+        <x-frontend.link class="text-sm soh-link" :href="route('login')" wire:navigate>
             {{ __('Log in') }}
         </x-frontend.link>
     </div>

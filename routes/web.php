@@ -6,6 +6,9 @@ use App\Http\Controllers\Backend\NotificationsController;
 use App\Http\Controllers\Backend\RolesController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\UserController as BackendUserController;
+use App\Http\Controllers\Backend\GalleryItemController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Frontend\GalleryController;
 use App\Http\Controllers\Frontend\UserController as FrontendUserController;
 use App\Http\Controllers\LanguageController;
 use App\Livewire\Frontend\Home;
@@ -14,6 +17,9 @@ use App\Livewire\Frontend\Terms;
 use App\Livewire\Frontend\Users\ChangePassword;
 use App\Livewire\Frontend\Users\Profile;
 use App\Livewire\Frontend\Users\ProfileEdit;
+use App\Livewire\Student\Dashboard as StudentDashboard;
+use App\Livewire\Parents\Dashboard as ParentDashboard;
+use App\Livewire\Teacher\Dashboard as TeacherDashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +44,13 @@ Route::get('home', Home::class)->name('home');
 // Language Switch
 Route::get('language/{language}', [LanguageController::class, 'switch'])->name('language.switch');
 
-Route::get('dashboard', Home::class)->name('dashboard');
+Route::get('dashboard', function () {
+    if (! auth()->check()) {
+        return redirect()->route('frontend.index');
+    }
+
+    return redirect()->route(auth()->user()->dashboardRouteName());
+})->name('dashboard');
 
 // pages
 Route::get('terms', Terms::class)->name('terms');
@@ -46,6 +58,9 @@ Route::get('privacy', Privacy::class)->name('privacy');
 
 Route::group(['as' => 'frontend.'], function () {
     Route::get('/', Home::class)->name('index');
+    Route::view('about', 'frontend.about')->name('about');
+    Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
+    Route::view('contact', 'frontend.contact')->name('contact');
 
     Route::group(['middleware' => ['auth']], function () {
         /*
@@ -89,6 +104,13 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
         $module_name = 'settings';
         Route::get("{$module_name}", [SettingController::class, 'index'])->name("{$module_name}.index");
         Route::post("{$module_name}", [SettingController::class, 'store'])->name("{$module_name}.store");
+    });
+
+    Route::group(['middleware' => ['can:edit_backend']], function () {
+        Route::resource('gallery-items', GalleryItemController::class)->except(['show']);
+        Route::patch('gallery-items/{galleryItem}/move/{direction}', [GalleryItemController::class, 'move'])
+            ->where('direction', 'up|down')
+            ->name('gallery-items.move');
     });
 
     /*
@@ -144,6 +166,132 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
     Route::resource("{$module_name}", BackendUserController::class);
 });
 
+/*
+*
+* Teacher Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lessons'])->group(function () {
+    Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
+    Route::get('/calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'teacherEvents'])
+        ->name('calendar.events')
+        ->middleware('role:teacher');
+    Route::get('/booking-management', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'index'])
+        ->name('booking-management.index')
+        ->middleware('role:teacher');
+    Route::get('/booking-management/{lesson}', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'show'])
+        ->name('booking-management.show')
+        ->middleware('role:teacher');
+    Route::patch('/booking-management/{lesson}/complete', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'complete'])
+        ->name('booking-management.complete')
+        ->middleware('role:teacher');
+    Route::patch('/booking-management/{lesson}/cancel', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'cancel'])
+        ->name('booking-management.cancel')
+        ->middleware('role:teacher');
+    Route::patch('/booking-management/{lesson}/reschedule', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'reschedule'])
+        ->name('booking-management.reschedule')
+        ->middleware('role:teacher');
+    Route::get('/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
+        ->name('assignments.index')
+        ->middleware('can:assign_lessons');
+
+    Route::resource('lesson-requests', \App\Http\Controllers\Teacher\LessonRequestController::class)
+        ->only(['index', 'show'])
+        ->parameters(['lesson-requests' => 'lessonRequest'])
+        ->middleware('role:teacher');
+
+    Route::patch('lesson-requests/{lessonRequest}/confirm', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'confirm'])
+        ->name('lesson-requests.confirm')
+        ->middleware('role:teacher');
+
+    Route::patch('lesson-requests/{lessonRequest}/reschedule', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reschedule'])
+        ->name('lesson-requests.reschedule')
+        ->middleware('role:teacher');
+
+    Route::patch('lesson-requests/{lessonRequest}/reject', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reject'])
+        ->name('lesson-requests.reject')
+        ->middleware('role:teacher');
+});
+
+/*
+*
+* Parent Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::prefix('parent')->as('parent.')->middleware(['auth', 'role:parent'])->group(function () {
+    Route::get('/dashboard', ParentDashboard::class)->name('dashboard');
+});
+
+/*
+*
+* Student Routes
+*
+* --------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/dashboard', StudentDashboard::class)
+        ->name('student.dashboard')
+        ->middleware('can:view_assigned_lessons');
+    Route::get('/student/booking-management', [\App\Http\Controllers\Student\LessonManagementController::class, 'index'])
+        ->name('student.booking-management.index')
+        ->middleware('role:student');
+    Route::get('/student/booking-management/{lesson}', [\App\Http\Controllers\Student\LessonManagementController::class, 'show'])
+        ->name('student.booking-management.show')
+        ->middleware('role:student');
+
+    Route::get('/student/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
+        ->name('student.lessons.index')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
+        ->name('lessons.index')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}', [\App\Http\Controllers\LessonController::class, 'show'])
+        ->name('lessons.show')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}/download', [\App\Http\Controllers\LessonController::class, 'download'])
+        ->name('lessons.download')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::get('/lessons/{lesson}/preview', [\App\Http\Controllers\LessonController::class, 'preview'])
+        ->name('lessons.preview')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::post('/lessons/{lesson}/start', [\App\Http\Controllers\LessonController::class, 'markAsStarted'])
+        ->name('lessons.mark-started')
+        ->middleware('can:view_assigned_lessons');
+
+    Route::prefix('student')->as('student.')->middleware(['role:student', 'can:view_assigned_lessons'])->group(function () {
+        Route::resource('lesson-requests', \App\Http\Controllers\Student\LessonRequestController::class)
+            ->only(['index', 'create', 'store']);
+
+        Route::patch('lesson-requests/{lessonRequest}/accept-suggestion', [\App\Http\Controllers\Student\LessonRequestController::class, 'acceptSuggestion'])
+            ->name('lesson-requests.accept-suggestion');
+
+        Route::get('calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'studentEvents'])
+            ->name('calendar.events');
+    });
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    
+    // Teacher/admin assignments dashboard
+    Route::get('/admin/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
+        ->name('backend.assignments.index')
+        ->middleware(['can:view_backend', 'can:assign_lessons']);
+    
+    // Minimal profile routes used by the navigation
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 /**
  * File Manager Routes.
  */

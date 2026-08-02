@@ -1,123 +1,93 @@
-<div>
-    <section class="bg-white dark:bg-gray-800">
-        <div class="mx-auto max-w-7xl px-4 py-24 text-center sm:px-12">
-            <div class="m-6 flex justify-center">
-                <img class="h-24 rounded-sm" src="{{ asset('img/logo-square.jpg') }}" alt="{{ app_name() }}" />
-            </div>
-            <h1
-                class="mb-6 text-4xl font-extrabold leading-none tracking-tight text-gray-900 sm:text-6xl dark:text-white"
-            >
-                {{ app_name() }}
-            </h1>
-            <p class="mb-10 text-lg font-normal text-gray-500 sm:px-16 sm:text-2xl xl:px-48 dark:text-gray-400">
-                {!! setting('app_description') !!}
-            </p>
-            <div class="mb-8 flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0 lg:mb-16">
-                <a
-                    class="inline-flex items-center justify-center rounded-lg bg-gray-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-gray-800 focus:ring-4 focus:ring-gray-300"
-                    href="https://github.com/nasirkhan/laravel-starter"
-                    target="_blank"
-                >
-                    <svg
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
-                        />
-                    </svg>
-                    <span class="ms-2">Github</span>
-                </a>
-                <a
-                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-center text-base font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:border-gray-700 dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-800"
-                    href="https://nasirkhn.com"
-                    target="_blank"
-                >
-                    <svg
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-world-www"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
-                        <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
-                        <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4" />
-                        <path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
-                        <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
-                        <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4" />
-                        <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
-                        <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
-                        <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
-                    </svg>
-                    <span class="ms-2">Website</span>
-                </a>
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+    <section class="relative overflow-hidden rounded-[2rem] border border-[color:var(--soh-gray)]/45 bg-[linear-gradient(160deg,#FDFBFD_0%,#F1D8EC_100%)] p-3 shadow-[0_30px_80px_rgba(140,3,117,0.14)] sm:p-4">
+        <div class="pointer-events-none absolute inset-0 opacity-35" style="background-image: linear-gradient(rgba(166,18,141,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(166,18,141,0.07) 1px, transparent 1px); background-size: 52px 52px;"></div>
+
+        <div class="relative grid grid-cols-1 gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
+            <div class="relative min-h-[430px] overflow-hidden rounded-[1.4rem] border border-[color:var(--soh-gray)]/45 bg-[radial-gradient(120%_85%_at_20%_18%,rgba(166,18,141,0.22)_0%,rgba(242,226,238,0.95)_46%,rgba(230,198,222,0.92)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_20px_46px_rgba(140,3,117,0.22)] lg:min-h-[640px]">
+                <img
+                    class="absolute inset-0 h-full w-full object-cover object-center"
+                    src="{{ asset('img/sohm-logo-original.jpg') }}"
+                    alt="Sounds of Harmony Music Centre"
+                />
+                <div class="absolute inset-0 bg-[linear-gradient(165deg,rgba(255,255,255,0.07)_0%,rgba(166,18,141,0.14)_52%,rgba(140,3,117,0.34)_100%)]"></div>
+                <div class="pointer-events-none absolute -inset-[18%] rounded-[2rem] bg-[radial-gradient(72%_62%_at_50%_42%,rgba(166,18,141,0.24)_0%,rgba(166,18,141,0.08)_48%,transparent_76%)] blur-xl"></div>
+                <div class="absolute bottom-5 left-5 rounded-lg bg-white/90 px-4 py-2 text-[11px] font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase shadow-sm">
+                    {{ __('School Portal') }}
+                </div>
             </div>
 
+            <div class="flex flex-col justify-center rounded-[1.4rem] border border-[color:var(--soh-gray)]/45 bg-white/96 p-8 shadow-[0_18px_44px_rgba(140,3,117,0.1)] backdrop-blur-sm sm:p-10 lg:min-h-[640px]">
+                <p class="text-xs font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">Sounds of Harmony Music Centre</p>
+
+                <h1 class="mt-4 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl sm:leading-tight">{{ __('Welcome to SOHMC Portal') }}</h1>
+
+                <p class="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+                    {{ __('Your central portal for teaching, student learning, and daily academic coordination.') }}
+                </p>
+
+                <p class="mt-2 text-sm leading-relaxed text-gray-500">{!! setting('app_description') !!}</p>
+
+                <div class="mt-8 flex flex-wrap gap-3">
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="soh-btn-primary px-6 py-3" wire:navigate>
+                            @lang('Go to Dashboard')
+                        </a>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('login') }}" class="soh-btn-primary px-6 py-3" wire:navigate>
+                            @lang('Sign In')
+                        </a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="soh-btn-outline px-6 py-3" wire:navigate>
+                                @lang('Sign Up')
+                            </a>
+                        @endif
+                    @endguest
+                </div>
+
+                <div class="mt-8 rounded-xl bg-[color:var(--soh-purple)] p-5 text-white">
+                    <h2 class="text-xl font-semibold">@lang('Portal access in one place')</h2>
+                    <p class="mt-2 text-sm leading-relaxed text-white/90">
+                        @lang('A single secure platform adapts to each signed-in user and shows the tools they need.')
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8">
             @include('frontend.includes.messages')
         </div>
     </section>
 
-    <section class="bg-gray-100 py-20 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-        <div class="container mx-auto flex flex-col items-center justify-center px-5">
-            <div class="w-full text-center lg:w-2/3">
-                <h1 class="mb-4 text-3xl font-medium text-gray-800 sm:text-4xl dark:text-gray-200">
-                    {{ __('Screenshots of the project') }}
-                </h1>
-
-                <p class="mb-8 leading-relaxed">
-                    In the following section we listed a number of screenshots of different parts of the project,
-                    Laravel Starter.
-                </p>
-            </div>
+    <section class="mt-12">
+        <div class="mb-5">
+            <p class="text-xs font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">@lang('Platform Capabilities')</p>
+            <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-[2.1rem]">@lang('Everything you need to run learning smoothly')</h2>
         </div>
-    </section>
 
-    <section class="bg-gray-50 pb-20 dark:bg-gray-700">
-        <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/1cf5ce5a-f374-4bae-b5a3-69e8d7ff684d"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/93341711-60dd-4624-8cd7-82f1c611287d"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/0f6b8201-6f6a-429f-894b-4e491cc5eba4"
-                    alt="Page preview"
-                />
-            </div>
-            <div class="rounded-lg p-3 shadow-lg sm:p-10 dark:bg-gray-800">
-                <img
-                    loading="lazy"
-                    src="https://github.com/nasirkhan/laravel-starter/assets/396987/f8131011-2ecc-4a11-961f-85e02cb8f7a1"
-                    alt="Page preview"
-                />
-            </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="soh-card p-5">
+            <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Teaching')</p>
+            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Booking Management')</h3>
+            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Track scheduled lessons and manage completion, cancellation, and rescheduling.')</p>
+        </article>
+        <article class="soh-card p-5">
+            <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Learning')</p>
+            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Student Progress')</h3>
+            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Monitor assigned lessons and completion progress in one place.')</p>
+        </article>
+        <article class="soh-card p-5">
+            <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Access')</p>
+            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Role-Based Dashboards')</h3>
+            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Separate experiences for admins, teachers, and students with clear permissions.')</p>
+        </article>
+        <article class="soh-card p-5">
+            <p class="text-[11px] font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">@lang('Security')</p>
+            <h3 class="mt-2 text-lg font-semibold text-gray-900">@lang('Account Controls')</h3>
+            <p class="mt-2 text-sm leading-relaxed text-gray-600">@lang('Manage profile, password, and account settings with secure authentication.')</p>
+        </article>
         </div>
     </section>
 </div>

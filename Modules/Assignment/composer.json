@@ -1,0 +1,11 @@
+{
+  "name": "modules/assignment",
+  "description": "Assignment management module for lessons",
+  "type": "package",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Modules\\Assignment\\": ""
+    }
+  }
+}

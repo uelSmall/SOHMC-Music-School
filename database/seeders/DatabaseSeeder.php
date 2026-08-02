@@ -20,13 +20,23 @@ class DatabaseSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
 
         // Always run essential seeders
-        $this->call(AuthTableSeeder::class);
+        $this->call([
+            AuthTableSeeder::class,
+            BookingInstrumentSeeder::class,
+        ]);
 
         // Always run Menu seeder (essential for navigation)
         $this->callEssentialModuleSeeders();
 
         // Only run dummy data seeders if enabled
         if ($this->shouldSeedDummyData()) {
+            $this->call([
+                UserSeeder::class,
+                LessonSeeder::class,
+                ParentStudentSeeder::class,
+                GallerySeeder::class,
+            ]);
+
             $this->callDummyDataSeeders();
         }
 
@@ -45,7 +55,7 @@ class DatabaseSeeder extends Seeder
     {
         // Check environment variable first
         if (env('SEED_DUMMY_DATA') !== null) {
-            return env('SEED_DUMMY_DATA', true);
+            return filter_var(env('SEED_DUMMY_DATA'), FILTER_VALIDATE_BOOLEAN);
         }
 
         // Check for command line option
@@ -53,8 +63,8 @@ class DatabaseSeeder extends Seeder
             return false;
         }
 
-        // Default to seeding dummy data
-        return true;
+        // Default to dummy data in local/testing environments
+        return app()->environment(['local', 'testing']);
     }
 
     /**

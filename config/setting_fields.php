@@ -14,7 +14,7 @@ return [
                 'label' => 'App Name', // you know what label it is
                 'rules' => 'required|min:2|max:50', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Laravel Starter', // default value if you want
+                'value' => 'Sounds of Harmony Music Centre', // default value if you want
             ],
             [
                 'type' => 'text', // input fields type
@@ -23,7 +23,7 @@ return [
                 'label' => 'App Description', // you know what label it is
                 'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Laravel Starter is a CMS like modular starter application project built with Laravel. This starter project can be used as a foundation to build your own projects.', // default value if you want
+                'value' => 'Sounds of Harmony Music Centre (SOHMC) is a music learning platform for managing lessons, teachers, and student progress.', // default value if you want
             ],
             [
                 'type' => 'text', // input fields type
@@ -32,7 +32,7 @@ return [
                 'label' => 'Footer Text', // you know what label it is
                 'rules' => 'required|min:2', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => '<a href="https://github.com/nasirkhan/laravel-starter/" class="text-muted">Built with ♥ from Bangladesh</a>', // default value if you want
+                'value' => '© 2026 Sounds of Harmony Music Centre (SOHMC). All rights reserved.', // default value if you want
             ],
             [
                 'type' => 'checkbox', // input fields type
@@ -185,7 +185,7 @@ return [
                 'label' => 'Meta Site Name', // you know what label it is
                 'rules' => 'required', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Laravel Starter | An Awesome Laravel Starter Project', // default value if you want
+                'value' => 'Sounds of Harmony Music Centre | SOHMC', // default value if you want
             ],
             [
                 'type' => 'text', // input fields type
@@ -194,7 +194,7 @@ return [
                 'label' => 'Meta Description', // you know what label it is
                 'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Laravel Starter is a CMS like modular starter application project built with latest Laravel. This starter project can be used as a foundation to build your own projects.', // default value if you want
+                'value' => 'SOHMC helps teachers and students manage lessons, assignments, and learning progress online.', // default value if you want
             ],
             [
                 'type' => 'text', // input fields type
@@ -203,7 +203,7 @@ return [
                 'label' => 'Meta Keyword', // you know what label it is
                 'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Web Application, web app, Laravel, Laravel starter, Bootstrap, Admin, Template, Open Source, nasir khan saikat, nasirkhansaikat', // default value if you want
+                'value' => 'music school, SOHMC, Sounds of Harmony Music Centre, lessons, students, teachers, online learning', // default value if you want
             ],
             [
                 'type' => 'text', // input fields type

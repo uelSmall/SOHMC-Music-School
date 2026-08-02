@@ -6,7 +6,7 @@ $notifications_latest = optional($notifications)->take(5);
 
 <div class="nav-item dropdown">
     <a class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" href="#" aria-label="Open user menu">
-        <span class="avatar avatar-sm" style="background-image: url({{ asset("img/favicon.png") }})"></span>
+        <span class="avatar avatar-sm" style="background-image: url({{ asset("img/sohmc-logo-icon.jpg") }})"></span>
         <div class="d-none d-xl-block ps-2">
             <div>{{ auth()->user()->name }}</div>
             <div class="small text-muted mt-1">{{ Auth::user()->email }}</div>

@@ -30,7 +30,7 @@
         </div>
     </form>
 
-    <div class="space-x-1 text-center text-sm text-zinc-600">
+    <div class="space-x-1 text-center text-sm text-gray-600">
         {{ __("Or, return to") }}
         <x-frontend.link class="text-sm" :href="route('login')" wire:navigate>
             {{ __("log in") }}

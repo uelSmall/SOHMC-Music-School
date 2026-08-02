@@ -4,14 +4,14 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-        <link type="image/png" href="{{ asset("img/favicon.png") }}" rel="icon" />
-        <link href="{{ asset("img/favicon.png") }}" rel="apple-touch-icon" sizes="76x76" />
+        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
+        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="apple-touch-icon" sizes="76x76" />
         <meta name="keyword" content="{{ setting("meta_keyword") }}" />
         <meta name="description" content="{{ setting("meta_description") }}" />
 
         <!-- Shortcut Icon -->
-        <link href="{{ asset("img/favicon.png") }}" rel="shortcut icon" />
-        <link type="image/ico" href="{{ asset("img/favicon.png") }}" rel="icon" />
+        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="shortcut icon" />
+        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -22,11 +22,21 @@
 
         @vite(["resources/sass/app-backend.scss", "resources/js/app-backend.js"])
 
-        <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+Bengali+UI&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
         <style>
             body {
-                font-family: Ubuntu, 'Noto Sans Bengali UI', Arial, Helvetica, sans-serif;
+                font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            .navbar-brand,
+            .card-title {
+                font-family: 'Sora', 'Segoe UI', Arial, sans-serif;
             }
         </style>
 
@@ -38,7 +48,6 @@
     </head>
 
     <body>
-        <x-selected-theme />
 
         <!-- Sidebar -->
         @include("backend.includes.sidebar")

@@ -15,7 +15,7 @@ if (! function_exists('app_name')) {
      */
     function app_name(): string
     {
-        return config('app.name');
+        return (string) setting('app_name', config('app.name'));
     }
 }
 
@@ -223,6 +223,10 @@ if (! function_exists('encode_id')) {
      */
     function encode_id(int $id): string
     {
+        if (! extension_loaded('bcmath') && ! extension_loaded('gmp')) {
+            return 'id_' . base_convert((string) $id, 10, 36);
+        }
+
         static $sqids;
         if (! $sqids) {
             $sqids = new Sqids(alphabet: 'abcdefghijklmnopqrstuvwxyz123456789');
@@ -244,6 +248,12 @@ if (! function_exists('decode_id')) {
      */
     function decode_id(string $hashid): ?int
     {
+        if (str_starts_with($hashid, 'id_')) {
+            $decoded = base_convert(substr($hashid, 3), 36, 10);
+
+            return is_numeric($decoded) ? (int) $decoded : null;
+        }
+
         static $sqids;
         if (! $sqids) {
             $sqids = new Sqids(alphabet: 'abcdefghijklmnopqrstuvwxyz123456789');
