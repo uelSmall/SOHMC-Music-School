@@ -3,15 +3,16 @@
         <div class="grid grid-cols-1 gap-8 rounded-[1.75rem] border border-[color:var(--soh-gray)]/40 bg-white/90 p-6 shadow-[0_22px_60px_rgba(140,3,117,0.12)] backdrop-blur-sm sm:p-8 lg:grid-cols-[1.15fr_0.75fr_0.7fr] lg:gap-10 lg:p-10">
             <div>
                 <a
-                    class="soh-brand-lockup soh-brand-light items-center text-gray-900"
+                    class="inline-flex flex-col items-start"
                     href="/"
                     wire:navigate
                     aria-label="Go to homepage"
                 >
-                    <img class="soh-brand-image rounded-xl shadow-sm" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
-                    <span class="soh-brand-wordmark">
-                        <span class="text-lg font-extrabold tracking-tight text-[color:var(--soh-black)]">SOHMC</span>
-                        <span class="text-sm font-semibold text-[color:var(--soh-purple)]/85">Sounds of Harmony Music Centre</span>
+                    <span class="inline-flex min-w-[210px] justify-center rounded-lg bg-[color:var(--soh-purple)]/88 px-2.5 py-1.5 shadow-[0_5px_14px_rgba(140,3,117,0.14)]">
+                        <img class="h-12 w-auto" src="{{ asset('img/sohmc-nav-logo.png') }}" alt="Sounds of Harmony Music Centre" />
+                    </span>
+                    <span class="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--soh-purple)]/70">
+                        Music School Portal
                     </span>
                 </a>
 
@@ -21,18 +22,18 @@
 
                 <div class="mt-6 flex flex-wrap gap-3">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="soh-btn-primary px-5 py-3" wire:navigate>
+                        <a href="{{ route('dashboard') }}" class="soh-btn-primary min-w-[210px] justify-center px-5 py-3" wire:navigate>
                             @lang('Open Dashboard')
                         </a>
                     @endauth
 
                     @guest
-                        <a href="{{ route('login') }}" class="soh-btn-primary px-5 py-3" wire:navigate>
+                        <a href="{{ route('login') }}" class="soh-btn-primary min-w-[210px] justify-center px-5 py-3" wire:navigate>
                             @lang('Log In')
                         </a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="soh-btn-outline px-5 py-3" wire:navigate>
+                            <a href="{{ route('register') }}" class="soh-btn-outline min-w-[210px] justify-center px-5 py-3" wire:navigate>
                                 @lang('Create Account')
                             </a>
                         @endif
@@ -63,7 +64,9 @@
 
         <div class="mt-6 flex flex-col gap-4 border-t border-[color:var(--soh-gray)]/30 px-2 pt-5 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
             <div class="max-w-3xl leading-6">{!! setting("footer_text") !!}</div>
-            <div class="font-medium text-[color:var(--soh-purple)]">{{ __('Designed for learning, teaching, and school coordination.') }}</div>
+            <div class="text-xs font-medium tracking-[0.02em] text-[color:var(--soh-purple)]/75">
+                {{ __('Built by') }} <span class="text-[color:var(--soh-purple)]">UEL Tech Solutions</span>
+            </div>
         </div>
     </div>
 </footer>

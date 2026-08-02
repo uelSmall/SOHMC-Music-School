@@ -10,7 +10,7 @@ $notifications_latest = optional($notifications)->take(5);
             <a href="/" class="d-flex align-items-center gap-2 text-decoration-none">
                 <img
                     class="sidebar-brand-full"
-                    src="{{ asset('img/sohm-logo-original.jpg') }}"
+                    src="{{ asset('img/sohmc-logo-wordmark.jpg') }}"
                     alt="Sounds of Harmony Music Centre"
                     style="height:46px; width:auto; object-fit:contain;"
                 />

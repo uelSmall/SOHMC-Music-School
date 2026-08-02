@@ -1,5 +1,5 @@
 <span {{ $attributes->merge(['class' => 'soh-brand-lockup soh-brand-light']) }}>
-	<img class="soh-brand-image" src="{{ asset('img/sohm-logo-original.jpg') }}" alt="Sounds of Harmony Music Centre" />
+	<img class="soh-brand-image" src="{{ asset('img/sohmc-logo-wordmark.jpg') }}" alt="Sounds of Harmony Music Centre" />
 	<span class="soh-brand-wordmark">
 		<span class="soh-brand-title">SOHMC</span>
 		<span class="soh-brand-subtitle">Sounds of Harmony Music Centre</span>

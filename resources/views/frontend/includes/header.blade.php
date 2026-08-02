@@ -13,9 +13,12 @@
     </a>
 
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
-        <a class="soh-brand-wordmark soh-brand-dark text-white" href="/" wire:navigate aria-label="Go to homepage">
-            <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
-            <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
+        <a class="inline-flex items-center" href="/" wire:navigate aria-label="Go to homepage">
+            <img
+                src="{{ asset('img/sohmc-nav-logo.png') }}"
+                alt="Sounds of Harmony Music Centre"
+                class="h-12 w-auto"
+            />
         </a>
         <div class="flex items-center justify-end space-x-1 text-white/90 md:order-2 md:space-x-0 rtl:space-x-reverse">
             @guest

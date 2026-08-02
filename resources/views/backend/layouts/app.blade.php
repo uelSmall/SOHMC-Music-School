@@ -4,14 +4,14 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-        <link type="image/png" href="{{ asset("img/favicon.png") }}" rel="icon" />
-        <link href="{{ asset("img/favicon.png") }}" rel="apple-touch-icon" sizes="76x76" />
+        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
+        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="apple-touch-icon" sizes="76x76" />
         <meta name="keyword" content="{{ setting("meta_keyword") }}" />
         <meta name="description" content="{{ setting("meta_description") }}" />
 
         <!-- Shortcut Icon -->
-        <link href="{{ asset("img/favicon.png") }}" rel="shortcut icon" />
-        <link type="image/ico" href="{{ asset("img/favicon.png") }}" rel="icon" />
+        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="shortcut icon" />
+        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
 
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}" />

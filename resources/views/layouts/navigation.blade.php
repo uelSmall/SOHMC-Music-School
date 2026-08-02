@@ -2,12 +2,12 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center gap-4">
-                <a href="{{ route('home') }}" class="soh-brand soh-brand-lockup soh-brand-dark" aria-label="Go to homepage">
-                    <span class="soh-monogram md:hidden">SOHMC</span>
-                    <span class="soh-brand-wordmark hidden md:flex">
-                        <span class="text-xl font-extrabold leading-none tracking-tight">SOHMC</span>
-                        <span class="text-sm font-semibold text-white/90">Sounds of Harmony Music Centre</span>
-                    </span>
+                <a href="{{ route('home') }}" class="inline-flex items-center" aria-label="Go to homepage">
+                    <img
+                        src="{{ asset('img/sohmc-logo.png') }}"
+                        alt="Sounds of Harmony Music Centre"
+                        class="h-11 w-auto rounded-sm bg-white px-2 py-1 shadow-[0_8px_22px_rgba(13,13,13,0.2)]"
+                    />
                 </a>
 
                 <div class="hidden items-center gap-2 sm:flex">

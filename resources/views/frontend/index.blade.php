@@ -14,7 +14,7 @@
                 <div class="relative flex min-h-[450px] items-center justify-center lg:min-h-[560px]">
                     <img
                         class="max-h-[520px] w-full object-contain"
-                        src="{{ asset('img/sohm-logo-original.jpg') }}"
+                        src="{{ asset('img/sohmc-logo-wordmark.jpg') }}"
                         alt="Sounds of Harmony Music Centre logo"
                     />
                 </div>
