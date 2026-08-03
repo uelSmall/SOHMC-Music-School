@@ -5,10 +5,6 @@
 
     RewriteEngine On
 
-    # Serve built Vite assets and storage files from the Laravel public directory
-    RewriteRule ^build/(.*)$ ../laravel-app/public/build/$1 [L]
-    RewriteRule ^storage/(.*)$ ../laravel-app/public/storage/$1 [L]
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
