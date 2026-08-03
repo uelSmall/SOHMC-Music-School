@@ -5,17 +5,14 @@ declare(strict_types=1);
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $relativePath = ltrim($requestPath, '/');
 
-if (
-	str_starts_with($relativePath, 'build/')
-	|| str_starts_with($relativePath, 'storage/')
-) {
+if ($relativePath !== '') {
 	$publicRoot = realpath(__DIR__ . '/../laravel-app/public');
 	$assetPath = realpath(__DIR__ . '/../laravel-app/public/' . $relativePath);
 
 	if (
 		$publicRoot !== false
 		&& $assetPath !== false
-		&& str_starts_with($assetPath, $publicRoot)
+		&& str_starts_with($assetPath, $publicRoot . DIRECTORY_SEPARATOR)
 		&& is_file($assetPath)
 	) {
 		$extension = strtolower(pathinfo($assetPath, PATHINFO_EXTENSION));
