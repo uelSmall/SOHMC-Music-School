@@ -42,11 +42,11 @@ php artisan serve
 
 ## Hostinger / GitHub Deployment
 
-This repository is structured for Hostinger shared hosting with a deployment-safe layout:
+This repository uses a standard Laravel root layout so it can be deployed directly into Hostinger `public_html`.
 
-- The full Laravel application lives in `laravel-app/`
-- The public web entrypoint is served from `public_html/`
-- `public_html/index.php` forwards requests to `laravel-app/public/index.php`
+- Keep the Laravel application at repository root (`app`, `bootstrap`, `config`, `database`, `public`, `resources`, `routes`, `storage`, `artisan`).
+- Root `index.php` forwards requests to `public/index.php`.
+- Root `.htaccess` routes requests through `index.php` for shared hosting compatibility.
 
 Deploy steps:
 
@@ -56,7 +56,7 @@ npm install
 npm run build
 ```
 
-Make sure the built Vite assets are committed under `laravel-app/public/build/` and then push to GitHub. Hostinger can deploy the repository directly from GitHub using this structure.
+Commit the generated Vite files under `public/build/` and then push to GitHub. Hostinger can deploy directly from the repository with no manual file moves.
 
 ## Seeded Demo Accounts
 
