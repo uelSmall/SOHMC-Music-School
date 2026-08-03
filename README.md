@@ -19,6 +19,12 @@ Build assets (dev):
 npm run dev
 ```
 
+Build production assets for deployment:
+
+```bash
+npm run build
+```
+
 Run migrations and seeders:
 
 ```bash
@@ -33,6 +39,24 @@ Serve locally:
 php artisan serve
 # Visit http://127.0.0.1:8000/lessons (student view) or /admin/lessons (admin)
 ```
+
+## Hostinger / GitHub Deployment
+
+This repository is structured for Hostinger shared hosting with a deployment-safe layout:
+
+- The full Laravel application lives in `laravel-app/`
+- The public web entrypoint is served from `public_html/`
+- `public_html/index.php` forwards requests to `laravel-app/public/index.php`
+
+Deploy steps:
+
+```bash
+composer install
+npm install
+npm run build
+```
+
+Make sure the built Vite assets are committed under `laravel-app/public/build/` and then push to GitHub. Hostinger can deploy the repository directly from GitHub using this structure.
 
 ## Seeded Demo Accounts
 
