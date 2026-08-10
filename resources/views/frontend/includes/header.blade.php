@@ -12,15 +12,16 @@
         Skip to main content
     </a>
 
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <a class="inline-flex items-center" href="/" wire:navigate aria-label="Go to homepage">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-10">
+        <a class="inline-flex shrink-0 items-center" href="/" wire:navigate aria-label="Go to homepage">
             <img
                 src="{{ asset('img/sohmc-nav-logo.png') }}"
                 alt="Sounds of Harmony Music Centre"
-                class="h-12 w-auto"
+                class="h-10 w-auto sm:h-12"
             />
         </a>
-        <div class="flex items-center justify-end space-x-1 text-white/90 md:order-2 md:space-x-0 rtl:space-x-reverse">
+
+        <div class="flex items-center justify-end gap-1 text-white/90 md:gap-2 rtl:space-x-reverse">
             @guest
                 @if (user_registration())
                     <a
@@ -166,7 +167,7 @@
             </button>
         </div>
 
-        <div class="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto" id="navbar-language">
+        <div class="hidden items-center md:flex" id="navbar-language">
             <ul class="flex flex-col rounded-lg p-4 font-medium md:mt-0 md:flex-row md:space-x-1 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse">
                 <li>
                     <a

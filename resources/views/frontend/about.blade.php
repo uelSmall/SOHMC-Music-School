@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="relative overflow-hidden bg-[linear-gradient(160deg,#FDFBFD_0%,#F1D8EC_100%)] px-4 py-12 sm:px-6 lg:px-8">
+    <section class="relative overflow-hidden bg-[linear-gradient(160deg,#FDFBFD_0%,#F1D8EC_100%)] px-4 py-12 sm:px-6 lg:px-10">
         <div class="mx-auto max-w-7xl">
             <div class="grid items-stretch gap-6 lg:grid-cols-2">
                 <article class="soh-card flex h-full flex-col p-8 sm:p-10">
@@ -53,7 +53,7 @@
         </div>
     </section>
 
-    <section class="px-4 py-12 sm:px-6 lg:px-8">
+    <section class="px-4 py-12 sm:px-6 lg:px-10">
         <div class="mx-auto max-w-7xl">
             <div class="mb-6 text-center">
                 <p class="text-xs font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">Our Impact</p>
@@ -85,7 +85,7 @@
         </div>
     </section>
 
-    <section class="px-4 pb-8 sm:px-6 lg:px-8">
+    <section class="px-4 pb-8 sm:px-6 lg:px-10">
         <div class="mx-auto max-w-7xl">
             <div class="soh-card p-6 sm:p-8">
                 <h2 class="text-center text-2xl font-semibold text-[color:var(--soh-black)]">Instruments &amp; Classes Offered</h2>

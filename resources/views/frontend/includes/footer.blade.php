@@ -1,4 +1,4 @@
-<footer class="border-t border-[color:var(--soh-gray)]/35 bg-[linear-gradient(180deg,#FCF7FB_0%,#F4E7F1_100%)] px-4 py-10 sm:px-6 sm:py-14 lg:px-8" role="contentinfo" aria-label="Site footer">
+<footer class="border-t border-[color:var(--soh-gray)]/35 bg-[linear-gradient(180deg,#FCF7FB_0%,#F4E7F1_100%)] px-4 py-10 sm:px-6 sm:py-14 lg:px-10" role="contentinfo" aria-label="Site footer">
     <div class="mx-auto max-w-7xl">
         <div class="grid grid-cols-1 gap-8 rounded-[1.75rem] border border-[color:var(--soh-gray)]/40 bg-white/90 p-6 shadow-[0_22px_60px_rgba(140,3,117,0.12)] backdrop-blur-sm sm:p-8 lg:grid-cols-[1.15fr_0.75fr_0.7fr] lg:gap-10 lg:p-10">
             <div>

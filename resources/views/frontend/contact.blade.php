@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="px-4 py-12 sm:px-6 lg:px-8">
+    <section class="px-4 py-12 sm:px-6 lg:px-10">
         <div class="mx-auto max-w-7xl">
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <article class="soh-card p-8">
