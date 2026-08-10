@@ -12,7 +12,7 @@
                     <p class="text-xs font-bold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">About SOHMC</p>
                     <h1 class="mt-3 text-4xl font-bold tracking-tight text-[color:var(--soh-black)] sm:text-5xl">Sounds of Harmony Music Centre</h1>
                     <p class="mt-5 text-base leading-relaxed text-gray-700 sm:text-lg">
-                        For over 13 years, Sounds of Harmony Music Centre has inspired, educated, and empowered students through
+                        For over 20 years, Sounds of Harmony Music Centre has inspired, educated, and empowered students through
                         the transformative power of music. Our mission is to nurture talent, build confidence, and provide a
                         positive, enriching environment where children, teens, and adults can discover and develop their musical abilities.
                     </p>
@@ -27,8 +27,8 @@
                 </article>
 
                 <article class="soh-card flex h-full flex-col p-8 sm:p-10">
-                    <div class="mb-4 inline-flex rounded-full border border-[color:var(--soh-purple)]/30 bg-[color:var(--soh-purple)] px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-white uppercase">
-                        Over 13 Years Of Musical Excellence
+                    <div class="mb-4 inline-flex items-center gap-1 rounded-full border border-[color:var(--soh-purple)]/30 bg-[color:var(--soh-purple)] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-white uppercase shadow-sm sm:px-5">
+                        Over <span class="text-2xl font-black leading-none sm:text-3xl">20</span> Years Of Musical Excellence
                     </div>
 
                     <h2 class="text-2xl font-semibold text-[color:var(--soh-black)]">Why Families Choose Us</h2>

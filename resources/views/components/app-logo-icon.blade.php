@@ -4,6 +4,6 @@
 
 <img
     {{ $attributes->except(['variant', 'class'])->merge(['class' => $class]) }}
-    src="{{ asset('img/sohmc-logo-icon.jpg') }}"
-    alt="SOHMC logo icon"
+    src="{{ asset('img/sohmc-piano-icon.png') }}"
+    alt="SOHMC piano icon"
 />

@@ -5,8 +5,9 @@
 @endsection
 
 @section('content')
-    <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section class="px-4 py-12 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <article class="soh-card p-8">
                 <p class="text-xs font-semibold tracking-[0.14em] text-[color:var(--soh-purple)] uppercase">{{ __('Contact') }}</p>
                 <h1 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('Get In Touch') }}</h1>

@@ -4,9 +4,9 @@
             <div class="flex items-center gap-4">
                 <a href="{{ route('home') }}" class="inline-flex items-center" aria-label="Go to homepage">
                     <img
-                        src="{{ asset('img/sohmc-logo.png') }}"
+                        src="{{ asset('img/sohmc-nav-logo.png') }}"
                         alt="Sounds of Harmony Music Centre"
-                        class="h-11 w-auto rounded-sm bg-white px-2 py-1 shadow-[0_8px_22px_rgba(13,13,13,0.2)]"
+                        class="h-12 w-auto"
                     />
                 </a>
 

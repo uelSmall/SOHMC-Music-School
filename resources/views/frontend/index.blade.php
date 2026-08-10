@@ -5,7 +5,7 @@
 @endsection
 
 @section("content")
-    <section class="relative overflow-hidden bg-[radial-gradient(circle_at_12%_20%,rgba(166,18,141,0.2),transparent_44%),radial-gradient(circle_at_88%_80%,rgba(166,18,141,0.14),transparent_40%),linear-gradient(180deg,#ECEEF3_0%,#F3F5F9_100%)] px-4 py-18 sm:px-8 lg:px-12">
+    <section class="relative overflow-hidden bg-[radial-gradient(circle_at_12%_20%,rgba(166,18,141,0.2),transparent_44%),radial-gradient(circle_at_88%_80%,rgba(166,18,141,0.14),transparent_40%),linear-gradient(180deg,#ECEEF3_0%,#F3F5F9_100%)] px-4 py-18 sm:px-6 lg:px-8">
         <div class="pointer-events-none absolute inset-0 opacity-35" style="background-image: linear-gradient(rgba(13,13,13,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(13,13,13,0.08) 1px, transparent 1px); background-size: 48px 48px;"></div>
 
         <div class="relative mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-stretch">
@@ -50,7 +50,7 @@
         @include("frontend.includes.messages")
     </section>
 
-    <section class="px-4 py-16 sm:px-8 lg:px-12">
+    <section class="px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-7xl">
             <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div>
@@ -88,7 +88,7 @@
         </div>
     </section>
 
-    <section class="bg-white/80 px-4 py-16 sm:px-8 lg:px-12">
+    <section class="bg-white/80 px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
             <article class="soh-card p-6">
                 <h3 class="text-lg font-semibold text-[color:var(--soh-black)]">About SOHMC</h3>

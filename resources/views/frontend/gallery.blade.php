@@ -5,8 +5,9 @@
 @endsection
 
 @section('content')
-    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-14">
-        <div class="mb-8 rounded-[1.8rem] border border-[color:var(--soh-gray)]/50 bg-[linear-gradient(145deg,#FFFFFF_0%,#F7ECF5_55%,#F2D8EC_100%)] p-6 shadow-[0_24px_56px_rgba(140,3,117,0.14)] sm:p-8">
+    <section class="px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
+        <div class="mx-auto max-w-7xl">
+            <div class="mb-8 rounded-[1.8rem] border border-[color:var(--soh-gray)]/50 bg-[linear-gradient(145deg,#FFFFFF_0%,#F7ECF5_55%,#F2D8EC_100%)] p-6 shadow-[0_24px_56px_rgba(140,3,117,0.14)] sm:p-8">
             <p class="text-xs font-semibold tracking-[0.16em] text-[color:var(--soh-purple)] uppercase">{{ __('Gallery') }}</p>
             <h1 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('School Moments') }}</h1>
             <p class="mt-3 max-w-3xl text-base text-gray-600 sm:text-lg">{{ __('A visual snapshot of performances, rehearsals, and musical life at SOHMC.') }}</p>

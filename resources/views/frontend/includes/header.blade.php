@@ -12,7 +12,7 @@
         Skip to main content
     </a>
 
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <a class="inline-flex items-center" href="/" wire:navigate aria-label="Go to homepage">
             <img
                 src="{{ asset('img/sohmc-nav-logo.png') }}"
