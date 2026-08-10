@@ -12,7 +12,7 @@
         Skip to main content
     </a>
 
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-10">
+    <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 sm:px-6 lg:px-10">
         <a class="inline-flex shrink-0 items-center" href="/" wire:navigate aria-label="Go to homepage">
             <img
                 src="{{ asset('img/sohmc-nav-logo.png') }}"
@@ -20,6 +20,47 @@
                 class="h-10 w-auto sm:h-12"
             />
         </a>
+
+        <div class="hidden items-center md:flex md:flex-1 md:justify-center" id="navbar-language">
+            <ul class="flex flex-col rounded-lg p-4 font-medium md:mt-0 md:flex-row md:space-x-1 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse">
+                <li>
+                    <a
+                        href="{{ route('frontend.index') }}"
+                        class="soh-nav-link {{ request()->routeIs('home') || request()->routeIs('frontend.index') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Home') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.about') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.about') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('About') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.gallery') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.gallery') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Gallery') }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{{ route('frontend.contact') }}"
+                        class="soh-nav-link {{ request()->routeIs('frontend.contact') ? 'active' : '' }}"
+                        wire:navigate
+                    >
+                        {{ __('Contact') }}
+                    </a>
+                </li>
+            </ul>
+        </div>
 
         <div class="flex items-center justify-end gap-1 text-white/90 md:gap-2 rtl:space-x-reverse">
             @guest
@@ -165,47 +206,6 @@
                     />
                 </svg>
             </button>
-        </div>
-
-        <div class="hidden items-center md:flex" id="navbar-language">
-            <ul class="flex flex-col rounded-lg p-4 font-medium md:mt-0 md:flex-row md:space-x-1 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse">
-                <li>
-                    <a
-                        href="{{ route('frontend.index') }}"
-                        class="soh-nav-link {{ request()->routeIs('home') || request()->routeIs('frontend.index') ? 'active' : '' }}"
-                        wire:navigate
-                    >
-                        {{ __('Home') }}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('frontend.about') }}"
-                        class="soh-nav-link {{ request()->routeIs('frontend.about') ? 'active' : '' }}"
-                        wire:navigate
-                    >
-                        {{ __('About') }}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('frontend.gallery') }}"
-                        class="soh-nav-link {{ request()->routeIs('frontend.gallery') ? 'active' : '' }}"
-                        wire:navigate
-                    >
-                        {{ __('Gallery') }}
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('frontend.contact') }}"
-                        class="soh-nav-link {{ request()->routeIs('frontend.contact') ? 'active' : '' }}"
-                        wire:navigate
-                    >
-                        {{ __('Contact') }}
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
