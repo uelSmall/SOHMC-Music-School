@@ -12,7 +12,8 @@
         Skip to main content
     </a>
 
-    <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 sm:px-6 lg:px-10">
+    <div class="px-4 py-4 sm:px-6 lg:px-10">
+        <div class="mx-auto flex max-w-7xl items-center gap-4">
         <a class="inline-flex shrink-0 items-center" href="/" wire:navigate aria-label="Go to homepage">
             <img
                 src="{{ asset('img/sohmc-nav-logo.png') }}"
@@ -206,6 +207,7 @@
                     />
                 </svg>
             </button>
+        </div>
         </div>
     </div>
 </nav>
