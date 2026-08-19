@@ -20,6 +20,7 @@
                 </div>
             </div>
 
+
             <div class="flex h-full flex-col justify-center rounded-[1.9rem] border border-[color:var(--soh-gray)]/50 bg-white/85 p-8 shadow-[0_16px_48px_rgba(140,3,117,0.1)] backdrop-blur-sm sm:p-10 lg:min-h-[560px]">
                 <span class="inline-flex w-fit items-center rounded-full border border-[color:var(--soh-gray)] bg-white px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">
                     Sounds of Harmony Music Centre
