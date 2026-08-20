@@ -23,6 +23,8 @@ class Register extends Component
 
     public string $password_confirmation = '';
 
+    public string $role = 'student';
+
     /**
      * Handle an incoming registration request.
      */
@@ -32,22 +34,30 @@ class Register extends Component
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:student,teacher,parent'],
         ]);
 
         $validated['password'] = $validated['password'];
 
-        $user = User::create($validated);
+        // Remove role from data that goes to User model (role is managed via Spatie)
+        $userData = $validated;
+        unset($userData['role']);
+
+        $user = User::create($userData);
 
         $username = intval(config('app.initial_username')) + $user->id;
         $user->username = strval($username);
         $user->last_ip = optional(request())->getClientIp();
         $user->save();
 
-        // event(new Registered($user));
+        // Assign the selected role
+        $user->assignRole($validated['role']);
+
+        event(new Registered($user));
         event(new UserRegistered($user));
 
         Auth::login($user);
 
-        $this->redirect(route('home', absolute: false), navigate: true);
+        $this->redirect(route('verification.notice', absolute: false), navigate: true);
     }
 }

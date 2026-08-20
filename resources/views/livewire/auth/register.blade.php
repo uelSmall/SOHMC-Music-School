@@ -35,6 +35,25 @@
             :required="$required"
         />
 
+        <!-- Role Selection -->
+        @php
+            $field_name = "role";
+            $filed_label = __("I am a");
+            $role_options = [
+                'student' => __('Student'),
+                'teacher' => __('Teacher'),
+                'parent' => __('Parent'),
+            ];
+        @endphp
+
+        <x-frontend.form.select
+            wire:model="{{ $field_name }}"
+            :label="$filed_label"
+            :options="$role_options"
+            :value="'student'"
+            :required="true"
+        />
+
         <!-- Password -->
         @php
             $field_name = "password";

@@ -62,7 +62,7 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
     Route::view('contact', 'frontend.contact')->name('contact');
 
-    Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['auth', 'verified']], function () {
         /*
         *
         *  Users Routes
@@ -86,7 +86,7 @@ Route::group(['as' => 'frontend.'], function () {
 * These routes need view-backend permission
 * --------------------------------------------------------------------
 */
-Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 'can:view_backend']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 'verified', 'can:view_backend']], function () {
     /**
      * Backend Dashboard
      * Namespaces indicate folder structure.
@@ -172,7 +172,7 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
 *
 * --------------------------------------------------------------------
 */
-Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lessons'])->group(function () {
+Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'verified', 'can:manage_lessons'])->group(function () {
     Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
     Route::get('/calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'teacherEvents'])
         ->name('calendar.events')
@@ -220,7 +220,7 @@ Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'can:manage_lesson
 *
 * --------------------------------------------------------------------
 */
-Route::prefix('parent')->as('parent.')->middleware(['auth', 'role:parent'])->group(function () {
+Route::prefix('parent')->as('parent.')->middleware(['auth', 'verified', 'role:parent'])->group(function () {
     Route::get('/dashboard', ParentDashboard::class)->name('dashboard');
 });
 
@@ -230,7 +230,7 @@ Route::prefix('parent')->as('parent.')->middleware(['auth', 'role:parent'])->gro
 *
 * --------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/student/dashboard', StudentDashboard::class)
         ->name('student.dashboard')
         ->middleware('can:view_assigned_lessons');

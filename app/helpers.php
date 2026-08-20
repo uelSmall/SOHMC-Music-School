@@ -41,13 +41,7 @@ if (! function_exists('user_registration')) {
      */
     function user_registration(): bool
     {
-        $user_registration = config('app.user_registration');
-
-        if ((bool) env('USER_REGISTRATION')) {
-            $user_registration = true;
-        }
-
-        return (bool) $user_registration;
+        return (bool) config('app.user_registration');
     }
 }
 
@@ -116,20 +110,21 @@ if (! function_exists('show_column_value')) {
         if ($column_type === 'json') {
             $return_text = json_encode($value);
         } elseif ($column_type !== 'json' && is_string($value) && \Illuminate\Support\Str::endsWith(strtolower($value), ['png', 'jpg', 'jpeg', 'gif', 'svg'])) {
-            $img_path = asset($value);
+            $img_path = e(asset($value));
+            $escaped_value = e($value);
 
             $return_text = '<figure class="figure">
-                                <a href="'.$img_path.'" data-lightbox="image-set" data-title="Path: '.$value.'">
+                                <a href="'.$img_path.'" data-lightbox="image-set" data-title="Path: '.$escaped_value.'">
                                     <img src="'.$img_path.'" style="max-width:200px;" class="figure-img img-fluid rounded img-thumbnail" alt="">
                                 </a>
-                                <figcaption class="figure-caption">Path: '.$value.'</figcaption>
+                                <figcaption class="figure-caption">Path: '.$escaped_value.'</figcaption>
                             </figure>';
         } else {
             // Handle enum objects by converting to their string value
             if ($value instanceof \BackedEnum) {
                 $return_text = $value->value;
             } elseif (is_string($value)) {
-                $return_text = $value;
+                $return_text = e($value);
             } else {
                 $return_text = json_encode($value);
             }
@@ -551,7 +546,7 @@ if (! function_exists('demo_mode')) {
      */
     function demo_mode(): bool
     {
-        return (bool) env('DEMO_MODE');
+        return (bool) config('app.demo_mode');
     }
 }
 
