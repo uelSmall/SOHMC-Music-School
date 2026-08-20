@@ -364,6 +364,67 @@ h6,
 	cursor: pointer;
 }
 
+/* --- Mobile Calendar --- */
+@media (max-width: 767px) {
+	.soh-calendar {
+		padding: 0.35rem;
+		border-radius: 0.65rem;
+		overflow: hidden;
+	}
+
+	.soh-calendar .fc-toolbar {
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.soh-calendar .fc-toolbar-title {
+		font-size: 0.92rem;
+		order: -1;
+		width: 100%;
+		text-align: center;
+		margin-bottom: 0.15rem;
+	}
+
+	.soh-calendar .fc-toolbar-chunk {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.soh-calendar .fc-button {
+		padding: 0.3rem 0.6rem;
+		font-size: 0.72rem;
+		border-radius: 0.4rem;
+	}
+
+	.soh-calendar .fc-event {
+		font-size: 0.65rem;
+		padding: 0.1rem 0.2rem;
+	}
+
+	.soh-calendar .fc-timegrid-slot-label {
+		font-size: 0.62rem;
+		padding: 0 0.15rem;
+	}
+
+	.soh-calendar .fc-col-header-cell {
+		font-size: 0.68rem;
+		padding: 0.3rem 0.1rem;
+	}
+
+	.soh-calendar .fc-scrollgrid {
+		border-radius: 0.4rem;
+	}
+
+	.soh-calendar td,
+	.soh-calendar th {
+		border-color: rgba(166, 18, 141, 0.08);
+	}
+
+	.soh-calendar .fc-timegrid .fc-day-today {
+		background: rgba(166, 18, 141, 0.04);
+	}
+}
+
 .soh-brand-light .soh-brand-subtitle {
 	color: rgba(13, 13, 13, 0.72);
 }

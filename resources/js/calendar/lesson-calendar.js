@@ -3,6 +3,32 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
+const MOBILE_BREAKPOINT = 768;
+
+function isMobile() {
+    return window.innerWidth < MOBILE_BREAKPOINT;
+}
+
+function getHeaderToolbar() {
+    if (isMobile()) {
+        return {
+            left: 'prev,next',
+            center: 'title',
+            right: 'timeGridDay,timeGridWeek',
+        };
+    }
+
+    return {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+    };
+}
+
+function getInitialView() {
+    return isMobile() ? 'timeGridDay' : 'dayGridMonth';
+}
+
 function textOrFallback(value, fallback = 'N/A') {
     return value && String(value).trim().length > 0 ? value : fallback;
 }
@@ -88,18 +114,20 @@ function initCalendarWrapper(wrapper) {
 
     const calendar = new Calendar(calendarElement, {
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-        initialView: window.innerWidth < 1024 ? 'timeGridWeek' : 'dayGridMonth',
+        initialView: getInitialView(),
         height: 'auto',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        },
+        contentHeight: isMobile() ? 400 : 'auto',
+        headerToolbar: getHeaderToolbar(),
+        slotMinTime: '07:00:00',
+        slotMaxTime: '21:00:00',
+        slotDuration: '00:30:00',
+        allDaySlot: false,
         eventTimeFormat: {
             hour: 'numeric',
             minute: '2-digit',
             meridiem: 'short',
         },
+        dayMaxEvents: isMobile() ? 3 : false,
         events(fetchInfo, successCallback, failureCallback) {
             const params = new URLSearchParams({
                 start: fetchInfo.startStr,
@@ -131,7 +159,6 @@ function initCalendarWrapper(wrapper) {
 
     calendar.render();
     wrapper.dataset.initialized = '1';
-
     wrapper.__calendarInstance = calendar;
 
     return calendar;
@@ -167,7 +194,7 @@ function bindCalendarToggle(wrapper) {
                 setTimeout(() => {
                     calendar.updateSize();
                     calendar.refetchEvents();
-                }, 0);
+                }, 100);
             }
         }
     });
@@ -181,6 +208,25 @@ function bindCalendarToggle(wrapper) {
 
     wrapper.dataset.toggleBound = '1';
 }
+
+let resizeTimer;
+
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        document.querySelectorAll('.js-lesson-calendar-wrapper').forEach((wrapper) => {
+            const calendar = wrapper.__calendarInstance;
+
+            if (calendar) {
+                calendar.setOption('headerToolbar', getHeaderToolbar());
+                calendar.setOption('height', 'auto');
+                calendar.setOption('contentHeight', isMobile() ? 400 : 'auto');
+                calendar.setOption('dayMaxEvents', isMobile() ? 3 : false);
+                calendar.updateSize();
+            }
+        });
+    }, 250);
+});
 
 export function initializeLessonCalendars() {
     document.querySelectorAll('.js-lesson-calendar-wrapper').forEach((wrapper) => {
