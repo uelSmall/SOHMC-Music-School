@@ -172,14 +172,14 @@
     <section class="bg-[#F2F2F2] py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
             <div class="text-center">
-                <p class="text-xs font-bold tracking-[0.18em] text-[color:var(--soh-purple)] uppercase">{{ __('Student Portal') }}</p>
+                <p class="text-xs font-bold tracking-[0.18em] text-[color:var(--soh-purple)] uppercase">{{ __('Portal') }}</p>
                 <h2 class="mt-3 text-3xl font-bold tracking-tight text-[color:var(--soh-black)] sm:text-4xl">{{ __('Your Musical Journey, Organized') }}</h2>
                 <p class="mx-auto mt-4 max-w-2xl text-base text-gray-600 sm:text-lg">
                     {{ __('Track lessons, view assignments, and monitor progress — all in one place.') }}
                 </p>
             </div>
 
-            <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div class="rounded-2xl border border-[color:var(--soh-gray)]/25 bg-white p-7 shadow-[0_8px_30px_rgba(166,18,141,0.08)]">
                     <div class="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -196,22 +196,10 @@
                     <div class="flex h-11 w-11 items-center justify-center rounded-full bg-violet-50 text-violet-600">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path d="M12 14v7m0-7l6.16-3.422"/></svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-bold text-[color:var(--soh-black)]">{{ __('Teachers') }}</h3>
+                    <h3 class="mt-4 text-lg font-bold text-[color:var(--soh-black)]">{{ __('Teachers & Parents') }}</h3>
                     <p class="mt-2 text-sm leading-relaxed text-gray-600">{{ __('Upload materials, create lessons, assign coursework, and monitor student progress.') }}</p>
                     <a href="{{ route('login') }}" class="soh-link mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-                        {{ __('Teacher Login') }}
-                        <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
-                    </a>
-                </div>
-
-                <div class="rounded-2xl border border-[color:var(--soh-gray)]/25 bg-white p-7 shadow-[0_8px_30px_rgba(166,18,141,0.08)]">
-                    <div class="flex h-11 w-11 items-center justify-center rounded-full bg-amber-50 text-amber-600">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </div>
-                    <h3 class="mt-4 text-lg font-bold text-[color:var(--soh-black)]">{{ __('Administrators') }}</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-gray-600">{{ __('Manage users, oversee school operations, and keep platform content organized.') }}</p>
-                    <a href="{{ route('login') }}" class="soh-link mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-                        {{ __('Admin Login') }}
+                        {{ __('Login') }}
                         <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>
                     </a>
                 </div>
