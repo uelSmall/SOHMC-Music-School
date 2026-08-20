@@ -5,33 +5,34 @@
 @endsection
 
 @section('content')
-    {{-- Hero Section --}}
-    <section class="relative overflow-hidden bg-[radial-gradient(circle_at_20%_30%,rgba(166,18,141,0.18),transparent_50%),radial-gradient(circle_at_80%_70%,rgba(166,18,141,0.12),transparent_45%),linear-gradient(160deg,#FDFBFD_0%,#F1D8EC_100%)] px-4 py-14 sm:px-6 lg:px-10 lg:py-16">
-        <div class="pointer-events-none absolute inset-0 opacity-25" style="background-image: linear-gradient(rgba(13,13,13,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(13,13,13,0.06) 1px, transparent 1px); background-size: 48px 48px;"></div>
-
-        <div class="relative mx-auto max-w-7xl">
-            <div class="rounded-[1.8rem] border border-[color:var(--soh-gray)]/50 bg-[linear-gradient(145deg,#FFFFFF_0%,#F7ECF5_55%,#F2D8EC_100%)] p-6 shadow-[0_24px_56px_rgba(140,3,117,0.14)] sm:p-8">
-                <span class="inline-flex w-fit items-center rounded-full border border-[color:var(--soh-gray)] bg-white px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-[color:var(--soh-purple)] uppercase">
-                    {{ __('Gallery') }}
-                </span>
-                <h1 class="mt-4 text-4xl font-bold tracking-tight text-[color:var(--soh-black)] sm:text-5xl">{{ __('School Moments') }}</h1>
-                <p class="mt-3 max-w-3xl text-base text-gray-600 sm:text-lg">{{ __('A visual snapshot of performances, rehearsals, and musical life at SOHMC.') }}</p>
-
-                @unless ($galleryItems->isEmpty())
-                    <div class="mt-5 inline-flex items-center gap-2 rounded-full border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-purple)]/5 px-4 py-2 text-sm font-semibold text-[color:var(--soh-purple)]">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                        {{ $galleryItems->count() }} {{ __('photos') }}
-                    </div>
-                @endunless
-            </div>
+    {{-- Hero --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-[#A6128D] via-[#8C0375] to-[#4A0140] px-4 py-20 text-center sm:px-6 lg:px-10 lg:py-24">
+        <div class="pointer-events-none absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-white/5 blur-[60px]"></div>
+        <div class="pointer-events-none absolute -bottom-32 -left-32 h-[500px] w-[500px] rounded-full bg-[#D991CD]/10 blur-[80px]"></div>
+        <div class="relative z-10 mx-auto max-w-7xl">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2 text-xs font-bold tracking-[0.12em] text-white/70 uppercase">
+                <svg class="h-4 w-4 text-[#D991CD]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                Gallery
+            </span>
+            <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">School <span class="text-[#D991CD]">Moments</span></h1>
+            <p class="mx-auto mt-5 max-w-2xl text-lg text-white/75 leading-relaxed">A visual snapshot of performances, rehearsals, and musical life at SOHMC.</p>
+            @unless ($galleryItems->isEmpty())
+                <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-white/12 border border-white/20 px-5 py-2 text-sm font-semibold text-white/80 backdrop-blur-sm">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    {{ $galleryItems->count() }} {{ __('photos') }}
+                </div>
+            @endunless
+        </div>
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg class="block w-full" viewBox="0 0 1440 60" fill="none" style="height:56px"><path d="M0 60V20C240 0 480 0 720 20C960 40 1200 40 1440 20V60H0Z" fill="var(--soh-surface)"/></svg>
         </div>
     </section>
 
     {{-- Gallery Grid --}}
-    <section class="px-4 py-12 sm:px-6 lg:px-10 lg:py-14" x-data="galleryLightbox()">
+    <section class="bg-[color:var(--soh-surface)] px-4 py-14 sm:px-6 lg:px-10 lg:py-16" x-data="galleryLightbox()">
         <div class="mx-auto max-w-7xl">
             @if ($galleryItems->isEmpty())
-                <div class="rounded-2xl border border-[color:var(--soh-gray)]/40 bg-white p-14 text-center shadow-[0_8px_30px_rgba(166,18,141,0.08)]">
+                <div class="rounded-3xl border border-[color:var(--soh-gray)]/40 bg-white p-14 text-center shadow-lg">
                     <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[color:var(--soh-purple)]/10">
                         <svg class="h-8 w-8 text-[color:var(--soh-purple)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                     </div>
@@ -49,7 +50,7 @@
 
                         @if ($imageUrl)
                             <article
-                                class="group relative cursor-pointer overflow-hidden rounded-2xl border border-[color:var(--soh-gray)]/30 bg-white shadow-[0_8px_30px_rgba(140,3,117,0.1)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(140,3,117,0.22)] {{ $isWide ? 'sm:col-span-2 lg:col-span-2' : '' }}"
+                                class="group relative cursor-pointer overflow-hidden rounded-2xl border border-[color:var(--soh-gray)]/30 bg-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl {{ $isWide ? 'sm:col-span-2 lg:col-span-2' : '' }}"
                                 x-intersect.once="$el.classList.add('animate-fade-in')"
                                 @click="open({{ $index }}, '{{ addslashes($item->title) }}', '{{ addslashes($item->caption ?? '') }}', '{{ $fullUrl }}')"
                             >
@@ -61,16 +62,14 @@
                                 />
 
                                 {{-- Gradient overlay --}}
-                                <div class="absolute inset-0 bg-gradient-to-t from-[color:var(--soh-black)]/70 via-[color:var(--soh-black)]/10 to-transparent opacity-60 transition-opacity duration-400 group-hover:opacity-90"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100"></div>
 
                                 {{-- Content --}}
-                                <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                                    <div class="translate-y-2 transition-transform duration-400 group-hover:translate-y-0">
-                                        <h2 class="text-lg font-semibold text-white sm:text-xl">{{ $item->title }}</h2>
-                                        @if ($item->caption)
-                                            <p class="mt-1 line-clamp-2 text-sm text-white/80 transition-opacity duration-400 opacity-0 group-hover:opacity-100">{{ $item->caption }}</p>
-                                        @endif
-                                    </div>
+                                <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6 translate-y-4 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100">
+                                    <h2 class="text-lg font-semibold text-white sm:text-xl">{{ $item->title }}</h2>
+                                    @if ($item->caption)
+                                        <p class="mt-1 line-clamp-2 text-sm text-white/80">{{ $item->caption }}</p>
+                                    @endif
                                 </div>
 
                                 {{-- Expand icon --}}
@@ -87,7 +86,7 @@
         {{-- Lightbox Modal --}}
         <template x-if="active">
             <div
-                class="fixed inset-0 z-50 flex items-center justify-center bg-[color:var(--soh-black)]/90 p-4 backdrop-blur-sm sm:p-8"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm sm:p-8"
                 x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
@@ -97,7 +96,6 @@
                 @click.self="close()"
                 @keydown.escape.window="close()"
             >
-                {{-- Close button --}}
                 <button
                     @click="close()"
                     class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25 sm:top-6 sm:right-6"
@@ -106,7 +104,6 @@
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
 
-                {{-- Image container --}}
                 <div
                     class="relative max-h-[85vh] max-w-5xl"
                     x-transition:enter="transition ease-out duration-300"
@@ -118,15 +115,12 @@
                         :alt="imageTitle"
                         class="max-h-[80vh] w-full rounded-xl object-contain shadow-2xl"
                     />
-
-                    {{-- Caption --}}
                     <div x-show="imageTitle || imageCaption" class="mt-4 text-center">
                         <h3 class="text-lg font-semibold text-white" x-text="imageTitle"></h3>
                         <p x-show="imageCaption" class="mt-1 text-sm text-white/70" x-text="imageCaption"></p>
                     </div>
                 </div>
 
-                {{-- Navigation arrows --}}
                 @if ($galleryItems->count() > 1)
                     <button
                         @click="prev()"
@@ -142,25 +136,30 @@
                     >
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                     </button>
-
-                    {{-- Counter --}}
                     <div class="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-sm" x-text="`${currentIndex + 1} / ${total}`"></div>
                 @endif
             </div>
         </template>
     </section>
 
+    {{-- CTA --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-[#A6128D] to-[#6B025E] px-4 py-20 text-center sm:px-6 lg:px-10">
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_50%_100%,rgba(217,145,205,0.2),transparent_70%)]"></div>
+        <div class="relative z-10 mx-auto max-w-7xl">
+            <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Want to Be Part of the Story?</h2>
+            <p class="mx-auto mt-4 max-w-xl text-white/70 leading-relaxed">Join SOHMC and start creating your own musical moments. Enroll today.</p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[color:var(--soh-purple-dark)] shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">Enroll Now</a>
+                <a href="{{ route('frontend.contact') }}" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/10">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
     @push('after-styles')
     <style>
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
             animation: fadeInUp 0.6s ease-out forwards;

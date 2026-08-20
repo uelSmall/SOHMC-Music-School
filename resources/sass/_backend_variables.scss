@@ -1,0 +1,95 @@
+// ============================================================
+// SOHMC CoreUI Theme Variables
+// ============================================================
+
+// --- Brand Colors ---
+$primary:    #A6128D;
+$secondary:  #D991CD;
+$success:    #2eb85c;
+$info:       #339af0;
+$warning:    #f7c948;
+$danger:     #e5534b;
+$light:      #F2F2F2;
+$dark:       #0D0D0D;
+
+// --- Body ---
+$body-bg:    #FAF7FC;
+$body-color: #0D0D0D;
+
+// --- Links ---
+$link-color:          #A6128D;
+$link-decoration:     none;
+$link-hover-color:    #8C0375;
+$link-shade-percentage: 15%;
+
+// --- Grays (purple-tinted instead of Bootstrap default gray) ---
+$gray-100: #FAF7FC;
+$gray-200: #F2EDF5;
+$gray-300: #E4DAE9;
+$gray-400: #C9B8D5;
+$gray-500: #A594B1;
+$gray-600: #7D6A8D;
+$gray-700: #5A4A6A;
+$gray-800: #2E2238;
+$gray-900: #0D0D0D;
+
+// --- Cards ---
+$card-bg:              #ffffff;
+$card-border-color:    rgba(166, 18, 141, 0.1);
+$card-border-radius:   1rem;
+$card-cap-bg:          transparent;
+$card-cap-padding-y:   1.25rem;
+$card-cap-padding-x:   1.5rem;
+$card-spacer-y:        1.5rem;
+$card-spacer-x:        1.5rem;
+$card-box-shadow:      0 2px 12px rgba(166, 18, 141, 0.06);
+$card-border-width:    1px;
+
+// --- Sidebar ---
+$sidebar-bg:           #1a0218;
+$sidebar-color:        rgba(255, 255, 255, 0.72);
+$sidebar-brand-color:  #fff;
+$sidebar-active-bg:    rgba(166, 18, 141, 0.35);
+$sidebar-active-color: #fff;
+$sidebar-hover-bg:     rgba(166, 18, 141, 0.18);
+$sidebar-hover-color:  #fff;
+$sidebar-narrow-hover-bg: rgba(166, 18, 141, 0.18);
+
+// --- Header ---
+$header-bg:            #ffffff;
+$header-border-color:  rgba(166, 18, 141, 0.1);
+
+// --- Buttons ---
+$btn-border-radius:    0.75rem;
+$btn-padding-y:        0.5rem;
+$btn-padding-x:        1.25rem;
+$btn-font-weight:      600;
+
+// --- Forms ---
+$input-border-color:   rgba(166, 18, 141, 0.22);
+$input-focus-border-color: #A6128D;
+$input-focus-box-shadow:   0 0 0 0.2rem rgba(166, 18, 141, 0.15);
+$input-border-radius:  0.75rem;
+
+// --- Table ---
+$table-striped-bg:     rgba(166, 18, 141, 0.03);
+$table-hover-bg:       rgba(166, 18, 141, 0.06);
+$table-border-color:   rgba(166, 18, 141, 0.1);
+
+// --- Badge ---
+$badge-border-radius:  0.5rem;
+
+// --- Dropdown ---
+$dropdown-border-color: rgba(166, 18, 141, 0.15);
+$dropdown-border-radius: 0.75rem;
+$dropdown-link-hover-bg: rgba(166, 18, 141, 0.08);
+
+// --- Breadcrumb ---
+$breadcrumb-divider-color: #D991CD;
+
+// --- Font families ---
+$font-family-sans-serif: 'Manrope', 'Segoe UI', Arial, sans-serif;
+$font-family-base:       $font-family-sans-serif;
+
+// --- Border ---
+$border-color: rgba(166, 18, 141, 0.1);

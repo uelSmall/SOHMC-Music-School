@@ -5,6 +5,7 @@
 
 /* Configure Flowbite source */
 @source "../node_modules/flowbite";
+@source "../resources/views";
 
 /* Import Flowbite plugin */
 @plugin "flowbite/plugin";
