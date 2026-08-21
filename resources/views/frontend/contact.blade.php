@@ -35,7 +35,7 @@
                             </div>
                             <div>
                                 <h3 class="font-bold">Email Us</h3>
-                                <p class="mt-1 text-sm text-gray-600"><a href="mailto:info@sohmc.example" class="font-semibold text-[color:var(--soh-purple)] hover:underline">info@sohmc.example</a></p>
+                                <p class="mt-1 text-sm text-gray-600"><a href="mailto:soundsofharmony51@gmail.com" class="font-semibold text-[color:var(--soh-purple)] hover:underline">soundsofharmony51@gmail.com</a></p>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             </div>
                             <div>
                                 <h3 class="font-bold">Call Us</h3>
-                                <p class="mt-1 text-sm text-gray-600"><a href="tel:+10000000000" class="font-semibold text-[color:var(--soh-purple)] hover:underline">+1 (000) 000-0000</a></p>
+                                <p class="mt-1 text-sm text-gray-600"><a href="tel:+18684782889" class="font-semibold text-[color:var(--soh-purple)] hover:underline">+1 (868) 478-2889</a> | <a href="tel:+18682842340" class="font-semibold text-[color:var(--soh-purple)] hover:underline">+1 (868) 284-2340</a></p>
                             </div>
                         </div>
                     </div>
@@ -93,33 +93,47 @@
                 <div class="rounded-3xl border border-[color:var(--soh-purple)]/15 bg-white p-7 sm:p-9 shadow-lg shadow-[color:var(--soh-purple)]/8">
                     <h2 class="text-xl font-bold">Send Us a Message</h2>
                     <p class="mt-2 text-sm text-gray-600">Fill out the form below and we'll get back to you as soon as possible.</p>
-                    <form class="mt-6 grid gap-4 sm:grid-cols-2">
+
+                    @if(session('flash_success'))
+                        <div class="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">{{ session('flash_success') }}</div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                            <ul class="list-disc list-inside">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('frontend.contact.submit') }}" method="POST" class="mt-6 grid gap-4 sm:grid-cols-2">
+                        @csrf
                         <div class="flex flex-col sm:col-span-1">
                             <label for="name" class="mb-1.5 text-sm font-semibold text-gray-800">Full Name</label>
-                            <input type="text" id="name" placeholder="Your name" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Your name" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
                         </div>
                         <div class="flex flex-col sm:col-span-1">
                             <label for="email" class="mb-1.5 text-sm font-semibold text-gray-800">Email Address</label>
-                            <input type="email" id="email" placeholder="you@example.com" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="you@example.com" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
                         </div>
                         <div class="flex flex-col sm:col-span-1">
                             <label for="phone" class="mb-1.5 text-sm font-semibold text-gray-800">Phone (Optional)</label>
-                            <input type="tel" id="phone" placeholder="+1 (000) 000-0000" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
+                            <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" placeholder="+1 (000) 000-0000" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
                         </div>
                         <div class="flex flex-col sm:col-span-1">
                             <label for="subject" class="mb-1.5 text-sm font-semibold text-gray-800">Subject</label>
-                            <select id="subject" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
-                                <option value="" disabled selected>Select a topic</option>
-                                <option>Enrollment Inquiry</option>
-                                <option>Schedule & Classes</option>
-                                <option>Account Support</option>
-                                <option>General Question</option>
-                                <option>Other</option>
+                            <select name="subject" id="subject" class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)]">
+                                <option value="" disabled {{ old('subject') ? '' : 'selected' }}>Select a topic</option>
+                                @foreach(['Enrollment Inquiry', 'Schedule & Classes', 'Account Support', 'General Question', 'Other'] as $option)
+                                    <option value="{{ $option }}" {{ old('subject') === $option ? 'selected' : '' }}>{{ $option }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="flex flex-col sm:col-span-2">
                             <label for="message" class="mb-1.5 text-sm font-semibold text-gray-800">Message</label>
-                            <textarea id="message" rows="5" placeholder="Tell us how we can help..." class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)] resize-y"></textarea>
+                            <textarea name="message" id="message" rows="5" placeholder="Tell us how we can help..." class="rounded-xl border border-[color:var(--soh-purple)]/20 bg-[color:var(--soh-surface)] px-4 py-3 text-sm outline-none transition-all duration-200 focus:border-[color:var(--soh-purple)] focus:bg-white focus:shadow-[0_0_0_3px_rgba(166,18,141,0.1)] resize-y">{{ old('message') }}</textarea>
                         </div>
                         <div class="sm:col-span-2">
                             <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-[color:var(--soh-purple)] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-200 hover:bg-[color:var(--soh-purple-dark)] hover:-translate-y-0.5 hover:shadow-xl">

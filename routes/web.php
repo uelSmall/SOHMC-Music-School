@@ -61,6 +61,7 @@ Route::group(['as' => 'frontend.'], function () {
     Route::view('about', 'frontend.about')->name('about');
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
     Route::view('contact', 'frontend.contact')->name('contact');
+    Route::post('contact', [\App\Http\Controllers\Frontend\ContactController::class, 'store'])->name('contact.submit');
 
     Route::group(['middleware' => ['auth', 'verified']], function () {
         /*
@@ -174,6 +175,7 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'verified', 'role:administrator']], function () {
     Route::get('/', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('home');
     Route::get('dashboard', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('dashboard');
+    Route::get('teacher-dashboard', [\App\Livewire\Admin\TeacherDashboard::class, '__invoke'])->name('teacher-dashboard');
     Route::get('calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'adminEvents'])->name('calendar.events');
 
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);

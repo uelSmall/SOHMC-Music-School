@@ -16,7 +16,7 @@ trait UserPresenter
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => ($value == '') ? '/img/default-avatar.svg' : $value,
+            get: fn ($value) => in_array($value, [null, '', 'img/default-avatar.jpg']) ? '/img/default-avatar.svg' : $value,
         );
     }
 

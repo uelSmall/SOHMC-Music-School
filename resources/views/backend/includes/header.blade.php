@@ -280,15 +280,7 @@ $notifications_latest = optional($notifications)->take(5);
                     aria-expanded="false"
                 >
                     <div class="avatar avatar-md">
-                        @php
-                            $avatar = asset(auth()->user()->avatar);
-
-                            if (! file_exists($avatar)) {
-                                $avatar = asset("img/default-avatar.svg");
-                            }
-                        @endphp
-
-                        <img class="avatar-img" src="{{ $avatar }}" alt="{{ asset(auth()->user()->name) }}" />
+                        <img class="avatar-img" src="{{ asset(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" />
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end pt-0">

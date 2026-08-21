@@ -22,7 +22,7 @@
                     <div class="mt-1 text-sm font-semibold text-white/60">Years of Excellence</div>
                 </div>
                 <div class="text-center">
-                    <div class="font-[Sora] text-4xl font-extrabold text-white">500+</div>
+                    <div class="font-[Sora] text-4xl font-extrabold text-white">300+</div>
                     <div class="mt-1 text-sm font-semibold text-white/60">Students Taught</div>
                 </div>
                 <div class="text-center">
@@ -138,7 +138,7 @@
                 <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Instruments & Classes Offered</h2>
             </div>
             <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                @foreach(['Piano' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9v10M10 9v10M14 9v10M17 9v10"/>', 'Guitar' => '<path d="M15 3l6 6-2 2-2-2-4 4a5 5 0 1 1-2-2l4-4-2-2 2-2z"/>', 'Violin' => '<path d="M15 3l6 6"/><path d="M11 8a4 4 0 1 0 5 5l-2 2a4 4 0 1 1-5-5l2-2z"/>', 'Voice' => '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/>', 'Saxophone' => '<path d="M18 3v4l-6 6a3 3 0 1 0 4.2 4.2l2.8-2.8"/><circle cx="18" cy="17" r="2"/>', 'Keyboard' => '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6 10h2v4H6zM10 10h2v4h-2zM14 10h2v4h-2z"/>', 'Steelpan' => '<circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1"/><circle cx="14.5" cy="9" r="1"/><circle cx="13" cy="14" r="1"/>', 'Music Theory' => '<path d="M6 4h9l3 3v13H6z"/><path d="M9 9h6M9 13h6M9 17h4"/>'] as $name => $svg)
+                @foreach(['Piano/Keyboard' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9v10M10 9v10M14 9v10M17 9v10"/>', 'Guitar' => '<path d="M15 3l6 6-2 2-2-2-4 4a5 5 0 1 1-2-2l4-4-2-2 2-2z"/>', 'Violin' => '<path d="M15 3l6 6"/><path d="M11 8a4 4 0 1 0 5 5l-2 2a4 4 0 1 1-5-5l2-2z"/>', 'Voice' => '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/>', 'Saxophone' => '<path d="M18 3v4l-6 6a3 3 0 1 0 4.2 4.2l2.8-2.8"/><circle cx="18" cy="17" r="2"/>', 'Steelpan' => '<circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1"/><circle cx="14.5" cy="9" r="1"/><circle cx="13" cy="14" r="1"/>', 'Music Theory' => '<path d="M6 4h9l3 3v13H6z"/><path d="M9 9h6M9 13h6M9 17h4"/>'] as $name => $svg)
                     <div class="rounded-2xl border border-[color:var(--soh-purple)]/12 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[color:var(--soh-purple)]/30 hover:shadow-lg hover:shadow-[color:var(--soh-purple)]/14 group">
                         <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:var(--soh-purple)]/10 text-[color:var(--soh-purple)] transition-all duration-300 group-hover:bg-[color:var(--soh-purple)] group-hover:text-white">
                             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">{!! $svg !!}</svg>
