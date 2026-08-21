@@ -3,9 +3,22 @@
         ['label' => 'Student Dashboard', 'current' => true],
     ]" />
 
-    <div>
-        <h1 class="soh-page-title">Student Dashboard</h1>
-        <p class="soh-page-subtitle">Track assignments, due dates, and progress in one place.</p>
+    {{-- Welcome Banner --}}
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#A6128D] via-[#8C0375] to-[#6B025E] p-8 text-white shadow-xl sm:p-10">
+        <div class="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+        <div class="absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-[#D991CD]/20 blur-2xl"></div>
+        <div class="relative">
+            <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Welcome back, {{ auth()->user()->name }}</h1>
+            <p class="mt-2 max-w-xl text-lg text-white/80">Track your assignments, due dates, and progress.</p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="{{ route('lessons.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
+                    My Lessons
+                </a>
+                <a href="{{ route('student.lesson-requests.create') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
+                    Book a Lesson
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
