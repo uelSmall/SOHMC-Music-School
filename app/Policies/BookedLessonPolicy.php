@@ -10,17 +10,17 @@ class BookedLessonPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('teacher') || $user->hasRole('student');
+        return $user->hasAnyRole(['teacher', 'administrator', 'super admin', 'student']);
     }
 
     public function view(User $user, BookedLesson $lesson): bool
     {
-        return $this->isTeacherOwner($user, $lesson) || $this->isStudentOwner($user, $lesson);
+        return $this->isTeacherOwner($user, $lesson) || $this->isStudentOwner($user, $lesson) || $user->hasAnyRole(['administrator', 'super admin']);
     }
 
     public function manage(User $user, BookedLesson $lesson): bool
     {
-        return $this->isTeacherOwner($user, $lesson);
+        return $this->isTeacherOwner($user, $lesson) || $user->hasAnyRole(['administrator', 'super admin']);
     }
 
     public function complete(User $user, BookedLesson $lesson): bool
@@ -46,5 +46,10 @@ class BookedLessonPolicy
     private function isStudentOwner(User $user, BookedLesson $lesson): bool
     {
         return $user->hasRole('student') && (int) $lesson->student_id === (int) $user->id;
+    }
+
+    private function isAdmin(User $user): bool
+    {
+        return $user->hasAnyRole(['administrator', 'super admin']);
     }
 }

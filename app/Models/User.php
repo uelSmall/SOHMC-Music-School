@@ -152,8 +152,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      */
     public function dashboardRouteName(): string
     {
-        if ($this->hasRole('super admin') || $this->hasRole('administrator')) {
-            return 'backend.dashboard';
+        if ($this->hasRole('super admin')) {
+            return 'backend.home';
+        }
+
+        if ($this->hasRole('administrator')) {
+            return 'admin.dashboard';
         }
 
         if ($this->hasRole('teacher')) {

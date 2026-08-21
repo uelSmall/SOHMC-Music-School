@@ -6,7 +6,7 @@
 
 @section('breadcrumbs')
     <x-backend.breadcrumbs>
-        <x-backend.breadcrumb-item route='{{ route("backend.dashboard") }}' icon="fa-solid fa-house">
+        <x-backend.breadcrumb-item route='{{ route("backend.home") }}' icon="fa-solid fa-house">
             @lang('Dashboard')
         </x-backend.breadcrumb-item>
         <x-backend.breadcrumb-item route='{{ route("backend.lessons.index") }}' icon="{{ $module_icon }}">

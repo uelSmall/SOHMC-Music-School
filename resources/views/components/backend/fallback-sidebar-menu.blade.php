@@ -147,7 +147,7 @@
     @else
         {{-- Final fallback: Basic hardcoded menu items --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route("backend.dashboard") }}">
+            <a class="nav-link" href="{{ route("backend.home") }}">
                 <i class="nav-icon fa-solid fa-cubes"></i>
                 &nbsp;@lang("Dashboard")
             </a>

@@ -284,7 +284,7 @@ $notifications_latest = optional($notifications)->take(5);
                             $avatar = asset(auth()->user()->avatar);
 
                             if (! file_exists($avatar)) {
-                                $avatar = asset("img/default-avatar.jpg");
+                                $avatar = asset("img/default-avatar.svg");
                             }
                         @endphp
 

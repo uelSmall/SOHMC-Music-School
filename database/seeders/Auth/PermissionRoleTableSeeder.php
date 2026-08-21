@@ -39,6 +39,12 @@ class PermissionRoleTableSeeder extends Seeder
             'edit_settings',
             'manage_lessons',
             'assign_lessons',
+            'view_assigned_lessons',
+            'view_users',
+            'edit_users',
+            'add_users',
+            'delete_users',
+            'restore_users',
         ]);
 
         $teacher = Role::firstOrCreate(['name' => 'teacher']);
@@ -46,6 +52,7 @@ class PermissionRoleTableSeeder extends Seeder
             'view_backend',
             'manage_lessons',
             'assign_lessons',
+            'view_assigned_lessons',
         ]);
 
         $parent = Role::firstOrCreate(['name' => 'parent']);
@@ -64,6 +71,13 @@ class PermissionRoleTableSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        Artisan::call('auth:permissions', [
+            'name' => 'users',
+        ]);
+        if (! app()->runningUnitTests()) {
+            $this->command->info('_Users_ Permissions Created.');
         }
 
         Artisan::call('auth:permissions', [

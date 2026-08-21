@@ -20,17 +20,19 @@ class LessonRequestController extends Controller
 {
     public function index(Request $request): View
     {
-        $teacherId = (int) $request->user()->id;
-
-        $lessonRequests = LessonRequest::query()
-            ->where('teacher_id', $teacherId)
+        $lessonRequestsQuery = LessonRequest::query()
             ->with([
                 'student:id,name',
+                'teacher:id,name',
                 'instrument:id,name',
                 'lesson:id,lesson_request_id,lesson_date,lesson_start_time,lesson_end_time,lesson_duration,status',
-            ])
-            ->latest()
-            ->get();
+            ]);
+
+        if (! $request->user()->hasAnyRole(['administrator', 'super admin'])) {
+            $lessonRequestsQuery->where('teacher_id', $request->user()->id);
+        }
+
+        $lessonRequests = $lessonRequestsQuery->latest()->get();
 
         $pendingRequests = $lessonRequests->filter(function (LessonRequest $lessonRequest): bool {
             return $lessonRequest->status === LessonRequestStatus::Pending;

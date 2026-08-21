@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Frontend\Lessons;
 
-use App\Models\User;
 use Livewire\Attributes\State;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -47,28 +46,29 @@ class LessonSearch extends Component
     public function getLessonData()
     {
         $user = auth()->user();
-        $query = Lesson::query();
-        $accessibleStudentIds = collect();
+        $isStudent = $user->hasRole('student');
         $isParent = $user->hasRole('parent');
+        $isTeacher = $user->hasRole('teacher');
 
-        if ($user->hasRole('student')) {
-            $accessibleStudentIds = collect([$user->id]);
-        } elseif ($user->hasRole('parent')) {
+        $query = Lesson::query()->where('status', 'published');
+
+        if ($isTeacher) {
+            // Teachers see only their own published lessons
+            $query->where('teacher_id', $user->id);
+        } elseif ($isParent) {
+            // Parents see published lessons assigned to their children
             $accessibleStudentIds = $user->children()->pluck('users.id');
-        }
-
-        if (($user->hasRole('student') || $user->hasRole('parent')) && $accessibleStudentIds->isEmpty()) {
-            return collect();
-        }
-
-        if ($user->hasRole('student') || $user->hasRole('parent')) {
+            if ($accessibleStudentIds->isEmpty()) {
+                return collect();
+            }
             $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
                 $q->whereIn('student_id', $accessibleStudentIds);
             });
         }
+        // Students and admins: all published lessons (no additional filter)
 
         // Search filter
-        if (! $isParent && $this->search) {
+        if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('description', 'like', '%' . $this->search . '%');
@@ -76,31 +76,43 @@ class LessonSearch extends Component
         }
 
         // Instrument filter
-        if (! $isParent && $this->filterInstrument) {
+        if ($this->filterInstrument) {
             $query->where('instrument', $this->filterInstrument);
         }
 
         // Tab filtering
-        if (! $isParent && $this->tab === 'assigned') {
-            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
-                $q->whereIn('student_id', $accessibleStudentIds);
-            });
-        } elseif (! $isParent && $this->tab === 'completed') {
-            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
-                $q->whereIn('student_id', $accessibleStudentIds)
-                    ->where('status', 'completed');
-            });
+        if ($this->tab === 'assigned') {
+            if ($isStudent) {
+                $query->whereHas('assignedStudents', fn ($q) => $q->where('student_id', $user->id));
+            } elseif ($isParent) {
+                $accessibleStudentIds = $user->children()->pluck('users.id');
+                $query->whereHas('assignedStudents', fn ($q) => $q->whereIn('student_id', $accessibleStudentIds));
+            }
+        } elseif ($this->tab === 'completed') {
+            if ($isStudent) {
+                $query->whereHas('assignedStudents', fn ($q) => $q->where('student_id', $user->id)->where('status', 'completed'));
+            } elseif ($isParent) {
+                $accessibleStudentIds = $user->children()->pluck('users.id');
+                $query->whereHas('assignedStudents', fn ($q) => $q->whereIn('student_id', $accessibleStudentIds)->where('status', 'completed'));
+            }
         }
 
-        // Status filter (for assignments)
-        if (! $isParent && $this->filterStatus && $this->tab !== 'all') {
-            $query->whereHas('assignedStudents', function ($q) use ($accessibleStudentIds) {
-                $q->whereIn('student_id', $accessibleStudentIds)
-                    ->where('status', $this->filterStatus);
-            });
+        // Status filter (assignments tab only)
+        if ($this->filterStatus && $this->tab !== 'all') {
+            if ($isStudent) {
+                $query->whereHas('assignedStudents', fn ($q) => $q->where('student_id', $user->id)->where('status', $this->filterStatus));
+            } elseif ($isParent) {
+                $accessibleStudentIds = $user->children()->pluck('users.id');
+                $query->whereHas('assignedStudents', fn ($q) => $q->whereIn('student_id', $accessibleStudentIds)->where('status', $this->filterStatus));
+            }
         }
 
-        return $query->with('teacher', 'assignedStudents')
+        // Eager load: only load the current user's assignment (not all students')
+        $assignmentUserId = $user->id;
+
+        return $query->with(['teacher:id,name', 'assignedStudents' => function ($q) use ($assignmentUserId) {
+            $q->where('student_id', $assignmentUserId);
+        }])
             ->orderBy('title')
             ->get();
     }
@@ -109,6 +121,7 @@ class LessonSearch extends Component
     public function instruments()
     {
         return Lesson::query()
+            ->where('status', 'published')
             ->whereNotNull('instrument')
             ->whereRaw('LOWER(instrument) <> ?', ['general'])
             ->distinct()

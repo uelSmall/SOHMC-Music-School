@@ -74,6 +74,12 @@ class AssignLessonModal extends Component
         ]);
 
         $lesson = Lesson::findOrFail($this->selectedLessonId);
+
+        // Ownership check: teachers can only assign their own lessons
+        $user = auth()->user();
+        if ($user->hasRole('teacher') && (int) $lesson->teacher_id !== (int) $user->id) {
+            abort(403, 'You can only assign your own lessons.');
+        }
         $students = User::query()->whereIn('id', $this->selectedStudentIds)->get()->keyBy('id');
 
         foreach ($this->selectedStudentIds as $studentId) {

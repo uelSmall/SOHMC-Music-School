@@ -11,8 +11,10 @@
                 </a>
 
                 <div class="hidden items-center gap-2 sm:flex">
-                    @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
-                        <a href="{{ route('backend.dashboard') }}" class="soh-nav-link {{ request()->routeIs('backend.dashboard') ? 'active' : '' }}">Admin</a>
+                    @if (auth()->user()->hasRole('super admin'))
+                        <a href="{{ route('backend.home') }}" class="soh-nav-link {{ request()->routeIs('backend.*') ? 'active' : '' }}">Admin</a>
+                    @elseif (auth()->user()->hasRole('administrator'))
+                        <a href="{{ route('admin.dashboard') }}" class="soh-nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}">Admin</a>
                     @endif
 
                     @if (auth()->user()->hasRole('parent'))
@@ -91,8 +93,10 @@
 
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden border-t border-white/20 sm:hidden">
         <div class="space-y-1 px-4 py-3">
-            @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('administrator'))
-                <a @click="open = false" href="{{ route('backend.dashboard') }}" class="soh-nav-link block">Admin Dashboard</a>
+            @if (auth()->user()->hasRole('super admin'))
+                <a @click="open = false" href="{{ route('backend.home') }}" class="soh-nav-link block">Admin Dashboard</a>
+            @elseif (auth()->user()->hasRole('administrator'))
+                <a @click="open = false" href="{{ route('admin.dashboard') }}" class="soh-nav-link block">Admin Dashboard</a>
             @endif
 
             @if (auth()->user()->hasRole('parent'))

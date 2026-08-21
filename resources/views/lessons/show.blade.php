@@ -23,7 +23,7 @@
                 ];
             } else {
                 $breadcrumbItems = [
-                    ['label' => 'Admin Dashboard', 'route' => route('backend.dashboard')],
+                    ['label' => 'Admin Dashboard', 'route' => route('admin.dashboard')],
                     ['label' => 'Lessons', 'route' => route('lessons.index')],
                     ['label' => $lesson->title, 'current' => true],
                 ];

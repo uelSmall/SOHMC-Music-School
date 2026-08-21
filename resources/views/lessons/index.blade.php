@@ -22,7 +22,7 @@
             ];
         } else {
             $breadcrumbItems = [
-                ['label' => 'Admin Dashboard', 'route' => route('backend.dashboard')],
+                ['label' => 'Admin Dashboard', 'route' => route('admin.dashboard')],
                 ['label' => 'Lessons', 'current' => true],
             ];
         }
@@ -31,8 +31,8 @@
     <x-frontend.breadcrumbs :items="$breadcrumbItems" />
 
     <div class="mb-5">
-        <h1 class="soh-page-title">My Lessons</h1>
-        <p class="soh-page-subtitle">Browse lessons, filter quickly, and manage assignment progress.</p>
+        <h1 class="soh-page-title">Lesson Library</h1>
+        <p class="soh-page-subtitle">Browse all available lessons, filter by instrument, and track your assigned progress.</p>
     </div>
 
     <livewire:frontend.lessons.lesson-search />

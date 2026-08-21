@@ -9,7 +9,8 @@ class LessonRequestPolicy
 {
     public function view(User $user, LessonRequest $lessonRequest): bool
     {
-        return $user->hasRole('teacher') && (int) $lessonRequest->teacher_id === (int) $user->id;
+        return $user->hasAnyRole(['administrator', 'super admin'])
+            || ($user->hasRole('teacher') && (int) $lessonRequest->teacher_id === (int) $user->id);
     }
 
     public function update(User $user, LessonRequest $lessonRequest): bool

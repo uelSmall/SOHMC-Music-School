@@ -59,7 +59,7 @@
     @unless ($isParentUser)
         <div class="border-b border-gray-200">
             <div class="flex gap-6 sm:gap-8">
-                @foreach (['all' => 'All Lessons', 'assigned' => 'Assigned', 'completed' => 'Completed'] as $tabKey => $tabLabel)
+                @foreach (['all' => 'All Lessons', 'assigned' => 'My Assignments', 'completed' => 'Completed'] as $tabKey => $tabLabel)
                     <button
                         wire:click="$set('tab', '{{ $tabKey }}')"
                         class="border-b-2 px-2 py-2.5 text-sm font-semibold transition-all duration-200 {{ $tab === $tabKey ? '' : 'border-transparent text-gray-600 hover:text-gray-900' }}"
@@ -113,7 +113,12 @@
             <article class="soh-card relative overflow-hidden p-0 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-md" style="border-color:rgba(217,145,205,0.35);">
                 <span class="absolute top-0 bottom-0 left-0 w-1.5" style="background:{{ $leftBorderColor }};"></span>
                 <div class="min-h-[88px] p-4 sm:p-5" style="background:rgba(140,3,117,0.9); border-bottom:1px solid #D991CD;">
-                    <h3 class="line-clamp-2 text-lg font-semibold leading-snug text-white sm:text-xl">{{ $lesson->title }}</h3>
+                    <div class="flex items-start justify-between gap-2">
+                        <h3 class="line-clamp-2 text-lg font-semibold leading-snug text-white sm:text-xl">{{ $lesson->title }}</h3>
+                        @if($lesson->created_at->diffInDays(now()) <= 14)
+                            <span class="shrink-0 rounded-full bg-green-400 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-900">New</span>
+                        @endif
+                    </div>
                     @php
                         $categoryLabel = $lesson->instrument
                             ? ucfirst($lesson->instrument)

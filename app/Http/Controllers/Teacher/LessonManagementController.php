@@ -19,16 +19,18 @@ class LessonManagementController extends Controller
     {
         $this->authorize('viewAny', BookedLesson::class);
 
-        $teacherId = (int) $request->user()->id;
-        $today = now()->toDateString();
-
         $lessonsQuery = BookedLesson::query()
-            ->where('teacher_id', $teacherId)
             ->with([
                 'student:id,name',
                 'instrument:id,name',
                 'lessonRequest:id,student_note,teacher_note',
             ]);
+
+        if (! $request->user()->hasAnyRole(['administrator', 'super admin'])) {
+            $lessonsQuery->where('teacher_id', $request->user()->id);
+        }
+
+        $today = now()->toDateString();
 
         $statistics = [
             'today' => (clone $lessonsQuery)->whereDate('lesson_date', $today)->where('status', LessonStatus::Scheduled->value)->count(),

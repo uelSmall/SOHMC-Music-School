@@ -16,8 +16,8 @@ class AssignmentDashboard extends Component
     {
         $assignment = LessonStudentAssignment::query()
             ->with(['lesson:id,title,teacher_id', 'student:id,name'])
-            ->whereHas('lesson', function ($query) {
-                $query->where('teacher_id', auth()->id());
+            ->where(function ($query) {
+                $this->scopeToOwnOrAll($query);
             })
             ->findOrFail($assignmentId);
 
@@ -38,8 +38,8 @@ class AssignmentDashboard extends Component
         ]);
 
         $assignment = LessonStudentAssignment::query()
-            ->whereHas('lesson', function ($query) {
-                $query->where('teacher_id', auth()->id());
+            ->where(function ($query) {
+                $this->scopeToOwnOrAll($query);
             })
             ->findOrFail($this->commentAssignmentId);
 
@@ -57,8 +57,8 @@ class AssignmentDashboard extends Component
     {
         $assignments = LessonStudentAssignment::query()
             ->with(['lesson:id,title,teacher_id', 'student:id,name', 'latestComment.teacher:id,name'])
-            ->whereHas('lesson', function ($q) {
-                $q->where('teacher_id', auth()->id());
+            ->where(function ($query) {
+                $this->scopeToOwnOrAll($query);
             })
             ->orderBy('assigned_at', 'desc')
             ->get();
@@ -68,5 +68,18 @@ class AssignmentDashboard extends Component
         return view('backend.lessons.assignments-dashboard', [
             'assignments' => $assignments,
         ])->layout($layout);
+    }
+
+    private function scopeToOwnOrAll($query): void
+    {
+        $user = auth()->user();
+
+        if ($user->hasAnyRole(['administrator', 'super admin'])) {
+            // Admin sees all assignments
+            $query->whereHas('lesson', fn ($q) => $q->whereNotNull('id'));
+        } else {
+            // Teachers see only their own
+            $query->whereHas('lesson', fn ($q) => $q->where('teacher_id', $user->id));
+        }
     }
 }

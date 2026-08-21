@@ -36,6 +36,15 @@ class LessonCalendarController extends Controller
         return response()->json($events);
     }
 
+    public function adminEvents(Request $request): JsonResponse
+    {
+        $query = BookedLesson::query();
+
+        $events = $this->buildEvents($query, 'admin', $request);
+
+        return response()->json($events);
+    }
+
     private function buildEvents(Builder $query, string $viewerRole, Request $request): array
     {
         $query->with([
@@ -63,9 +72,11 @@ class LessonCalendarController extends Controller
                 $teacherName = $lesson->teacher?->name ?? 'Teacher';
                 $studentName = $lesson->student?->name ?? 'Student';
 
-                $title = $viewerRole === 'student'
-                    ? sprintf('%s Lesson with %s', $instrumentName, $teacherName)
-                    : sprintf('Lesson with %s', $studentName);
+                $title = match ($viewerRole) {
+                    'student' => sprintf('%s Lesson with %s', $instrumentName, $teacherName),
+                    'admin' => sprintf('%s: %s → %s', $instrumentName, $teacherName, $studentName),
+                    default => sprintf('Lesson with %s', $studentName),
+                };
 
                 return [
                     'id' => $lesson->id,

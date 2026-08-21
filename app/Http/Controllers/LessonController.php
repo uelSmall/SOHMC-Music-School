@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Lesson\Models\Lesson;
 use Modules\Lesson\Enums\AssignmentStatus;
+use Modules\Lesson\Enums\LessonStatus;
 
 class LessonController extends Controller
 {
@@ -133,7 +134,12 @@ class LessonController extends Controller
         }
 
         if ($user->hasRole('student')) {
-            // Support both assignment records and direct lesson_student pivot assignments.
+            // Students can view all published lessons (library)
+            if ($lesson->status === LessonStatus::Published) {
+                return true;
+            }
+
+            // Also allow access to assigned lessons regardless of status
             $hasAssignmentRecord = $lesson->assignedStudents()
                 ->where('student_id', $user->id)
                 ->exists();
@@ -148,6 +154,13 @@ class LessonController extends Controller
         }
 
         if ($user->hasRole('parent')) {
+            // Check assignedStudents (new system)
+            $childrenIds = $user->children()->pluck('users.id');
+            if ($childrenIds->isNotEmpty() && $lesson->assignedStudents()->whereIn('student_id', $childrenIds)->exists()) {
+                return true;
+            }
+
+            // Fallback: legacy pivot
             return $lesson->students()
                 ->whereHas('parents', function ($query) use ($user) {
                     $query->where('users.id', $user->id);

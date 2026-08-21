@@ -15,11 +15,14 @@ class UpdateStudentAssignmentStatus extends Component
 
     public function mount(): void
     {
+        $this->authorizeOwnership();
         $this->status = $this->assignment->status->value;
     }
 
     public function incrementStatus(): void
     {
+        $this->authorizeOwnership();
+
         $statuses = ['assigned', 'started', 'in_progress', 'completed'];
         $currentIndex = array_search($this->status, $statuses);
 
@@ -36,6 +39,7 @@ class UpdateStudentAssignmentStatus extends Component
 
     public function markAsStarted(): void
     {
+        $this->authorizeOwnership();
         $this->assignment->update(['status' => 'started']);
         $this->status = 'started';
         $this->dispatch('statusUpdated');
@@ -44,6 +48,7 @@ class UpdateStudentAssignmentStatus extends Component
 
     public function markAsInProgress(): void
     {
+        $this->authorizeOwnership();
         $this->assignment->update(['status' => 'in_progress']);
         $this->status = 'in_progress';
         $this->dispatch('statusUpdated');
@@ -52,11 +57,21 @@ class UpdateStudentAssignmentStatus extends Component
 
     public function markAsCompleted(): void
     {
+        $this->authorizeOwnership();
         $this->assignment->update(['status' => 'completed']);
         $this->status = 'completed';
         $this->notifyCompletion();
         $this->dispatch('statusUpdated');
         session()->flash('message', 'Marked as completed!');
+    }
+
+    private function authorizeOwnership(): void
+    {
+        $user = auth()->user();
+
+        if ((int) $this->assignment->student_id !== (int) $user->id) {
+            abort(403, 'You can only update your own assignments.');
+        }
     }
 
     private function notifyCompletion(): void

@@ -92,7 +92,6 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
      * Namespaces indicate folder structure.
      */
     Route::get('/', [BackendController::class, 'index'])->name('home');
-    Route::get('dashboard', [BackendController::class, 'index'])->name('dashboard');
 
     /*
      *
@@ -167,51 +166,58 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
 });
 
 /*
+ *
+ * Tailwind Admin Routes (for Administrator role)
+ *
+ * --------------------------------------------------------------------
+ */
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'verified', 'role:administrator']], function () {
+    Route::get('/', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('home');
+    Route::get('dashboard', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('dashboard');
+    Route::get('calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'adminEvents'])->name('calendar.events');
+
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
+    Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
+    Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
+});
+
+/*
 *
 * Teacher Routes
 *
 * --------------------------------------------------------------------
 */
-Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'verified', 'can:manage_lessons'])->group(function () {
+Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'verified', 'role:teacher|administrator', 'can:manage_lessons'])->group(function () {
     Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
     Route::get('/calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'teacherEvents'])
-        ->name('calendar.events')
-        ->middleware('role:teacher');
+        ->name('calendar.events');
     Route::get('/booking-management', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'index'])
-        ->name('booking-management.index')
-        ->middleware('role:teacher');
+        ->name('booking-management.index');
     Route::get('/booking-management/{lesson}', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'show'])
-        ->name('booking-management.show')
-        ->middleware('role:teacher');
+        ->name('booking-management.show');
     Route::patch('/booking-management/{lesson}/complete', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'complete'])
-        ->name('booking-management.complete')
-        ->middleware('role:teacher');
+        ->name('booking-management.complete');
     Route::patch('/booking-management/{lesson}/cancel', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'cancel'])
-        ->name('booking-management.cancel')
-        ->middleware('role:teacher');
+        ->name('booking-management.cancel');
     Route::patch('/booking-management/{lesson}/reschedule', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'reschedule'])
-        ->name('booking-management.reschedule')
-        ->middleware('role:teacher');
+        ->name('booking-management.reschedule');
     Route::get('/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
         ->name('assignments.index')
         ->middleware('can:assign_lessons');
 
     Route::resource('lesson-requests', \App\Http\Controllers\Teacher\LessonRequestController::class)
         ->only(['index', 'show'])
-        ->parameters(['lesson-requests' => 'lessonRequest'])
-        ->middleware('role:teacher');
+        ->parameters(['lesson-requests' => 'lessonRequest']);
 
     Route::patch('lesson-requests/{lessonRequest}/confirm', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'confirm'])
-        ->name('lesson-requests.confirm')
-        ->middleware('role:teacher');
+        ->name('lesson-requests.confirm');
 
     Route::patch('lesson-requests/{lessonRequest}/reschedule', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reschedule'])
-        ->name('lesson-requests.reschedule')
-        ->middleware('role:teacher');
+        ->name('lesson-requests.reschedule');
 
     Route::patch('lesson-requests/{lessonRequest}/reject', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reject'])
-        ->name('lesson-requests.reject')
-        ->middleware('role:teacher');
+        ->name('lesson-requests.reject');
 });
 
 /*
