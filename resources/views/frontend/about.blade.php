@@ -26,7 +26,7 @@
                     <div class="mt-1 text-sm font-semibold text-white/60">Students Taught</div>
                 </div>
                 <div class="text-center">
-                    <div class="font-[Sora] text-4xl font-extrabold text-white">8</div>
+                    <div class="font-[Sora] text-4xl font-extrabold text-white">6</div>
                     <div class="mt-1 text-sm font-semibold text-white/60">Instruments Offered</div>
                 </div>
             </div>
