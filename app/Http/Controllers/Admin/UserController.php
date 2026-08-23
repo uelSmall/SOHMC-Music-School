@@ -42,10 +42,14 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         $validated['email_verified_at'] = now();
 
+        // Remove roles from data — not a users table column, managed via Spatie syncRoles()
+        $roles = $validated['roles'] ?? [];
+        unset($validated['roles']);
+
         $user = User::create($validated);
 
-        if (! empty($validated['roles'])) {
-            $user->syncRoles($validated['roles']);
+        if (! empty($roles)) {
+            $user->syncRoles($roles);
         }
 
         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
@@ -78,13 +82,12 @@ class UserController extends Controller
             unset($validated['password']);
         }
 
-        $user->update($validated);
+        // Remove roles from data — not a users table column, managed via Spatie syncRoles()
+        $roles = $validated['roles'] ?? [];
+        unset($validated['roles']);
 
-        if (! empty($validated['roles'])) {
-            $user->syncRoles($validated['roles']);
-        } else {
-            $user->syncRoles([]);
-        }
+        $user->update($validated);
+        $user->syncRoles($roles);
 
         return redirect()->route('admin.users.index')->with('status', 'User updated successfully.');
     }
