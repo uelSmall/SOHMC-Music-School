@@ -1,4 +1,9 @@
 <div class="mx-auto max-w-7xl space-y-6">
+    <x-frontend.breadcrumbs :items="[
+        ['label' => request()->routeIs('teacher.*') ? 'Teacher Dashboard' : 'Admin Dashboard', 'route' => request()->routeIs('teacher.*') ? route('teacher.dashboard') : route('admin.dashboard')],
+        ['label' => 'Lesson Assignments', 'current' => true],
+    ]" />
+
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="soh-page-title">Lesson Assignments</h2>
