@@ -75,7 +75,7 @@ class LessonForm extends Component
             $this->published_at = $lesson->published_at?->toDateString();
             $this->order = $lesson->order;
             $this->teacher_id = $this->isTeacher ? $user->id : ($lesson->teacher_id ?? null);
-            $this->student_ids = $lesson->students->pluck('id')->toArray();
+            $this->student_ids = $lesson->assignedStudents->pluck('student_id')->toArray();
         } elseif ($this->isTeacher) {
             $this->teacher_id = $user->id;
         }
@@ -140,10 +140,6 @@ class LessonForm extends Component
 
                 $this->lesson->update($data);
 
-                if (!empty($this->student_ids)) {
-                    $this->lesson->students()->sync($this->student_ids);
-                }
-
                 $message = 'Lesson updated successfully.';
             } else {
                 $data = [
@@ -164,10 +160,6 @@ class LessonForm extends Component
                 }
 
                 $lesson = Lesson::create($data);
-
-                if (!empty($this->student_ids)) {
-                    $lesson->students()->sync($this->student_ids);
-                }
 
                 $message = 'Lesson created successfully.';
             }

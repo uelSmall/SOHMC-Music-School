@@ -54,7 +54,7 @@
             </div>
 
             <!-- Right: Auth links (desktop + mobile) -->
-            <div class="flex items-center space-x-6 text-white">
+            <div class="flex items-center space-x-3 text-white">
                 @guest
                     <a href="{{ route('register') }}" class="inline-flex items-center px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">
                         <!-- Register icon -->
@@ -84,6 +84,9 @@
                 @endguest
 
                 @auth
+                    {{-- Notification Bell --}}
+                    <livewire:notifications.notification-bell />
+
                     <!-- Desktop: Profile dropdown -->
                     <div class="relative hidden md:block" @click.outside="profileMenu = false">
                         <button
@@ -174,11 +177,11 @@
     </div>
 
     <!-- Mobile menu (vertical layout, no duplicate auth links) -->
-    <div x-cloak x-show="mobileMenu" id="mobile-menu" class="md:hidden px-4 pb-4 space-y-2 bg-[#A6128D]">
-        <a href="{{ route('frontend.index') }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.index') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Home</a>
-        <a href="{{ route('frontend.about') }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.about') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">About</a>
-        <a href="{{ route('frontend.gallery') }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.gallery') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Gallery</a>
-        <a href="{{ route('frontend.contact') }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.contact') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Contact</a>
+    <div x-cloak x-show="mobileMenu" id="mobile-menu" class="md:hidden px-4 pb-4 space-y-1 bg-[#A6128D]">
+        <a href="{{ route('frontend.index') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.index') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Home</a>
+        <a href="{{ route('frontend.about') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.about') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">About</a>
+        <a href="{{ route('frontend.gallery') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.gallery') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Gallery</a>
+        <a href="{{ route('frontend.contact') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white {{ request()->routeIs('frontend.contact') ? 'bg-[#8C0375] text-white font-semibold' : '' }}">Contact</a>
 
         @auth
             <div class="border-t border-white/15 pt-2 mt-2">
@@ -186,8 +189,9 @@
                     <p class="text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
                     <p class="text-xs text-white/60 uppercase tracking-wider">{{ str(Auth::user()->dashboardRouteName())->before('.')->headline() }}</p>
                 </div>
-                <a href="{{ route(Auth::user()->dashboardRouteName()) }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Dashboard</a>
-                <a href="{{ route('profile.edit') }}" class="block text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Profile Settings</a>
+                <a href="{{ route(Auth::user()->dashboardRouteName()) }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Dashboard</a>
+                <a href="{{ route('notifications.index') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Notifications</a>
+                <a href="{{ route('profile.edit') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Profile Settings</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="block w-full text-left text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Logout</button>

@@ -194,32 +194,21 @@ Route::prefix('teacher')->as('teacher.')->middleware(['auth', 'verified', 'role:
     Route::get('/dashboard', TeacherDashboard::class)->name('dashboard');
     Route::get('/calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'teacherEvents'])
         ->name('calendar.events');
-    Route::get('/booking-management', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'index'])
+
+    // Legacy teacher booking routes → 301 to unified
+    Route::get('/booking-management', fn () => redirect()->route('bookings.index', [], 301))
         ->name('booking-management.index');
-    Route::get('/booking-management/{lesson}', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'show'])
-        ->name('booking-management.show');
-    Route::patch('/booking-management/{lesson}/complete', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'complete'])
-        ->name('booking-management.complete');
-    Route::patch('/booking-management/{lesson}/cancel', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'cancel'])
-        ->name('booking-management.cancel');
-    Route::patch('/booking-management/{lesson}/reschedule', [\App\Http\Controllers\Teacher\LessonManagementController::class, 'reschedule'])
-        ->name('booking-management.reschedule');
+    Route::get('/booking-management/{lesson}', fn ($lesson) => redirect()->route('bookings.show', $lesson, 301))
+        ->name('booking-management.show')
+        ->where('lesson', '[0-9]+');
+
+    // Legacy teacher lesson-requests routes → 301 to unified
+    Route::get('/lesson-requests', fn () => redirect()->route('bookings.index', [], 301))
+        ->name('lesson-requests.index');
+
     Route::get('/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)
         ->name('assignments.index')
         ->middleware('can:assign_lessons');
-
-    Route::resource('lesson-requests', \App\Http\Controllers\Teacher\LessonRequestController::class)
-        ->only(['index', 'show'])
-        ->parameters(['lesson-requests' => 'lessonRequest']);
-
-    Route::patch('lesson-requests/{lessonRequest}/confirm', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'confirm'])
-        ->name('lesson-requests.confirm');
-
-    Route::patch('lesson-requests/{lessonRequest}/reschedule', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reschedule'])
-        ->name('lesson-requests.reschedule');
-
-    Route::patch('lesson-requests/{lessonRequest}/reject', [\App\Http\Controllers\Teacher\LessonRequestController::class, 'reject'])
-        ->name('lesson-requests.reject');
 });
 
 /*
@@ -242,12 +231,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/student/dashboard', StudentDashboard::class)
         ->name('student.dashboard')
         ->middleware('can:view_assigned_lessons');
-    Route::get('/student/booking-management', [\App\Http\Controllers\Student\LessonManagementController::class, 'index'])
-        ->name('student.booking-management.index')
+
+    // Unified Bookings
+    Route::get('/bookings', [\App\Http\Controllers\BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/create', [\App\Http\Controllers\BookingController::class, 'create'])
+        ->name('bookings.create')
         ->middleware('role:student');
-    Route::get('/student/booking-management/{lesson}', [\App\Http\Controllers\Student\LessonManagementController::class, 'show'])
-        ->name('student.booking-management.show')
+    Route::post('/bookings', [\App\Http\Controllers\BookingController::class, 'store'])
+        ->name('bookings.store')
         ->middleware('role:student');
+    Route::get('/bookings/{booking}', [\App\Http\Controllers\BookingController::class, 'show'])->name('bookings.show');
+    Route::patch('/bookings/{lessonRequest}/confirm', [\App\Http\Controllers\BookingController::class, 'confirm'])
+        ->name('bookings.confirm')
+        ->middleware('role:teacher|administrator');
+    Route::patch('/bookings/{lessonRequest}/teacher-reschedule', [\App\Http\Controllers\BookingController::class, 'teacherReschedule'])
+        ->name('bookings.teacher-reschedule')
+        ->middleware('role:teacher|administrator');
+    Route::patch('/bookings/{lessonRequest}/reject', [\App\Http\Controllers\BookingController::class, 'reject'])
+        ->name('bookings.reject')
+        ->middleware('role:teacher|administrator');
+    Route::patch('/bookings/{lessonRequest}/accept-suggestion', [\App\Http\Controllers\BookingController::class, 'acceptSuggestion'])
+        ->name('bookings.accept-suggestion')
+        ->middleware('role:student');
+    Route::patch('/bookings/{lesson}/complete', [\App\Http\Controllers\BookingController::class, 'complete'])
+        ->name('bookings.complete')
+        ->middleware('role:teacher|administrator');
+    Route::patch('/bookings/{lesson}/cancel', [\App\Http\Controllers\BookingController::class, 'cancel'])
+        ->name('bookings.cancel')
+        ->middleware('role:teacher|administrator');
+    Route::patch('/bookings/{lesson}/reschedule-lesson', [\App\Http\Controllers\BookingController::class, 'rescheduleLesson'])
+        ->name('bookings.reschedule-lesson')
+        ->middleware('role:teacher|administrator');
+
+    // Legacy student booking routes → 301 to unified
+    Route::get('/student/booking-management', fn () => redirect()->route('bookings.index', [], 301));
+    Route::get('/student/booking-management/{lesson}', fn ($lesson) => redirect()->route('bookings.show', $lesson, 301))
+        ->where('lesson', '[0-9]+');
 
     Route::get('/student/lessons', [\App\Http\Controllers\LessonController::class, 'index'])
         ->name('student.lessons.index')
@@ -274,12 +293,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware('can:view_assigned_lessons');
 
     Route::prefix('student')->as('student.')->middleware(['role:student', 'can:view_assigned_lessons'])->group(function () {
-        Route::resource('lesson-requests', \App\Http\Controllers\Student\LessonRequestController::class)
-            ->only(['index', 'create', 'store']);
-
-        Route::patch('lesson-requests/{lessonRequest}/accept-suggestion', [\App\Http\Controllers\Student\LessonRequestController::class, 'acceptSuggestion'])
-            ->name('lesson-requests.accept-suggestion');
-
         Route::get('calendar/events', [\App\Http\Controllers\Calendar\LessonCalendarController::class, 'studentEvents'])
             ->name('calendar.events');
     });

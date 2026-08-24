@@ -24,6 +24,6 @@ class LessonRejectedNotification extends LessonRequestNotification
 
     protected function actionUrl(): string
     {
-        return route('student.lesson-requests.index');
+        return route('bookings.index');
     }
 }

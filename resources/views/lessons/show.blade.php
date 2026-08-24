@@ -83,24 +83,31 @@
                             @endif
                         </p>
 
-                        @if ($assignment->status->value === 'assigned')
-                            <form method="POST" action="{{ route('lessons.mark-started', $lesson) }}">
-                                @csrf
-                                <button type="submit" class="rounded-md border px-3 py-1.5 text-xs font-semibold" style="border-color:#D991CD; background:#F2F2F2; color:#A6128D;">
-                                    Mark as Started
-                                </button>
-                            </form>
+                        @if ($assignment->status->value !== 'completed')
+                            <livewire:frontend.lessons.update-student-assignment-status
+                                :key="'student-assignment-' . $assignment->id"
+                                :assignment="$assignment"
+                            />
+                        @else
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1.5 text-xs font-semibold text-green-700">
+                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                Completed
+                            </span>
                         @endif
                     </div>
                 </div>
             @endif
 
-            @if ($assignment && $assignment->latestComment)
-                <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
-                    <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</p>
-                    <p class="mt-2 text-sm text-gray-700">{{ $assignment->latestComment->body }}</p>
+            @if ($assignment)
+                <div class="mb-6">
+                    <livewire:frontend.lessons.assignment-comments
+                        :key="'comments-' . $assignment->id"
+                        :assignmentId="$assignment->id"
+                    />
                 </div>
-            @elseif (! empty($lesson->global_note))
+            @endif
+
+            @if (! empty($lesson->global_note))
                 <div class="soh-card mb-6 border-l-4 p-4" style="border-left-color:#A6128D;">
                     <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">Global Lesson Note</p>
                     <p class="mt-2 text-sm text-gray-700">{{ $lesson->global_note }}</p>
@@ -124,8 +131,9 @@
                                 </div>
                                 @if ($assignment->latestComment)
                                     <div class="mt-3 rounded-lg border border-gray-200 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-3 text-sm text-gray-700">
-                                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</div>
+                                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Latest Message from {{ $assignment->latestComment->user->name ?? 'Teacher' }}</div>
                                         <p class="mt-2">{{ $assignment->latestComment->body }}</p>
+                                        <p class="mt-1 text-[10px] text-gray-400">{{ $assignment->latestComment->created_at->format('M d, g:ia') }}</p>
                                     </div>
                                 @elseif (! empty($lesson->global_note))
                                     <div class="mt-3 rounded-lg border border-gray-200 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-3 text-sm text-gray-700">

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Backend\Assignments;
 
+use App\Notifications\AssignmentStatusUpdatedNotification;
 use Livewire\Component;
 use Modules\Lesson\Enums\AssignmentStatus;
 use Modules\Lesson\Models\LessonStudentAssignment;
@@ -34,7 +35,6 @@ class UpdateAssignmentStatus extends Component
             'status' => "required|string|in:{$validValues}",
         ]);
 
-        // Re-validate the argument against the same allowed values
         if (! in_array($newStatus, array_column(AssignmentStatus::cases(), 'value'))) {
             abort(403, 'Invalid status value.');
         }
@@ -42,8 +42,18 @@ class UpdateAssignmentStatus extends Component
         $this->assignment->update(['status' => $newStatus]);
         $this->status = $newStatus;
 
+        $this->notifyStudent();
         $this->dispatch('statusUpdated');
         $this->dispatch('notify', message: 'Assignment status updated successfully.', type: 'success');
+    }
+
+    private function notifyStudent(): void
+    {
+        $assignment = $this->assignment->loadMissing('lesson:id,title', 'student:id,name');
+
+        if ($assignment->student) {
+            $assignment->student->notify(new AssignmentStatusUpdatedNotification($assignment));
+        }
     }
 
     private function authorizeOwnership(): void

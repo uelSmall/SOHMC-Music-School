@@ -14,7 +14,7 @@
                 <a href="{{ route('lessons.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
                     My Lessons
                 </a>
-                <a href="{{ route('student.lesson-requests.create') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
+                <a href="{{ route('bookings.create') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
                     Book a Lesson
                 </a>
             </div>
@@ -50,14 +50,11 @@
             <a href="{{ route('lessons.index') }}" class="soh-btn-primary">
                 Go to My Lessons
             </a>
-            <a href="{{ route('student.booking-management.index') }}" class="soh-btn-outline">
-                Booking Management
+            <a href="{{ route('bookings.index') }}" class="soh-btn-outline">
+                My Bookings
             </a>
-            <a href="{{ route('student.lesson-requests.create') }}" class="soh-btn-outline">
+            <a href="{{ route('bookings.create') }}" class="soh-btn-outline">
                 Book a Lesson
-            </a>
-            <a href="{{ route('student.lesson-requests.index') }}" class="soh-btn-outline">
-                My Lesson Requests
             </a>
         </div>
     </div>

@@ -26,6 +26,6 @@ class LessonConfirmedNotification extends LessonRequestNotification
     {
         return $this->lessonRequest->lesson
             ? route('lessons.show', $this->lessonRequest->lesson)
-            : route('student.lesson-requests.index');
+            : route('bookings.index');
     }
 }

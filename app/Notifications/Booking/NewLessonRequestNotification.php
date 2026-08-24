@@ -28,6 +28,6 @@ class NewLessonRequestNotification extends LessonRequestNotification
 
     protected function actionUrl(): string
     {
-        return route('teacher.lesson-requests.show', $this->lessonRequest);
+        return route('bookings.show', $this->lessonRequest);
     }
 }

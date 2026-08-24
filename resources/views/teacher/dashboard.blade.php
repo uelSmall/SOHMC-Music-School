@@ -14,8 +14,8 @@
                 <a href="{{ route('teacher.lessons.create') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
                     Create Lesson
                 </a>
-                <a href="{{ route('teacher.lesson-requests.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
-                    Lesson Requests
+                <a href="{{ route('bookings.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
+                    My Bookings
                 </a>
             </div>
         </div>
@@ -53,14 +53,11 @@
             <a href="{{ route('teacher.lessons.index') }}" class="soh-btn-outline">
                 Manage Lessons
             </a>
-            <a href="{{ route('teacher.lesson-requests.index') }}" class="soh-btn-outline">
-                Lesson Requests
+            <a href="{{ route('bookings.index') }}" class="soh-btn-outline">
+                My Bookings
             </a>
             <a href="{{ route('teacher.assignments.index') }}" class="soh-btn-outline">
                 Manage Assignments
-            </a>
-            <a href="{{ route('teacher.booking-management.index') }}" class="soh-btn-outline">
-                Booking Management
             </a>
         </div>
     </div>
@@ -71,7 +68,7 @@
                 <h2 class="text-xl font-semibold text-black">Booking Management</h2>
                 <p class="text-sm text-gray-600">Track scheduled lessons through completion, cancellation, and rescheduling.</p>
             </div>
-            <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-sm font-medium">View all bookings</a>
+            <a href="{{ route('bookings.index') }}" class="soh-link text-sm font-medium">View all bookings</a>
         </div>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -97,7 +94,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Today&apos;s Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
 
                 <div class="space-y-3">
@@ -114,7 +111,7 @@
                                 <div>Date: {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                 <div>Time: {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                 <div>Duration: {{ $lesson->lesson_duration }} minutes</div>
-                                <div><a href="{{ route('teacher.booking-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
+                                <div><a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
                             </div>
                         </article>
                     @empty
@@ -126,7 +123,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Upcoming Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
 
                 <div class="space-y-3">
@@ -143,7 +140,7 @@
                                 <div>Date: {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                 <div>Time: {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                 <div>Duration: {{ $lesson->lesson_duration }} minutes</div>
-                                <div><a href="{{ route('teacher.booking-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
+                                <div><a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
                             </div>
                         </article>
                     @empty
@@ -155,7 +152,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Completed Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
 
                 <div class="space-y-3">
@@ -172,7 +169,7 @@
                                 <div>Date: {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                 <div>Time: {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                 <div>Duration: {{ $lesson->lesson_duration }} minutes</div>
-                                <div><a href="{{ route('teacher.booking-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
+                                <div><a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
                             </div>
                         </article>
                     @empty
@@ -184,7 +181,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Cancelled Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
 
                 <div class="space-y-3">
@@ -201,7 +198,7 @@
                                 <div>Date: {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                 <div>Time: {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                 <div>Duration: {{ $lesson->lesson_duration }} minutes</div>
-                                <div><a href="{{ route('teacher.booking-management.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
+                                <div><a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium">View details</a></div>
                             </div>
                         </article>
                     @empty
@@ -238,7 +235,7 @@
     <div class="soh-card p-6">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-xl font-semibold text-black">Lesson Requests</h2>
-            <a href="{{ route('teacher.lesson-requests.index') }}" class="soh-link text-sm font-medium">View all</a>
+            <a href="{{ route('bookings.index') }}" class="soh-link text-sm font-medium">View all</a>
         </div>
 
         @forelse($pendingLessonRequests as $request)
@@ -249,7 +246,7 @@
                     {{ \Illuminate\Support\Carbon::parse($request->requested_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($request->requested_end_time)->format('g:i A') }}
                 </div>
                 <div class="mt-2">
-                    <a href="{{ route('teacher.lesson-requests.show', $request) }}" class="soh-link text-sm font-medium">Review request</a>
+                    <a href="{{ route('bookings.show', $request) }}" class="soh-link text-sm font-medium">Review request</a>
                 </div>
             </div>
         @empty

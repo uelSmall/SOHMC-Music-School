@@ -160,26 +160,6 @@
             @enderror
         </div>
 
-        <div class="space-y-2">
-            <label for="student_ids" class="block font-semibold">Assign Students (optional)</label>
-            <div class="max-h-40 overflow-y-auto border border-gray-300 rounded p-3 space-y-2">
-                @foreach ($students as $student)
-                    <label class="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            value="{{ $student->id }}"
-                            wire:model.live="student_ids"
-                            class="rounded accent-[color:var(--soh-purple)]"
-                        />
-                        <span>{{ $student->name }}</span>
-                    </label>
-                @endforeach
-            </div>
-            @error('student_ids')
-                <span class="text-sm text-red-600">{{ $message }}</span>
-            @enderror
-        </div>
-
         <div class="flex gap-4 pt-4">
             <button
                 type="submit"

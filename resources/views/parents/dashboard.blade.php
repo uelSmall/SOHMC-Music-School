@@ -94,10 +94,10 @@
                             </div>
                             @if($summary['nextAssignment']->latestComment)
                                 <div class="mt-3 rounded-xl border border-[color:var(--soh-gray)]/45 bg-white p-4 text-sm text-gray-700">
-                                    <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</div>
+                                    <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Latest Message from {{ $summary['nextAssignment']->latestComment->user->name ?? 'Teacher' }}</div>
                                     <p class="mt-2">{{ $summary['nextAssignment']->latestComment->body }}</p>
                                     <p class="mt-2 text-xs text-gray-500">
-                                        {{ $summary['nextAssignment']->latestComment->teacher->name ?? 'Teacher' }} · {{ $summary['nextAssignment']->latestComment->created_at->format('M d, Y') }}
+                                        {{ $summary['nextAssignment']->latestComment->user->name ?? 'User' }} · {{ $summary['nextAssignment']->latestComment->created_at->format('M d, Y') }}
                                     </p>
                                 </div>
                             @elseif(! empty($summary['nextAssignment']->lesson->global_note))
@@ -155,8 +155,9 @@
                 <div class="mt-1 text-xs font-medium" style="color:#A6128D;">Due: {{ optional($assignment->due_date)->format('M d, Y') }}</div>
                 @if($assignment->latestComment)
                     <div class="mt-3 rounded-xl border border-[color:var(--soh-gray)]/45 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-4 text-sm text-gray-700">
-                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Private Teacher Note</div>
+                        <div class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Latest Message from {{ $assignment->latestComment->user->name ?? 'Teacher' }}</div>
                         <p class="mt-2">{{ $assignment->latestComment->body }}</p>
+                        <p class="mt-1 text-[10px] text-gray-400">{{ $assignment->latestComment->created_at->format('M d, g:ia') }}</p>
                     </div>
                 @elseif(! empty($assignment->lesson->global_note))
                     <div class="mt-3 rounded-xl border border-[color:var(--soh-gray)]/45 bg-[linear-gradient(180deg,#FFFFFF_0%,#FAF7FB_100%)] p-4 text-sm text-gray-700">

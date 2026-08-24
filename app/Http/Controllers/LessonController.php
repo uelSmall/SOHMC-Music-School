@@ -20,23 +20,22 @@ class LessonController extends Controller
         $user = Auth::user();
 
         if ($user->hasRole('student')) {
-            $lessonsQuery = Lesson::whereHas('students', function ($q) use ($user) {
-                $q->where('users.id', $user->id);
+            $lessonsQuery = Lesson::whereHas('assignedStudents', function ($q) use ($user) {
+                $q->where('student_id', $user->id);
             });
         } elseif ($user->hasRole('parent')) {
-            $lessonsQuery = Lesson::whereHas('students.parents', function ($q) use ($user) {
-                $q->where('users.id', $user->id);
+            $childrenIds = $user->children()->pluck('users.id');
+            $lessonsQuery = Lesson::whereHas('assignedStudents', function ($q) use ($childrenIds) {
+                $q->whereIn('student_id', $childrenIds);
             });
         } elseif ($user->hasRole('teacher')) {
             $lessonsQuery = Lesson::where('teacher_id', $user->id);
         } else {
-            // administrator or super admin
             $lessonsQuery = Lesson::query();
         }
 
         $lessons = $lessonsQuery->orderBy('order')->get();
 
-        // Group by instrument if available, otherwise group under "General"
         $lessonsByInstrument = $lessons->groupBy(function ($lesson) {
             $instrument = null;
 
@@ -65,7 +64,7 @@ class LessonController extends Controller
             'teacher:id,name',
             'assignedStudents' => function ($query) use ($childrenIds) {
                 $query->whereIn('student_id', $childrenIds)
-                    ->with('student:id,name', 'latestComment.teacher:id,name');
+                    ->with('student:id,name', 'latestComment.user:id,name');
             },
         ]);
 
@@ -134,38 +133,20 @@ class LessonController extends Controller
         }
 
         if ($user->hasRole('student')) {
-            // Students can view all published lessons (library)
             if ($lesson->status === LessonStatus::Published) {
                 return true;
             }
 
-            // Also allow access to assigned lessons regardless of status
-            $hasAssignmentRecord = $lesson->assignedStudents()
+            return $lesson->assignedStudents()
                 ->where('student_id', $user->id)
-                ->exists();
-
-            if ($hasAssignmentRecord) {
-                return true;
-            }
-
-            return $lesson->students()
-                ->where('users.id', $user->id)
                 ->exists();
         }
 
         if ($user->hasRole('parent')) {
-            // Check assignedStudents (new system)
             $childrenIds = $user->children()->pluck('users.id');
-            if ($childrenIds->isNotEmpty() && $lesson->assignedStudents()->whereIn('student_id', $childrenIds)->exists()) {
-                return true;
-            }
 
-            // Fallback: legacy pivot
-            return $lesson->students()
-                ->whereHas('parents', function ($query) use ($user) {
-                    $query->where('users.id', $user->id);
-                })
-                ->exists();
+            return $childrenIds->isNotEmpty()
+                && $lesson->assignedStudents()->whereIn('student_id', $childrenIds)->exists();
         }
 
         return false;

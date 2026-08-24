@@ -16,9 +16,9 @@
                     <x-heroicon-o-plus class="h-4 w-4" />
                     Create Lesson
                 </a>
-                <a href="{{ route('teacher.lesson-requests.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
+                <a href="{{ route('bookings.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/25">
                     <x-heroicon-o-inbox class="h-4 w-4" />
-                    Lesson Requests
+                    My Bookings
                 </a>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <h2 class="text-xl font-semibold text-black">My Booking Management</h2>
                 <p class="text-sm text-gray-600">Track your scheduled lessons through completion.</p>
             </div>
-            <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-sm font-medium">View all bookings</a>
+            <a href="{{ route('bookings.index') }}" class="soh-link text-sm font-medium">View all bookings</a>
         </div>
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -89,7 +89,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Today&apos;s Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
                 <div class="space-y-3">
                     @forelse($myTodaysLessons as $lesson)
@@ -116,7 +116,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Upcoming Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
                 <div class="space-y-3">
                     @forelse($myUpcomingLessons->take(5) as $lesson)
@@ -143,7 +143,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Completed Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
                 <div class="space-y-3">
                     @forelse($myCompletedLessons as $lesson)
@@ -170,7 +170,7 @@
             <div>
                 <div class="mb-3 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-black">Cancelled Lessons</h3>
-                    <a href="{{ route('teacher.booking-management.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
+                    <a href="{{ route('bookings.index') }}" class="soh-link text-xs font-medium">Open schedule</a>
                 </div>
                 <div class="space-y-3">
                     @forelse($myCancelledLessons as $lesson)
@@ -201,7 +201,7 @@
     <div class="soh-card p-6">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-xl font-semibold text-black">My Lesson Requests</h2>
-            <a href="{{ route('teacher.lesson-requests.index') }}" class="soh-link text-sm font-medium">View all</a>
+            <a href="{{ route('bookings.index') }}" class="soh-link text-sm font-medium">View all</a>
         </div>
         @forelse($myPendingRequests as $request)
             <div class="border-b border-gray-200 py-3 last:border-b-0">
@@ -211,7 +211,7 @@
                     {{ \Illuminate\Support\Carbon::parse($request->requested_start_time)->format('g:i A') }} – {{ \Illuminate\Support\Carbon::parse($request->requested_end_time)->format('g:i A') }}
                 </div>
                 <div class="mt-2">
-                    <a href="{{ route('teacher.lesson-requests.show', $request) }}" class="soh-link text-sm font-medium">Review request</a>
+                    <a href="{{ route('bookings.show', $request) }}" class="soh-link text-sm font-medium">Review request</a>
                 </div>
             </div>
         @empty

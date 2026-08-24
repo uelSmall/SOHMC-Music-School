@@ -9,38 +9,37 @@
         $colors = $statusColors[$status] ?? $statusColors['assigned'];
     @endphp
 
-    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full {{ $colors['bg'] }} {{ $colors['text'] }}">
+    <span class="inline-block rounded-full px-3 py-1 text-xs font-semibold {{ $colors['bg'] }} {{ $colors['text'] }}">
         {{ ucfirst(str_replace('_', ' ', $status)) }}
     </span>
 
     <div class="flex gap-2">
-        @if ($status !== 'completed')
-            <button
-                wire:click="incrementStatus"
-                class="rounded px-2 py-1 text-xs text-white transition-colors"
-                style="background:#A6128D;"
-                title="Mark as next status"
-            >
-                Next
-            </button>
-        @endif
-
         @if ($status === 'assigned')
             <button
                 wire:click="markAsStarted"
-                class="rounded px-2 py-1 text-xs text-white transition-colors"
-                style="background:#8C0375;"
+                class="rounded-full px-3 py-1 text-xs font-semibold text-white transition-all hover:opacity-90"
+                style="background:#A6128D;"
             >
-                Start
+                Start Lesson
             </button>
         @endif
 
-        @if ($status !== 'completed')
+        @if ($status === 'started')
+            <button
+                wire:click="markAsInProgress"
+                class="rounded-full px-3 py-1 text-xs font-semibold text-white transition-all hover:opacity-90"
+                style="background:#8C0375;"
+            >
+                In Progress
+            </button>
+        @endif
+
+        @if (in_array($status, ['started', 'in_progress']))
             <button
                 wire:click="markAsCompleted"
-                class="text-xs px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                class="rounded-full bg-green-500 px-3 py-1 text-xs font-semibold text-white transition-all hover:bg-green-600"
             >
-                Done
+                Mark Complete
             </button>
         @endif
     </div>

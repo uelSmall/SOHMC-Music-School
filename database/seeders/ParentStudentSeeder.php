@@ -121,7 +121,7 @@ class ParentStudentSeeder extends Seeder
 
                 LessonAssignmentComment::create([
                     'lesson_student_assignment_id' => $assignment->id,
-                    'teacher_id' => $lesson->teacher_id,
+                    'user_id' => $lesson->teacher_id,
                     'body' => match ($status) {
                         AssignmentStatus::Completed => 'Great work. Keep practicing the rhythm and tone for consistency.',
                         AssignmentStatus::InProgress => 'Nice progress. Focus on smooth transitions and steady tempo.',

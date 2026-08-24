@@ -28,6 +28,6 @@ class BookedLessonRescheduledSavedNotification extends LessonLifecycleNotificati
 
     protected function actionUrl(): string
     {
-        return route('teacher.booking-management.show', $this->lesson);
+        return route('bookings.show', $this->lesson);
     }
 }

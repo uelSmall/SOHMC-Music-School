@@ -480,3 +480,8 @@ h6,
 .dark .soh-stat-card .border-gray-200 {
 	border-color: var(--soh-border-dark) !important;
 }
+
+/* Safe area padding for mobile devices with notches */
+.safe-area-bottom {
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+}

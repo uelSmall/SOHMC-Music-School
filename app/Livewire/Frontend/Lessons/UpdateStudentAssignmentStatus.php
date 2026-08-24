@@ -5,6 +5,7 @@ namespace App\Livewire\Frontend\Lessons;
 use App\Models\User;
 use App\Notifications\AssignmentStatusUpdatedNotification;
 use Livewire\Component;
+use Modules\Lesson\Enums\AssignmentStatus;
 use Modules\Lesson\Models\LessonStudentAssignment;
 
 class UpdateStudentAssignmentStatus extends Component
@@ -19,50 +20,50 @@ class UpdateStudentAssignmentStatus extends Component
         $this->status = $this->assignment->status->value;
     }
 
-    public function incrementStatus(): void
-    {
-        $this->authorizeOwnership();
-
-        $statuses = ['assigned', 'started', 'in_progress', 'completed'];
-        $currentIndex = array_search($this->status, $statuses);
-
-        if ($currentIndex !== false && $currentIndex < count($statuses) - 1) {
-            $this->status = $statuses[$currentIndex + 1];
-            $this->assignment->update(['status' => $this->status]);
-            if ($this->status === 'completed') {
-                $this->notifyCompletion();
-            }
-            $this->dispatch('statusUpdated');
-            session()->flash('message', 'Assignment status updated!');
-        }
-    }
-
     public function markAsStarted(): void
     {
         $this->authorizeOwnership();
-        $this->assignment->update(['status' => 'started']);
-        $this->status = 'started';
+
+        if ($this->status !== AssignmentStatus::Assigned->value) {
+            return;
+        }
+
+        $this->assignment->update(['status' => AssignmentStatus::Started->value]);
+        $this->status = AssignmentStatus::Started->value;
+
         $this->dispatch('statusUpdated');
-        session()->flash('message', 'Marked as started!');
+        $this->dispatch('notify', message: 'Lesson started!', type: 'success');
     }
 
     public function markAsInProgress(): void
     {
         $this->authorizeOwnership();
-        $this->assignment->update(['status' => 'in_progress']);
-        $this->status = 'in_progress';
+
+        if (! in_array($this->status, [AssignmentStatus::Assigned->value, AssignmentStatus::Started->value])) {
+            return;
+        }
+
+        $this->assignment->update(['status' => AssignmentStatus::InProgress->value]);
+        $this->status = AssignmentStatus::InProgress->value;
+
         $this->dispatch('statusUpdated');
-        session()->flash('message', 'Marked as in progress!');
+        $this->dispatch('notify', message: 'Marked as in progress!', type: 'success');
     }
 
     public function markAsCompleted(): void
     {
         $this->authorizeOwnership();
-        $this->assignment->update(['status' => 'completed']);
-        $this->status = 'completed';
+
+        if ($this->status === AssignmentStatus::Completed->value) {
+            return;
+        }
+
+        $this->assignment->update(['status' => AssignmentStatus::Completed->value]);
+        $this->status = AssignmentStatus::Completed->value;
+
         $this->notifyCompletion();
         $this->dispatch('statusUpdated');
-        session()->flash('message', 'Marked as completed!');
+        $this->dispatch('notify', message: 'Lesson completed! Well done!', type: 'success');
     }
 
     private function authorizeOwnership(): void
@@ -76,20 +77,20 @@ class UpdateStudentAssignmentStatus extends Component
 
     private function notifyCompletion(): void
     {
-        $assignment = $this->assignment->loadMissing('lesson.teacher');
+        $assignment = $this->assignment->loadMissing('lesson:id,title,teacher_id', 'lesson.teacher:id,name', 'student:id,name');
 
-        $recipients = User::query()
-            ->where(function ($query) use ($assignment) {
-                $query->whereIn('id', [$assignment->lesson->teacher_id])
-                    ->orWhereHas('roles', function ($rolesQuery) {
-                        $rolesQuery->whereIn('name', ['super admin', 'administrator']);
-                    });
-            })
-            ->get();
-
-        foreach ($recipients as $recipient) {
-            $recipient->notify(new AssignmentStatusUpdatedNotification($assignment));
+        $teacher = $assignment->lesson->teacher;
+        if ($teacher) {
+            $teacher->notify(new AssignmentStatusUpdatedNotification($assignment));
         }
+
+        User::query()
+            ->whereHas('roles', function ($rolesQuery) {
+                $rolesQuery->whereIn('name', ['super admin', 'administrator']);
+            })
+            ->where('id', '!=', $teacher?->id)
+            ->get()
+            ->each->notify(new AssignmentStatusUpdatedNotification($assignment));
     }
 
     public function render()

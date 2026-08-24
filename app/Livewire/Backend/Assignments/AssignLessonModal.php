@@ -83,21 +83,26 @@ class AssignLessonModal extends Component
         $students = User::query()->whereIn('id', $this->selectedStudentIds)->get()->keyBy('id');
 
         foreach ($this->selectedStudentIds as $studentId) {
-            $assignment = LessonStudentAssignment::updateOrCreate(
-                [
+            $existing = LessonStudentAssignment::where('lesson_id', $lesson->id)
+                ->where('student_id', $studentId)
+                ->first();
+
+            if ($existing) {
+                // Only update due date — don't reset progress or re-notify
+                $existing->update(['due_date' => $this->dueDate]);
+            } else {
+                $assignment = LessonStudentAssignment::create([
                     'lesson_id' => $lesson->id,
                     'student_id' => $studentId,
-                ],
-                [
                     'status' => 'assigned',
                     'due_date' => $this->dueDate,
                     'assigned_at' => now(),
-                ]
-            );
+                ]);
 
-            $student = $students->get($studentId);
-            if ($student) {
-                $student->notify(new LessonAssignedNotification($assignment));
+                $student = $students->get($studentId);
+                if ($student) {
+                    $student->notify(new LessonAssignedNotification($assignment));
+                }
             }
         }
 

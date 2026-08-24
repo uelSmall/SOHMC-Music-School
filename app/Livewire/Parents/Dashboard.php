@@ -28,7 +28,7 @@ class Dashboard extends Component
         $parent = auth()->user();
 
         $children = $parent->children()
-            ->with(['assignedLessons.lesson:id,title,instrument,teacher_id,global_note', 'assignedLessons.lesson.teacher:id,name', 'assignedLessons.latestComment.teacher:id,name'])
+            ->with(['assignedLessons.lesson:id,title,instrument,teacher_id,global_note', 'assignedLessons.lesson.teacher:id,name', 'assignedLessons.latestComment.user:id,name'])
             ->get();
 
         $childrenIds = $children->pluck('id');
@@ -77,7 +77,7 @@ class Dashboard extends Component
         });
 
         $upcomingAssignments = (clone $assignmentsQuery)
-            ->with(['lesson:id,title,instrument,teacher_id,global_note', 'lesson.teacher:id,name', 'student:id,name', 'latestComment.teacher:id,name'])
+            ->with(['lesson:id,title,instrument,teacher_id,global_note', 'lesson.teacher:id,name', 'student:id,name', 'latestComment.user:id,name'])
             ->whereNotNull('due_date')
             ->whereDate('due_date', '>=', now()->toDateString())
             ->orderBy('due_date')

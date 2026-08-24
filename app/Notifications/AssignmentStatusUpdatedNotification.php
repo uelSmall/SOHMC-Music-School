@@ -26,10 +26,12 @@ class AssignmentStatusUpdatedNotification extends Notification
     {
         $assignment = $this->assignment->loadMissing('lesson:id,title', 'student:id,name');
 
+        $statusLabel = ucfirst(str_replace('_', ' ', $assignment->status->value));
+
         return [
             'type' => 'assignment_status_updated',
-            'title' => 'Assignment marked completed',
-            'message' => $assignment->student->name.' completed "'.$assignment->lesson->title.'".',
+            'title' => "Assignment {$statusLabel}",
+            'message' => $assignment->student->name.' marked "'.$assignment->lesson->title.'" as '.$statusLabel.'.',
             'status' => $assignment->status->value,
             'lesson_id' => $assignment->lesson_id,
             'assignment_id' => $assignment->id,

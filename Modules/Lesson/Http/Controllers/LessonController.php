@@ -48,11 +48,6 @@ class LessonController extends Controller
 
         $lesson = Lesson::create($data);
 
-        // Assign students if provided
-        if (!empty($data['student_ids'])) {
-            $lesson->students()->sync($data['student_ids']);
-        }
-
         return redirect()->route($this->resolveRoutePrefix().'.lessons.index')->with('success', 'Lesson created successfully.');
     }
 
@@ -95,11 +90,6 @@ class LessonController extends Controller
         }
 
         $lesson->update($data);
-
-        // Update student assignments if provided
-        if (isset($data['student_ids'])) {
-            $lesson->students()->sync($data['student_ids']);
-        }
 
         return redirect()->route($this->resolveRoutePrefix().'.lessons.index')->with('success', 'Lesson updated successfully.');
     }
