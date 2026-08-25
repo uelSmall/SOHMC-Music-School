@@ -55,7 +55,7 @@
                 <div class="flex items-center justify-between border-b px-6 py-4" style="border-color:#D991CD; background:linear-gradient(135deg, #A6128D 0%, #8C0375 100%);">
                     <div>
                         <h3 class="text-lg font-semibold text-white">Conversation</h3>
-                        <p class="text-sm text-white/75">{{ $commentAssignment->lesson->title }} — {{ $commentAssignment->student->name }}</p>
+                        <p class="text-sm text-white/75">{{ $commentAssignment->lesson?->title ?? 'Deleted Lesson' }} — {{ $commentAssignment->student?->name ?? 'Deleted Student' }}</p>
                     </div>
                     <button type="button" wire:click="cancelComment" class="rounded-lg bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition hover:bg-white/25">
                         Close
@@ -72,7 +72,7 @@
                             <div class="max-w-[75%] {{ $isMe ? 'order-2' : 'order-1' }}">
                                 <div class="flex items-center gap-1.5 {{ $isMe ? 'justify-end' : '' }} mb-1">
                                     <span class="text-[11px] font-semibold {{ $isMe ? 'text-[#A6128D]' : 'text-gray-600' }}">
-                                        {{ $comment->user->name }}
+                                        {{ $comment->user?->name ?? 'Unknown' }}
                                     </span>
                                     <span class="text-[10px] text-gray-400">
                                         {{ $comment->created_at->format('M d, g:ia') }}
@@ -139,10 +139,10 @@
                     @forelse ($assignments as $assignment)
                         <tr class="hover:bg-gray-50 transition-colors {{ $commentAssignmentId === $assignment->id ? 'bg-[#A6128D]/5' : '' }}">
                             <td class="px-6 py-4 text-sm text-gray-900">
-                                <strong>{{ $assignment->lesson->title }}</strong>
+                                <strong>{{ $assignment->lesson->title ?? 'Deleted Lesson' }}</strong>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700">
-                                {{ $assignment->student->name }}
+                                {{ $assignment->student->name ?? 'Deleted Student' }}
                             </td>
                             <td class="px-6 py-4">
                                 <livewire:backend.assignments.update-assignment-status
