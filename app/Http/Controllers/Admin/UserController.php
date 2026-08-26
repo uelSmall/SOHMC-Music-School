@@ -11,35 +11,9 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $activeTab = $request->get('role', 'all');
-        $search = $request->get('search', '');
-
-        $query = User::with('roles')->latest();
-
-        if ($activeTab !== 'all' && in_array($activeTab, ['student', 'teacher', 'parent'])) {
-            $query->whereHas('roles', fn ($q) => $q->where('name', $activeTab));
-        }
-
-        if ($search) {
-            $searchTerm = '%' . $search . '%';
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'like', $searchTerm)
-                  ->orWhere('email', 'like', $searchTerm);
-            });
-        }
-
-        $users = $query->paginate(20)->appends(['role' => $activeTab, 'search' => $search]);
-
-        $roleCounts = [
-            'students' => User::whereHas('roles', fn ($q) => $q->where('name', 'student'))->count(),
-            'teachers' => User::whereHas('roles', fn ($q) => $q->where('name', 'teacher'))->count(),
-            'parents'  => User::whereHas('roles', fn ($q) => $q->where('name', 'parent'))->count(),
-            'all'      => User::count(),
-        ];
-
-        return view('admin.users.index', compact('users', 'roleCounts', 'activeTab', 'search'));
+        return view('admin.users.index');
     }
 
     public function create()
