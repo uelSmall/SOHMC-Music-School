@@ -19,7 +19,7 @@
             <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-40 bg-black/50 lg:hidden" @click="sidebarOpen = false"></div>
 
             {{-- Sidebar --}}
-            <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-72 translate-x-0 overflow-y-auto border-r border-[color:var(--soh-gray)]/20 bg-white transition-transform duration-200 lg:translate-x-0">
+            <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 w-72 -translate-x-full overflow-y-auto border-r border-[color:var(--soh-gray)]/20 bg-white transition-transform duration-200 lg:translate-x-0">
                 <div class="flex h-16 items-center gap-3 border-b border-[color:var(--soh-gray)]/20 px-6">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
                         <img src="{{ asset('img/sohmc-logo-icon.jpg') }}" alt="SOHMC" class="h-9 w-9 rounded-lg object-cover" />
@@ -27,7 +27,7 @@
                     </a>
                 </div>
 
-                <nav class="mt-6 space-y-1 px-3">
+                <nav class="mt-6 space-y-1 overflow-y-auto px-3 pb-20 lg:pb-4">
                     @php
                         $navItems = [
                             ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'icon' => '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>'],
@@ -43,7 +43,7 @@
 
                     @foreach($navItems as $item)
                         @php $active = request()->routeIs($item['route'] . '*'); @endphp
-                        <a href="{{ route($item['route']) }}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {{ $active ? 'bg-[color:var(--soh-purple)]/10 text-[color:var(--soh-purple)]' : 'text-gray-600 hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]' }}">
+                        <a href="{{ route($item['route']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {{ $active ? 'bg-[color:var(--soh-purple)]/10 text-[color:var(--soh-purple)]' : 'text-gray-600 hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]' }}">
                             <svg class="h-5 w-5 {{ $active ? 'text-[color:var(--soh-purple)]' : 'text-gray-400' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $item['icon'] !!}</svg>
                             {{ $item['label'] }}
                         </a>
@@ -51,7 +51,7 @@
                 </nav>
 
                 <div class="absolute bottom-0 left-0 right-0 border-t border-[color:var(--soh-gray)]/20 p-4">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-500 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">
+                    <a href="{{ route('home') }}" @click="sidebarOpen = false" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-500 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">
                         <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                         View Site
                     </a>
@@ -61,12 +61,13 @@
             {{-- Main content --}}
             <div class="lg:pl-72">
                 {{-- Top bar --}}
-                <header class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[color:var(--soh-gray)]/20 bg-white/80 px-4 backdrop-blur-sm sm:px-6 lg:px-8">
-                    <button @click="sidebarOpen = !sidebarOpen" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:hidden">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-                    </button>
-
-                    <div class="flex-1"></div>
+                <header class="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[color:var(--soh-gray)]/20 bg-white/80 px-4 backdrop-blur-sm sm:h-16 sm:px-6 lg:px-8">
+                    <div class="flex items-center gap-3">
+                        <button @click="sidebarOpen = !sidebarOpen" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:hidden">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                        </button>
+                        <span class="text-sm font-semibold text-gray-900 lg:hidden">{{ $title ?? 'Admin' }}</span>
+                    </div>
 
                     <div x-data="{ open: false }" class="relative" @click.outside="open = false">
                         <button @click="open = !open" class="flex items-center gap-2.5 rounded-full border border-[color:var(--soh-gray)]/30 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
