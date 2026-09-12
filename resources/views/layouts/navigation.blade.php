@@ -70,6 +70,8 @@
 
                         <a @click="profileMenu = false" href="{{ route('profile.edit') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Profile Settings</a>
 
+                        <a @click="profileMenu = false" href="{{ route('bug-reports.create') }}" class="mt-1 block rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Report a Bug</a>
+
                         <form method="POST" action="{{ route('logout') }}" class="mt-2 border-t border-[color:var(--soh-gray)]/20 pt-2">
                             @csrf
                             <button type="submit" class="block w-full rounded-xl px-3 py-2.5 text-left text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">Logout</button>
@@ -106,6 +108,8 @@
             <a @click="open = false" href="{{ route('notifications.index') }}" class="soh-nav-link block">My Notifications</a>
 
             <a @click="open = false" href="{{ route('profile.edit') }}" class="soh-nav-link block">Profile</a>
+
+            <a @click="open = false" href="{{ route('bug-reports.create') }}" class="soh-nav-link block">Report a Bug</a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

@@ -46,6 +46,7 @@ class UserController extends Controller
 
         if (! empty($roles)) {
             $user->syncRoles($roles);
+            $user->clearPermissionCache();
         }
 
         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
@@ -84,6 +85,7 @@ class UserController extends Controller
 
         $user->update($validated);
         $user->syncRoles($roles);
+        $user->clearPermissionCache();
 
         return redirect()->route('admin.users.index')->with('status', 'User updated successfully.');
     }

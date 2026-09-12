@@ -61,23 +61,11 @@
                     @forelse($users as $user)
                         @php
                             $primaryRole = $user->roles->first()?->name ?? 'user';
-                            $avatarColors = [
-                                'student' => 'bg-blue-100 text-blue-700',
-                                'teacher' => 'bg-[#A6128D]/10 text-[#A6128D]',
-                                'parent'  => 'bg-orange-100 text-orange-800',
-                            ];
-                            $roleBadges = [
-                                'student' => 'bg-blue-100 text-blue-700',
-                                'teacher' => 'bg-purple-100 text-purple-700',
-                                'parent'  => 'bg-orange-100 text-orange-800',
-                                'administrator' => 'bg-red-100 text-red-700',
-                                'super admin' => 'bg-red-100 text-red-700',
-                            ];
                         @endphp
                         <tr class="transition hover:bg-gray-50/50">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full {{ $avatarColors[$primaryRole] ?? 'bg-gray-100 text-gray-600' }} text-sm font-bold">
+                                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white {{ \App\Models\Role::avatarFor($primaryRole) }}">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
                                     <div>
@@ -89,8 +77,8 @@
                             <td class="px-6 py-4">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($user->roles as $role)
-                                        <span class="inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold {{ $roleBadges[$role->name] ?? 'bg-gray-100 text-gray-600' }}">
-                                            {{ ucfirst($role->name) }}
+                                        <span class="inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold {{ \App\Models\Role::badgeFor($role->name) }}">
+                                            {{ \App\Models\Role::labelFor($role->name) }}
                                         </span>
                                     @endforeach
                                 </div>

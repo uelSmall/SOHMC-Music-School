@@ -65,23 +65,37 @@ trait UserPresenter
         $lastUpdated = \Illuminate\Support\Facades\Cache::get('spatie_permissions_last_updated', 'never');
         $cacheKey = 'permissions_user_'.$this->id.'_'.$lastUpdated;
 
-        // Check cache first
+        // Check cache first. Empty cached results are ignored (and refetched)
+        // to avoid poisoning the cache before permissions are assigned.
         if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            $cached = Cache::get($cacheKey);
+
+            if ($cached instanceof \Illuminate\Support\Collection && ! $cached->isEmpty()) {
+                return $cached;
+            }
+
+            Cache::forget($cacheKey);
         }
 
         // If relation is loaded (via eager loading), cache it and return
         if ($this->relationLoaded('permissions')) {
             $permissions = $this->getRelation('permissions');
-            Cache::forever($cacheKey, $permissions);
+
+            if ($permissions->isNotEmpty()) {
+                Cache::forever($cacheKey, $permissions);
+            }
 
             return $permissions;
         }
 
-        // Otherwise, query and cache
-        return Cache::rememberForever($cacheKey, function () {
-            return $this->permissions()->get();
-        });
+        // Otherwise, query and cache (only non-empty results are cached)
+        $permissions = $this->permissions()->get();
+
+        if ($permissions->isNotEmpty()) {
+            Cache::forever($cacheKey, $permissions);
+        }
+
+        return $permissions;
     }
 
     /**
@@ -94,23 +108,38 @@ trait UserPresenter
         $lastUpdated = \Illuminate\Support\Facades\Cache::get('spatie_permissions_last_updated', 'never');
         $cacheKey = 'roles_user_'.$this->id.'_'.$lastUpdated;
 
-        // Check cache first
+        // Check cache first. An empty cached result means the user was read
+        // before their roles were set (e.g. Spatie blanks the relation during
+        // syncRoles then immediately reads it); ignore and refetch those.
         if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            $cached = Cache::get($cacheKey);
+
+            if ($cached instanceof \Illuminate\Support\Collection && ! $cached->isEmpty()) {
+                return $cached;
+            }
+
+            Cache::forget($cacheKey);
         }
 
         // If relation is loaded (via eager loading), cache it and return
         if ($this->relationLoaded('roles')) {
             $roles = $this->getRelation('roles');
-            Cache::forever($cacheKey, $roles);
+
+            if ($roles->isNotEmpty()) {
+                Cache::forever($cacheKey, $roles);
+            }
 
             return $roles;
         }
 
-        // Otherwise, query and cache
-        return Cache::rememberForever($cacheKey, function () {
-            return $this->roles()->with('permissions')->get();
-        });
+        // Otherwise, query and cache (only non-empty results are cached)
+        $roles = $this->roles()->with('permissions')->get();
+
+        if ($roles->isNotEmpty()) {
+            Cache::forever($cacheKey, $roles);
+        }
+
+        return $roles;
     }
 
     /**

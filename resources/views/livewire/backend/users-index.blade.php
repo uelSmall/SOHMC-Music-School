@@ -34,16 +34,13 @@
                                 </td>
                                 <td>
                                     @if ($user->getRoleNames()->count() > 0)
-                                        <ul class="fa-ul">
+                                        <div class="d-flex flex-wrap gap-1">
                                             @foreach ($user->getRoleNames() as $role)
-                                                <li>
-                                                    <span class="fa-li">
-                                                        <i class="fa-solid fa-user-shield fa-fw"></i>
-                                                    </span>
-                                                    {{ ucwords($role) }}
-                                                </li>
+                                                <span class="badge {{ \App\Models\Role::bootstrapBadgeFor($role) }}">
+                                                    {{ \App\Models\Role::labelFor($role) }}
+                                                </span>
                                             @endforeach
-                                        </ul>
+                                        </div>
                                     @endif
                                 </td>
                                 <td>

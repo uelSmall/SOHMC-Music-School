@@ -45,7 +45,9 @@
                     @foreach($roles as $role)
                         <label class="flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 transition hover:border-[#A6128D]/50 hover:bg-[#A6128D]/5">
                             <input type="checkbox" name="roles[]" value="{{ $role->name }}" {{ in_array($role->name, old('roles', [])) ? 'checked' : '' }} class="rounded border-gray-300 text-[#A6128D] focus:ring-[#A6128D]/20" />
-                            <span class="text-sm font-medium text-gray-700">{{ ucfirst($role->name) }}</span>
+                            <span>
+                                <span class="inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold {{ \App\Models\Role::badgeFor($role->name) }}">{{ \App\Models\Role::labelFor($role->name) }}</span>
+                            </span>
                         </label>
                     @endforeach
                 </div>

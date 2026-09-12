@@ -182,6 +182,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
+    Route::get('bug-reports', [\App\Http\Controllers\BugReportController::class, 'index'])->name('bug-reports.index');
+    Route::get('bug-reports/{report}', [\App\Http\Controllers\BugReportController::class, 'show'])->name('bug-reports.show');
+    Route::patch('bug-reports/{report}', [\App\Http\Controllers\BugReportController::class, 'update'])->name('bug-reports.update');
 });
 
 /*
@@ -302,6 +305,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+    // Bug Report submission (all authenticated users)
+    Route::get('/bug-report', [\App\Http\Controllers\BugReportController::class, 'create'])->name('bug-reports.create');
+    Route::post('/bug-report', [\App\Http\Controllers\BugReportController::class, 'store'])->name('bug-reports.store');
     
     // Teacher/admin assignments dashboard
     Route::get('/admin/assignments', \App\Livewire\Backend\Lessons\AssignmentDashboard::class)

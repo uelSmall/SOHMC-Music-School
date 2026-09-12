@@ -140,6 +140,11 @@
                                     Profile Settings
                                 </a>
 
+                                <a @click="profileMenu = false" href="{{ route('bug-reports.create') }}" class="mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[color:var(--soh-surface)] hover:text-[color:var(--soh-purple)]">
+                                    <svg class="h-4 w-4 text-[color:var(--soh-purple)]/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                    Report a Bug
+                                </a>
+
                                 <div class="my-2 border-t border-[color:var(--soh-gray)]/20"></div>
 
                                 <form method="POST" action="{{ route('logout') }}">
@@ -192,6 +197,7 @@
                 <a href="{{ route(Auth::user()->dashboardRouteName()) }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Dashboard</a>
                 <a href="{{ route('notifications.index') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Notifications</a>
                 <a href="{{ route('profile.edit') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Profile Settings</a>
+                <a href="{{ route('bug-reports.create') }}" class="block text-white px-3 py-2.5 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Report a Bug</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="block w-full text-left text-white px-3 py-2 rounded-md transition-colors duration-200 hover:bg-[#8C0375] hover:text-white">Logout</button>
