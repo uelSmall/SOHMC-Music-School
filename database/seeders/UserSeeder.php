@@ -119,6 +119,8 @@ class UserSeeder extends Seeder
             } elseif (str_contains($user_data['email'], 'admin')) {
                 if ($user_data['email'] === 'super@admin.com') {
                     $user->syncRoles(['super admin']);
+                } elseif ($user_data['email'] === 'admin@admin.com') {
+                    $user->syncRoles(['administrator', 'teacher']);
                 } else {
                     $user->syncRoles(['administrator']);
                 }

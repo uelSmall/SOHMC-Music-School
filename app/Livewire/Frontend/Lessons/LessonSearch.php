@@ -5,6 +5,7 @@ namespace App\Livewire\Frontend\Lessons;
 use Livewire\Attributes\State;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Modules\Booking\Models\Instrument;
 use Modules\Lesson\Models\Lesson;
 
 class LessonSearch extends Component
@@ -77,7 +78,7 @@ class LessonSearch extends Component
 
         // Instrument filter
         if ($this->filterInstrument) {
-            $query->where('instrument', $this->filterInstrument);
+            $query->whereRaw('LOWER(instrument) = ?', [mb_strtolower($this->filterInstrument)]);
         }
 
         // Tab filtering
@@ -120,14 +121,10 @@ class LessonSearch extends Component
     #[\Livewire\Attributes\Computed]
     public function instruments()
     {
-        return Lesson::query()
-            ->where('status', 'published')
-            ->whereNotNull('instrument')
-            ->whereRaw('LOWER(instrument) <> ?', ['general'])
-            ->distinct()
-            ->pluck('instrument')
-            ->sort()
-            ->values();
+        return Instrument::query()
+            ->active()
+            ->orderBy('name')
+            ->pluck('name');
     }
 
     #[\Livewire\Attributes\Computed]

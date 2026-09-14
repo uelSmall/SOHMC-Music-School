@@ -206,6 +206,9 @@ class LessonForm extends Component
             'Keyboard',
             'Steelpan',
             'Music Theory',
+            'Drum set',
+            'Bass Guitar',
+            'Flute',
         ];
     }
 

@@ -174,6 +174,9 @@
                         ['name' => 'Keyboard', 'icon' => 'keyboard', 'desc' => 'Modern digital piano'],
                         ['name' => 'Steelpan', 'icon' => 'steelpan', 'desc' => 'Caribbean tradition'],
                         ['name' => 'Music Theory', 'icon' => 'theory','desc' => 'Reading & composition'],
+                        ['name' => 'Drum set', 'icon' => 'drumset',  'desc' => 'Rhythm, coordination & groove'],
+                        ['name' => 'Bass Guitar', 'icon' => 'bass',  'desc' => 'Groove & rhythm section'],
+                        ['name' => 'Flute',    'icon' => 'flute',    'desc' => 'Expressive melody & breath control'],
                     ];
                 @endphp
 
@@ -202,6 +205,15 @@
                                     @break
                                 @case('steelpan')
                                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="9" cy="10" r="1"/><circle cx="14.5" cy="9" r="1"/><circle cx="13" cy="14" r="1"/></svg>
+                                    @break
+                                @case('drumset')
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10a7 7 0 0 1 14 0"/><path d="M5 10v6a7 7 0 0 0 14 0v-6"/><path d="M16 6l3 3M19 6l-3 3"/></svg>
+                                    @break
+                                @case('bass')
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3l6 6-2 2-2-2-4 4a5 5 0 1 1-2-2l4-4-2-2 2-2z"/><circle cx="20" cy="10" r=".6" fill="currentColor"/><circle cx="21.5" cy="8.5" r=".6" fill="currentColor"/><circle cx="18" cy="8" r=".6" fill="currentColor"/><circle cx="19.5" cy="6.5" r=".6" fill="currentColor"/></svg>
+                                    @break
+                                @case('flute')
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="18" height="4" rx="2"/><circle cx="8" cy="12" r=".6" fill="currentColor"/><circle cx="11" cy="12" r=".6" fill="currentColor"/><circle cx="14" cy="12" r=".6" fill="currentColor"/><path d="M20 12h2"/></svg>
                                     @break
                                 @default
                                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h9l3 3v13H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>

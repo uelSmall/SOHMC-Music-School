@@ -19,7 +19,7 @@ class UserRoleTableSeeder extends Seeder
     public function run()
     {
         User::where('email', 'super@admin.com')->first()?->syncRoles('super admin');
-        User::where('email', 'admin@admin.com')->first()?->syncRoles('administrator');
+        User::where('email', 'admin@admin.com')->first()?->syncRoles(['administrator', 'teacher']);
 
         User::where('email', 'teacher1@example.com')->first()?->syncRoles('teacher');
         User::where('email', 'teacher2@example.com')->first()?->syncRoles('teacher');

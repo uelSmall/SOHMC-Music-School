@@ -33,7 +33,7 @@ class UserTableSeeder extends Seeder
             [
                 'id' => 2,
                 'username' => '100002',
-                'name' => 'Admin Istrator',
+                'name' => 'Malchiel Small',
                 'email' => 'admin@admin.com',
                 'password' => 'password',
                 'email_verified_at' => Carbon::now(),
