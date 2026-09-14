@@ -19,8 +19,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::with('permissions')->get();
+        $parents = User::role('parent')->orderBy('name')->get();
 
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create', compact('roles', 'parents'));
     }
 
     public function store(Request $request)
@@ -32,6 +33,8 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Password::min(6)],
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,name',
+            'parents' => 'nullable|array',
+            'parents.*' => 'exists:users,id',
         ]);
 
         $validated['name'] = trim($validated['first_name'] . ' ' . $validated['last_name']);
@@ -42,12 +45,17 @@ class UserController extends Controller
         $roles = $validated['roles'] ?? [];
         unset($validated['roles']);
 
+        $parents = $validated['parents'] ?? [];
+        unset($validated['parents']);
+
         $user = User::create($validated);
 
         if (! empty($roles)) {
             $user->syncRoles($roles);
             $user->clearPermissionCache();
         }
+
+        $user->parents()->sync($parents);
 
         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
     }
@@ -56,8 +64,10 @@ class UserController extends Controller
     {
         $roles = Role::with('permissions')->get();
         $userRoles = $user->roles->pluck('name')->toArray();
+        $parents = User::role('parent')->orderBy('name')->get();
+        $userParents = $user->parents()->pluck('users.id')->map(fn ($id) => (int) $id)->toArray();
 
-        return view('admin.users.edit', compact('user', 'roles', 'userRoles'));
+        return view('admin.users.edit', compact('user', 'roles', 'userRoles', 'parents', 'userParents'));
     }
 
     public function update(Request $request, User $user)
@@ -69,6 +79,8 @@ class UserController extends Controller
             'password' => ['nullable', 'confirmed', Password::min(6)],
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,name',
+            'parents' => 'nullable|array',
+            'parents.*' => 'exists:users,id',
         ]);
 
         $validated['name'] = trim($validated['first_name'] . ' ' . $validated['last_name']);
@@ -83,9 +95,14 @@ class UserController extends Controller
         $roles = $validated['roles'] ?? [];
         unset($validated['roles']);
 
+        $parents = $validated['parents'] ?? [];
+        unset($validated['parents']);
+
         $user->update($validated);
         $user->syncRoles($roles);
         $user->clearPermissionCache();
+
+        $user->parents()->sync($parents);
 
         return redirect()->route('admin.users.index')->with('status', 'User updated successfully.');
     }

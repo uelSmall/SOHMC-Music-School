@@ -55,6 +55,26 @@
                 @error('roles') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
 
+            <div>
+                <label class="mb-2 block text-sm font-medium text-gray-700">Parents / Guardians <span class="text-xs font-normal text-gray-400">(for student accounts)</span></label>
+                @if($parents->isEmpty())
+                    <p class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-500">No parent accounts yet. Create a parent account first, then link it here.</p>
+                @else
+                    <div class="grid gap-2 sm:grid-cols-2">
+                        @foreach($parents as $parent)
+                            <label class="flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 transition hover:border-[#A6128D]/50 hover:bg-[#A6128D]/5">
+                                <input type="checkbox" name="parents[]" value="{{ $parent->id }}" {{ in_array($parent->id, old('parents', $userParents)) ? 'checked' : '' }} class="rounded border-gray-300 text-[#A6128D] focus:ring-[#A6128D]/20" />
+                                <span class="text-sm">
+                                    <span class="block font-medium text-gray-800">{{ $parent->name }}</span>
+                                    <span class="block text-xs text-gray-500">{{ $parent->email }}</span>
+                                </span>
+                            </label>
+                        @endforeach
+                    </div>
+                @endif
+                @error('parents') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            </div>
+
             <div class="flex items-center gap-3 border-t border-gray-100 pt-6">
                 <a href="{{ route('admin.users.index') }}" class="soh-btn-outline">Cancel</a>
                 <button type="submit" class="soh-btn-primary">Save Changes</button>

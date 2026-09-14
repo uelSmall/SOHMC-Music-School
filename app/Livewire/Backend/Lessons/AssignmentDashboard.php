@@ -88,7 +88,7 @@ class AssignmentDashboard extends Component
                 ->get();
         }
 
-        $layout = request()->routeIs('teacher.*') ? 'layouts.app' : 'backend.layouts.app';
+        $layout = request()->routeIs('teacher.*') ? 'layouts.app' : 'components.layouts.admin';
 
         return view('backend.lessons.assignments-dashboard', [
             'assignments' => $assignments,
