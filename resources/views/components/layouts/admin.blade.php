@@ -2,12 +2,12 @@
 <html lang="{{ str_replace("_", "-", app()->currentLocale()) }}" dir="{{ language_direction() }}">
     <head>
         <meta charset="utf-8" />
-        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="apple-touch-icon" sizes="76x76" />
-        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
+        <link href="{{ asset("img/sohmc-favicon.png") }}" rel="apple-touch-icon" sizes="76x76" />
+        <link type="image/png" href="{{ asset("img/sohmc-favicon.png") }}" rel="icon" />
         <title>{{ $title ?? "Admin" }} | {{ config("app.name") }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
-        <link href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="shortcut icon" />
+        <link href="{{ asset("img/sohmc-favicon.png") }}" rel="shortcut icon" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         @vite(["resources/css/app-frontend.css", "resources/js/app-frontend.js"])
         @livewireStyles

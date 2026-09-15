@@ -61,10 +61,19 @@
             </div>
 
             <div>
-                <x-input-label for="lesson_duration" value="Duration (minutes) *" />
+                <x-input-label for="lesson_duration" value="Duration *" />
                 <select id="lesson_duration" name="lesson_duration" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[color:var(--soh-purple)] focus:ring-[color:var(--soh-purple)]" required>
-                    @foreach([15, 30, 45, 60, 90, 120] as $minutes)
-                        <option value="{{ $minutes }}" {{ old('lesson_duration', 60) == $minutes ? 'selected' : '' }}>{{ $minutes }} minutes</option>
+                    @foreach([30, 45, 60, 90, 120, 150, 180] as $minutes)
+                        @php
+                            if ($minutes < 60) {
+                                $label = $minutes . ' minutes';
+                            } elseif ($minutes === 60) {
+                                $label = '1 hour';
+                            } else {
+                                $label = intdiv($minutes, 60) . ($minutes % 60 === 0 ? '' : '½') . ' hours';
+                            }
+                        @endphp
+                        <option value="{{ $minutes }}" {{ old('lesson_duration', 60) == $minutes ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
                 @error('lesson_duration') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror

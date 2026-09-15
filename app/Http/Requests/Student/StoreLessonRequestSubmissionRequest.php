@@ -23,7 +23,7 @@ class StoreLessonRequestSubmissionRequest extends FormRequest
             'requested_date' => ['required', 'date', 'after_or_equal:today'],
             'requested_start_time' => ['required', 'date_format:H:i'],
             'requested_end_time' => ['required', 'date_format:H:i', 'after:requested_start_time'],
-            'lesson_duration' => ['required', 'integer', Rule::in([30, 45, 60])],
+            'lesson_duration' => ['required', 'integer', Rule::in([30, 45, 60, 90, 120, 150, 180])],
             'student_note' => ['nullable', 'string', 'max:2000'],
         ];
     }

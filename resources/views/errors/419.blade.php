@@ -2,7 +2,7 @@
 <html lang="{{ str_replace("_", "-", app()->currentLocale()) }}" dir="{{ language_direction() }}">
     <head>
         <meta charset="utf-8" />
-        <link type="image/jpeg" href="{{ asset("img/sohmc-logo-icon.jpg") }}" rel="icon" />
+        <link type="image/png" href="{{ asset("img/sohmc-favicon.png") }}" rel="icon" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>Session Expired | {{ config("app.name") }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />

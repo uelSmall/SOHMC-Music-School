@@ -43,15 +43,24 @@ class UserTableSeeder extends Seeder
         ];
 
         foreach ($users as $user_data) {
-            $user = User::updateOrCreate(
-                ['email' => $user_data['email']],
-                [
+            $user = User::where('email', $user_data['email'])->first();
+
+            if ($user) {
+                $user->forceFill([
                     'username' => $user_data['username'],
-                    'name' => $user_data['name'],
-                    'password' => $user_data['password'],
                     'email_verified_at' => $user_data['email_verified_at'],
-                ]
-            );
+                ])->save();
+
+                continue;
+            }
+
+            $user = User::create([
+                'username' => $user_data['username'],
+                'name' => $user_data['name'],
+                'email' => $user_data['email'],
+                'password' => $user_data['password'],
+                'email_verified_at' => $user_data['email_verified_at'],
+            ]);
 
             event(new UserCreated($user));
         }
