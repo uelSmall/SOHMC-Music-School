@@ -78,6 +78,25 @@
         <!-- Scripts -->
         @livewireScripts
 
+        <script>
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest ? e.target.closest('[data-password-toggle]') : null;
+                if (!btn) {
+                    return;
+                }
+                var input = document.getElementById(btn.getAttribute('data-password-toggle'));
+                if (!input) {
+                    return;
+                }
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                var icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+                }
+            });
+        </script>
+
         @stack("after-scripts")
         <!-- / Scripts -->
     </body>

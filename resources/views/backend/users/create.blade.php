@@ -102,7 +102,12 @@
 
                             {{ html()->label($field_lable, $field_name)->class("form-label") }}
                             {!! field_required($required) !!}
-                            {{ html()->password($field_name)->placeholder($field_placeholder)->class("form-control")->attributes(["$required"]) }}
+                            <div class="input-group">
+                                {{ html()->password($field_name)->id("password_input")->placeholder($field_placeholder)->class("form-control")->attributes(["$required"]) }}
+                                <button type="button" class="btn btn-outline-secondary" data-password-toggle="password_input" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 mb-3">
@@ -116,7 +121,12 @@
 
                             {{ html()->label($field_lable, $field_name)->class("form-label") }}
                             {!! field_required($required) !!}
-                            {{ html()->password($field_name)->placeholder($field_placeholder)->class("form-control")->attributes(["$required"]) }}
+                            <div class="input-group">
+                                {{ html()->password($field_name)->id("password_confirm_input")->placeholder($field_placeholder)->class("form-control")->attributes(["$required"]) }}
+                                <button type="button" class="btn btn-outline-secondary" data-password-toggle="password_confirm_input" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

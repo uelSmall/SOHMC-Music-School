@@ -51,7 +51,12 @@
                         {{ html()->label(__("labels.backend.users.fields.password"))->class("col-md-2 form-label")->for("password") }}
 
                         <div class="col-md-10">
-                            {{ html()->password("password")->class("form-control")->placeholder(__("labels.backend.users.fields.password"))->required() }}
+                            <div class="input-group">
+                                {{ html()->password("password")->id("change_password_input")->class("form-control")->placeholder(__("labels.backend.users.fields.password"))->required() }}
+                                <button type="button" class="btn btn-outline-secondary" data-password-toggle="change_password_input" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -59,7 +64,12 @@
                         {{ html()->label(__("labels.backend.users.fields.password_confirmation"))->class("col-md-2 form-label")->for("password_confirmation") }}
 
                         <div class="col-md-10">
-                            {{ html()->password("password_confirmation")->class("form-control")->placeholder(__("labels.backend.users.fields.password_confirmation"))->required() }}
+                            <div class="input-group">
+                                {{ html()->password("password_confirmation")->id("change_password_confirm_input")->class("form-control")->placeholder(__("labels.backend.users.fields.password_confirmation"))->required() }}
+                                <button type="button" class="btn btn-outline-secondary" data-password-toggle="change_password_confirm_input" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
