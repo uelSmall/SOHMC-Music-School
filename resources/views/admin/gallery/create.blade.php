@@ -26,6 +26,29 @@
                 @error('image') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
 
+            <div class="border-t border-gray-100 pt-6">
+                <h2 class="text-lg font-semibold text-gray-900">Video <span class="text-sm font-normal text-gray-400">(optional — upload a file or paste a link)</span></h2>
+                <div class="mt-4 space-y-4">
+                    <div>
+                        <label for="video" class="mb-1 block text-sm font-medium text-gray-700">Video File <span class="text-gray-400">(mp4/webm/ogg/mov, up to 500MB)</span></label>
+                        <input type="file" name="video" id="video" accept="video/*" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        @error('video') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="flex items-center gap-3 text-sm text-gray-400">
+                        <span class="h-px flex-1 bg-gray-200"></span>
+                        <span>or</span>
+                        <span class="h-px flex-1 bg-gray-200"></span>
+                    </div>
+
+                    <div>
+                        <label for="video_url" class="mb-1 block text-sm font-medium text-gray-700">Video Link <span class="text-gray-400">(YouTube or Vimeo URL)</span></label>
+                        <input type="url" name="video_url" id="video_url" value="{{ old('video_url') }}" placeholder="https://youtube.com/watch?v=..." class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        @error('video_url') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+
             <div class="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label for="status" class="mb-1 block text-sm font-medium text-gray-700">Status</label>

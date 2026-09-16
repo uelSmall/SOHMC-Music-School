@@ -26,6 +26,9 @@
                                     <p class="mt-1 truncate text-sm text-gray-500">{{ $item->caption }}</p>
                                 @endif
                             </div>
+                            @if($item->video_url)
+                                <span class="shrink-0 rounded-full bg-[#A6128D]/10 px-2 py-0.5 text-xs font-semibold text-[#A6128D]">Video</span>
+                            @endif
                             @if($item->status == 1)
                                 <span class="shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">Active</span>
                             @elseif($item->status == 0)

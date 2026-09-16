@@ -34,6 +34,44 @@
                 @error('image') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
 
+            <div class="border-t border-gray-100 pt-6">
+                <h2 class="text-lg font-semibold text-gray-900">Video <span class="text-sm font-normal text-gray-400">(optional)</span></h2>
+
+                @if($galleryItem->video_url)
+                    <div class="mt-3 rounded-xl border border-gray-200 p-3">
+                        @if (str_contains($galleryItem->video_url, 'youtube.com') || str_contains($galleryItem->video_url, 'youtu.be') || str_contains($galleryItem->video_url, 'vimeo.com'))
+                            <iframe src="{{ $galleryItem->video_url }}" class="h-48 w-full rounded-lg" loading="lazy" allowfullscreen></iframe>
+                        @else
+                            <video src="{{ $galleryItem->video_url }}" controls class="h-48 w-full rounded-lg"></video>
+                        @endif
+                        <label class="mt-3 flex cursor-pointer items-center gap-2 text-sm text-red-600">
+                            <input type="checkbox" name="remove_video" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500" />
+                            Remove this video
+                        </label>
+                    </div>
+                @endif
+
+                <div class="mt-4 space-y-4">
+                    <div>
+                        <label for="video" class="mb-1 block text-sm font-medium text-gray-700">Replace with Video File <span class="text-gray-400">(mp4/webm/ogg/mov, up to 500MB — leave blank to keep current)</span></label>
+                        <input type="file" name="video" id="video" accept="video/*" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        @error('video') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="flex items-center gap-3 text-sm text-gray-400">
+                        <span class="h-px flex-1 bg-gray-200"></span>
+                        <span>or</span>
+                        <span class="h-px flex-1 bg-gray-200"></span>
+                    </div>
+
+                    <div>
+                        <label for="video_url" class="mb-1 block text-sm font-medium text-gray-700">Video Link <span class="text-gray-400">(YouTube or Vimeo URL)</span></label>
+                        <input type="url" name="video_url" id="video_url" value="{{ old('video_url', $galleryItem->video_url) }}" placeholder="https://youtube.com/watch?v=..." class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        @error('video_url') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+
             <div class="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label for="status" class="mb-1 block text-sm font-medium text-gray-700">Status</label>

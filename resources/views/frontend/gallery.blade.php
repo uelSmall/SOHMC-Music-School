@@ -19,7 +19,7 @@
             @unless ($galleryItems->isEmpty())
                 <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-white/12 border border-white/20 px-5 py-2 text-sm font-semibold text-white/80 backdrop-blur-sm">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                    {{ $galleryItems->count() }} {{ __('photos') }}
+                    {{ $galleryItems->count() }} {{ __('moments') }}
                 </div>
             @endunless
         </div>
@@ -37,29 +37,45 @@
                         <svg class="h-8 w-8 text-[color:var(--soh-purple)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                     </div>
                     <p class="mt-4 text-xl font-semibold text-[color:var(--soh-black)]">{{ __('No gallery images available yet') }}</p>
-                    <p class="mt-2 text-sm text-gray-600">{{ __('Photos will appear here once they are uploaded.') }}</p>
+                    <p class="mt-2 text-sm text-gray-600">{{ __('Photos and videos will appear here once they are uploaded.') }}</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
                     @foreach ($galleryItems as $index => $item)
                         @php
                             $isWide = $index % 5 === 0;
+                            $videoUrl = $item->video_url;
                             $imageUrl = $item->getFirstMediaUrl('gallery', 'gallery-lg') ?: $item->getFirstMediaUrl('gallery');
-                            $fullUrl = $item->getFirstMediaUrl('gallery') ?: $imageUrl;
                         @endphp
 
-                        @if ($imageUrl)
+                        @if ($videoUrl || $imageUrl)
                             <article
                                 class="group relative cursor-pointer overflow-hidden rounded-2xl border border-[color:var(--soh-gray)]/30 bg-white shadow-lg transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl {{ $isWide ? 'sm:col-span-2 lg:col-span-2' : '' }}"
                                 x-intersect.once="$el.classList.add('animate-fade-in')"
-                                @click="open({{ $index }}, '{{ addslashes($item->title) }}', '{{ addslashes($item->caption ?? '') }}', '{{ $fullUrl }}')"
+                                @click="open({{ $index }})"
                             >
-                                <img
-                                    src="{{ $imageUrl }}"
-                                    alt="{{ $item->title }}"
-                                    loading="lazy"
-                                    class="h-64 w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 {{ $isWide ? 'sm:h-80 lg:h-96' : 'sm:h-72' }}"
-                                />
+                                @if ($videoUrl && ! $imageUrl)
+                                    <div class="flex h-64 items-center justify-center bg-gradient-to-br from-[#A6128D] via-[#8C0375] to-[#4A0140] sm:h-72 {{ $isWide ? 'sm:h-80 lg:h-96' : '' }}">
+                                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white/95 text-[#8C0375] shadow-xl transition-transform duration-300 group-hover:scale-110">
+                                            <svg class="ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                @else
+                                    <img
+                                        src="{{ $imageUrl }}"
+                                        alt="{{ $item->title }}"
+                                        loading="lazy"
+                                        class="h-64 w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105 {{ $isWide ? 'sm:h-80 lg:h-96' : 'sm:h-72' }}"
+                                    />
+                                @endif
+
+                                @if ($videoUrl)
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 text-[#8C0375] shadow-xl">
+                                            <svg class="ml-0.5 h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                @endif
 
                                 {{-- Gradient overlay --}}
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100"></div>
@@ -104,20 +120,30 @@
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
 
-                <div
-                    class="relative max-h-[85vh] max-w-5xl"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 scale-95"
-                    x-transition:enter-end="opacity-100 scale-100"
-                >
+                <div class="relative w-full max-w-5xl" x-show="activeItem">
                     <img
-                        :src="imageSrc"
-                        :alt="imageTitle"
+                        x-show="!activeItem.isVideo"
+                        :src="activeItem.src"
+                        :alt="activeItem.title"
                         class="max-h-[80vh] w-full rounded-xl object-contain shadow-2xl"
                     />
-                    <div x-show="imageTitle || imageCaption" class="mt-4 text-center">
-                        <h3 class="text-lg font-semibold text-white" x-text="imageTitle"></h3>
-                        <p x-show="imageCaption" class="mt-1 text-sm text-white/70" x-text="imageCaption"></p>
+
+                    <div x-show="activeItem.isVideo && activeItem.isIframe" class="aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl">
+                        <iframe :src="activeItem.src" class="h-full w-full" title="Gallery video" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                    </div>
+
+                    <video
+                        x-show="activeItem.isVideo && !activeItem.isIframe"
+                        :src="activeItem.src"
+                        controls
+                        playsinline
+                        autoplay
+                        class="max-h-[80vh] w-full rounded-xl bg-black shadow-2xl"
+                    ></video>
+
+                    <div x-show="activeItem.title || activeItem.caption" class="mt-4 text-center">
+                        <h3 class="text-lg font-semibold text-white" x-text="activeItem.title"></h3>
+                        <p x-show="activeItem.caption" class="mt-1 text-sm text-white/70" x-text="activeItem.caption"></p>
                     </div>
                 </div>
 
@@ -173,35 +199,37 @@
             return {
                 active: false,
                 currentIndex: 0,
-                imageTitle: '',
-                imageCaption: '',
-                imageSrc: '',
                 total: {{ $galleryItems->count() }},
                 items: [
                     @foreach ($galleryItems as $item)
                         @php
-                            $fullUrl = $item->getFirstMediaUrl('gallery') ?: $item->getFirstMediaUrl('gallery', 'gallery-lg');
+                            $videoUrl = $item->video_url;
+                            $imageUrl = $item->getFirstMediaUrl('gallery') ?: $item->getFirstMediaUrl('gallery', 'gallery-lg');
+                            $isVideo = (bool) $videoUrl;
+                            $isIframe = $isVideo && \App\Support\VideoUrl::isEmbed($videoUrl);
+                            $src = $isVideo ? $videoUrl : $imageUrl;
                         @endphp
-                        @if ($fullUrl)
+                        @if ($src)
                         {
-                            src: '{{ $fullUrl }}',
+                            src: @js($src),
                             title: @js($item->title),
                             caption: @js($item->caption ?? ''),
+                            isVideo: {{ $isVideo ? 'true' : 'false' }},
+                            isIframe: {{ $isIframe ? 'true' : 'false' }},
                         },
                         @endif
                     @endforeach
                 ],
-                open(index, title, caption, src) {
-                    const item = this.items.find(i => i.src === src);
-                    this.currentIndex = item ? this.items.indexOf(item) : 0;
-                    this.imageTitle = title;
-                    this.imageCaption = caption;
-                    this.imageSrc = src;
+                activeItem: null,
+                open(index) {
+                    this.currentIndex = index;
+                    this.activeItem = this.items[index];
                     this.active = true;
                     document.body.style.overflow = 'hidden';
                 },
                 close() {
                     this.active = false;
+                    this.activeItem = null;
                     document.body.style.overflow = '';
                 },
                 next() {
@@ -213,10 +241,7 @@
                     this.update();
                 },
                 update() {
-                    const item = this.items[this.currentIndex];
-                    this.imageSrc = item.src;
-                    this.imageTitle = item.title;
-                    this.imageCaption = item.caption;
+                    this.activeItem = this.items[this.currentIndex];
                 }
             }
         }

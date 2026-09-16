@@ -11,6 +11,7 @@ class GalleryItem extends BaseModel
     protected $fillable = [
         'title',
         'caption',
+        'video_url',
         'status',
         'sort_order',
         'created_by',

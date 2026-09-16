@@ -47,4 +47,11 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT'),
     ],
+
+    'supabase' => [
+        'url' => env('SUPABASE_URL'),
+        'key' => env('SUPABASE_PUBLISHABLE_KEY'),
+        'anon_key' => env('SUPABASE_ANON_KEY'),
+        'video_bucket' => env('SUPABASE_VIDEO_BUCKET', 'gallery-videos'),
+    ],
 ];
