@@ -53,6 +53,61 @@ class GalleryController extends Controller
         return redirect()->route('admin.gallery.index')->with('status', 'Gallery item created successfully.');
     }
 
+    public function storePhoto(Request $request)
+    {
+        $validated = $request->validate([
+            'photo_title' => ['required', 'string', 'max:255'],
+            'photo_caption' => ['nullable', 'string', 'max:1000'],
+            'photo_image' => ['required', 'image', 'max:20480'],
+            'photo_status' => ['required', 'in:0,1,2'],
+        ]);
+
+        $item = GalleryItem::create([
+            'title' => $validated['photo_title'],
+            'caption' => $validated['photo_caption'] ?? null,
+            'video_url' => null,
+            'status' => $validated['photo_status'],
+            'sort_order' => 0,
+            'created_by' => auth()->id(),
+        ]);
+
+        $item->addMedia($request->file('photo_image'))->toMediaCollection('gallery');
+
+        return redirect()->route('admin.gallery.index')->with('status', 'Photo uploaded successfully.');
+    }
+
+    public function storeVideo(Request $request)
+    {
+        $validated = $request->validate([
+            'video_title' => ['required', 'string', 'max:255'],
+            'video_caption' => ['nullable', 'string', 'max:1000'],
+            'video_file' => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska,video/m4v,application/mp4', 'max:512000'],
+            'video_link' => ['nullable', 'url', 'max:500'],
+            'video_status' => ['required', 'in:0,1,2'],
+        ]);
+
+        if (! $request->hasFile('video_file') && ! $request->filled('video_link')) {
+            return back()
+                ->withErrors(['video_file' => 'Please upload a video file or paste a YouTube/Vimeo link.'])
+                ->withInput();
+        }
+
+        $videoUrl = $request->hasFile('video_file')
+            ? app(SupabaseStorage::class)->upload($request->file('video_file'))
+            : VideoUrl::normalize($request->input('video_link'));
+
+        $item = GalleryItem::create([
+            'title' => $validated['video_title'],
+            'caption' => $validated['video_caption'] ?? null,
+            'video_url' => $videoUrl,
+            'status' => $validated['video_status'],
+            'sort_order' => 0,
+            'created_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('admin.gallery.index')->with('status', 'Video added successfully.');
+    }
+
     public function edit(GalleryItem $gallery)
     {
         return view('admin.gallery.edit', ['galleryItem' => $gallery]);

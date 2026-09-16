@@ -180,6 +180,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
 
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
+    Route::post('gallery/photos', [\App\Http\Controllers\Admin\GalleryController::class, 'storePhoto'])->name('gallery.store-photo');
+    Route::post('gallery/videos', [\App\Http\Controllers\Admin\GalleryController::class, 'storeVideo'])->name('gallery.store-video');
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
     Route::get('bug-reports', [\App\Http\Controllers\BugReportController::class, 'index'])->name('bug-reports.index');
