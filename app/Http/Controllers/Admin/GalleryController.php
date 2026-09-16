@@ -48,12 +48,12 @@ class GalleryController extends Controller
         return redirect()->route('admin.gallery.index')->with('status', 'Gallery item created successfully.');
     }
 
-    public function edit(GalleryItem $galleryItem)
+    public function edit(GalleryItem $gallery)
     {
-        return view('admin.gallery.edit', ['galleryItem' => $galleryItem]);
+        return view('admin.gallery.edit', ['galleryItem' => $gallery]);
     }
 
-    public function update(Request $request, GalleryItem $galleryItem)
+    public function update(Request $request, GalleryItem $gallery)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -63,7 +63,7 @@ class GalleryController extends Controller
             'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $galleryItem->update([
+        $gallery->update([
             'title' => $validated['title'],
             'caption' => $validated['caption'] ?? null,
             'status' => $validated['status'],
@@ -71,17 +71,17 @@ class GalleryController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $galleryItem->clearMediaCollection('gallery');
-            $galleryItem->addMedia($request->file('image'))->toMediaCollection('gallery');
+            $gallery->clearMediaCollection('gallery');
+            $gallery->addMedia($request->file('image'))->toMediaCollection('gallery');
         }
 
         return redirect()->route('admin.gallery.index')->with('status', 'Gallery item updated successfully.');
     }
 
-    public function destroy(GalleryItem $galleryItem)
+    public function destroy(GalleryItem $gallery)
     {
-        $galleryItem->clearMediaCollection('gallery');
-        $galleryItem->delete();
+        $gallery->clearMediaCollection('gallery');
+        $gallery->delete();
 
         return redirect()->route('admin.gallery.index')->with('status', 'Gallery item deleted successfully.');
     }

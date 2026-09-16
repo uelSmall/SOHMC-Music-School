@@ -56,19 +56,19 @@ class GalleryItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function edit(GalleryItem $galleryItem)
+    public function edit(GalleryItem $gallery_item)
     {
-        return view('backend.gallery-items.edit', compact('galleryItem'));
+        return view('backend.gallery-items.edit', ['galleryItem' => $gallery_item]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGalleryItemRequest $request, GalleryItem $galleryItem)
+    public function update(UpdateGalleryItemRequest $request, GalleryItem $gallery_item)
     {
         $data = $request->validated();
 
-        $galleryItem->update([
+        $gallery_item->update([
             'title' => $data['title'],
             'caption' => $data['caption'] ?? null,
             'status' => $data['status'],
@@ -76,8 +76,8 @@ class GalleryItemController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $galleryItem->clearMediaCollection('gallery');
-            $galleryItem->addMedia($request->file('image'))->toMediaCollection('gallery');
+            $gallery_item->clearMediaCollection('gallery');
+            $gallery_item->addMedia($request->file('image'))->toMediaCollection('gallery');
         }
 
         return redirect()
@@ -88,27 +88,27 @@ class GalleryItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(GalleryItem $galleryItem)
+    public function destroy(GalleryItem $gallery_item)
     {
-        $galleryItem->clearMediaCollection('gallery');
-        $galleryItem->delete();
+        $gallery_item->clearMediaCollection('gallery');
+        $gallery_item->delete();
 
         return redirect()
             ->route('backend.gallery-items.index')
             ->with('status', 'Gallery image deleted successfully.');
     }
 
-    public function move(GalleryItem $galleryItem, string $direction)
+    public function move(GalleryItem $gallery_item, string $direction)
     {
         abort_unless(in_array($direction, ['up', 'down'], true), 404);
 
-        DB::transaction(function () use ($galleryItem, $direction) {
+        DB::transaction(function () use ($gallery_item, $direction) {
             $comparison = $direction === 'up' ? '<' : '>';
             $sortDirection = $direction === 'up' ? 'desc' : 'asc';
 
             $adjacent = GalleryItem::query()
-                ->where('id', '!=', $galleryItem->id)
-                ->where('sort_order', $comparison, $galleryItem->sort_order)
+                ->where('id', '!=', $gallery_item->id)
+                ->where('sort_order', $comparison, $gallery_item->sort_order)
                 ->orderBy('sort_order', $sortDirection)
                 ->first();
 
@@ -116,8 +116,8 @@ class GalleryItemController extends Controller
                 return;
             }
 
-            $currentOrder = $galleryItem->sort_order;
-            $galleryItem->update(['sort_order' => $adjacent->sort_order]);
+            $currentOrder = $gallery_item->sort_order;
+            $gallery_item->update(['sort_order' => $adjacent->sort_order]);
             $adjacent->update(['sort_order' => $currentOrder]);
         });
 
