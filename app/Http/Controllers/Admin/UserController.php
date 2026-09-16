@@ -113,6 +113,13 @@ class UserController extends Controller
             return back()->withErrors(['error' => 'You cannot delete yourself.']);
         }
 
+        $actorIsSuperAdmin = auth()->user()->hasRole('super admin');
+        $targetIsSuperAdmin = $user->hasRole('super admin');
+
+        if ($targetIsSuperAdmin && ! $actorIsSuperAdmin) {
+            return back()->withErrors(['error' => 'Only a Super Admin can delete another Super Admin account.']);
+        }
+
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('status', 'User deleted successfully.');

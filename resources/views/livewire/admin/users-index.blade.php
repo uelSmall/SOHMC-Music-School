@@ -61,6 +61,8 @@
                     @forelse($users as $user)
                         @php
                             $primaryRole = $user->roles->first()?->name ?? 'user';
+                            $canDeleteUser = $user->id !== auth()->id()
+                                && (! $user->hasRole('super admin') || auth()->user()->hasRole('super admin'));
                         @endphp
                         <tr class="transition hover:bg-gray-50/50">
                             <td class="px-6 py-4">
@@ -102,7 +104,7 @@
                                     <a href="{{ route('admin.users.edit', $user) }}" class="rounded-lg px-3 py-1.5 text-sm font-medium text-[#A6128D] hover:bg-[#A6128D]/5 transition" title="Edit">
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </a>
-                                    @if($user->id !== auth()->id())
+                                    @if($canDeleteUser)
                                         <form method="POST" action="{{ route('admin.users.destroy', $user) }}" onsubmit="return confirm('Delete this user? This cannot be undone.')">
                                             @csrf
                                             @method('DELETE')

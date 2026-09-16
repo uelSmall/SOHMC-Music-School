@@ -172,7 +172,7 @@ Route::group(['prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['auth', 
  *
  * --------------------------------------------------------------------
  */
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'verified', 'role:administrator']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'verified', 'role:administrator|super admin']], function () {
     Route::get('/', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('home');
     Route::get('dashboard', [\App\Livewire\Admin\Dashboard::class, '__invoke'])->name('dashboard');
     Route::get('teacher-dashboard', [\App\Livewire\Admin\TeacherDashboard::class, '__invoke'])->name('teacher-dashboard');
