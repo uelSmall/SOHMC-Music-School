@@ -185,6 +185,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
     Route::get('payments/{payment}/download', [\App\Http\Controllers\Admin\PaymentController::class, 'download'])->name('payments.download');
     Route::post('payments/{payment}/resend', [\App\Http\Controllers\Admin\PaymentController::class, 'resend'])->name('payments.resend');
     Route::post('gallery/photos', [\App\Http\Controllers\Admin\GalleryController::class, 'storePhoto'])->name('gallery.store-photo');
+    Route::post('gallery/photo', [\App\Http\Controllers\Admin\GalleryController::class, 'storePhotoAjax'])->name('gallery.store-photo-ajax');
     Route::post('gallery/videos', [\App\Http\Controllers\Admin\GalleryController::class, 'storeVideo'])->name('gallery.store-video');
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');

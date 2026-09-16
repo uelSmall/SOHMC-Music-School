@@ -84,6 +84,38 @@ class GalleryController extends Controller
         return redirect()->route('admin.gallery.index')->with('status', "{$count} photo".(($count === 1) ? '' : 's').' uploaded successfully.');
     }
 
+    public function storePhotoAjax(Request $request)
+    {
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
+
+        $validated = $request->validate([
+            'photo' => ['required', 'image', 'max:20480'],
+            'photo_title' => ['nullable', 'string', 'max:255'],
+            'photo_caption' => ['nullable', 'string', 'max:1000'],
+            'photo_status' => ['required', 'in:0,1,2'],
+        ]);
+
+        $file = $request->file('photo');
+
+        try {
+            $item = GalleryItem::create([
+                'title' => $validated['photo_title'] ?? titleFromFilename($file->getClientOriginalName()),
+                'caption' => $validated['photo_caption'] ?? null,
+                'video_url' => null,
+                'status' => $validated['photo_status'],
+                'sort_order' => 0,
+                'created_by' => auth()->id(),
+            ]);
+
+            $item->addMedia($file)->toMediaCollection('gallery');
+        } catch (\Throwable $e) {
+            return response()->json(['ok' => false, 'message' => $e->getMessage()], 422);
+        }
+
+        return response()->json(['ok' => true, 'id' => $item->id, 'title' => $item->title]);
+    }
+
     public function storeVideo(Request $request)
     {
         $validated = $request->validate([

@@ -20,38 +20,38 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('admin.gallery.store-photo') }}" enctype="multipart/form-data" class="space-y-4 p-6">
+                <form id="photo-upload-form" method="POST" action="{{ route('admin.gallery.store-photo') }}" enctype="multipart/form-data" class="space-y-4 p-6">
                     @csrf
 
                     <div>
-                        <label for="photo_title" class="mb-1 block text-sm font-medium text-gray-700">Title <span class="text-gray-400">(optional — photo names are used if left blank)</span></label>
-                        <input type="text" name="photo_title" id="photo_title" value="{{ old('photo_title') }}" placeholder="e.g. Spring Concert 2026" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
-                        @error('photo_title') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        <label for="photo-caption" class="mb-1 block text-sm font-medium text-gray-700">Caption <span class="text-gray-400">(optional — applied to every photo)</span></label>
+                        <textarea id="photo-caption" rows="2" placeholder="e.g. All students — Spring Concert 2026" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none"></textarea>
                     </div>
 
                     <div>
-                        <label for="photo_caption" class="mb-1 block text-sm font-medium text-gray-700">Caption <span class="text-gray-400">(optional)</span></label>
-                        <textarea name="photo_caption" id="photo_caption" rows="2" placeholder="A short description" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none">{{ old('photo_caption') }}</textarea>
-                        @error('photo_caption') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        <label for="photo-files" class="mb-1 block text-sm font-medium text-gray-700">Choose Photos <span class="text-gray-400">(pick as many as you like — they upload one at a time)</span></label>
+                        <input type="file" id="photo-files" accept="image/*" multiple class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        <p id="photo-note" class="mt-1 text-xs text-gray-400"></p>
                     </div>
 
                     <div>
-                        <label for="photo_images" class="mb-1 block text-sm font-medium text-gray-700">Choose Photos <span class="text-gray-400">(hold Ctrl/Cmd or Shift to select many at once)</span></label>
-                        <input type="file" name="photo_images[]" id="photo_images" accept="image/*" multiple required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
-                        @error('photo_images') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                        @error('photo_images.*') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="photo_status" class="mb-1 block text-sm font-medium text-gray-700">Visibility</label>
-                        <select name="photo_status" id="photo_status" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none">
-                            <option value="1" {{ old('photo_status', '1') == '1' ? 'selected' : '' }}>Visible on the site (Active)</option>
-                            <option value="0" {{ old('photo_status') == '0' ? 'selected' : '' }}>Hidden (Draft)</option>
+                        <label for="photo-status-select" class="mb-1 block text-sm font-medium text-gray-700">Visibility</label>
+                        <select id="photo-status-select" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none">
+                            <option value="1">Visible on the site (Active)</option>
+                            <option value="0">Hidden (Draft)</option>
                         </select>
-                        @error('photo_status') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
-                    <button type="submit" class="soh-btn-primary w-full">Upload Photo(s)</button>
+                    <div id="photo-progress" class="hidden rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                        <p id="photo-progress-label" class="font-semibold text-[#A6128D]"></p>
+                        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                            <div id="photo-progress-bar" class="h-full rounded-full bg-[#A6128D] transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="photo-error-count" class="mt-2 hidden text-red-600 font-medium"></p>
+                        <p id="photo-done-message" class="mt-2 hidden text-green-600 font-medium"></p>
+                    </div>
+
+                    <button type="button" id="photo-upload-btn" class="soh-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50" disabled>Choose photos first</button>
                 </form>
             </div>
 
@@ -179,4 +179,105 @@
             <div class="px-4">{{ $galleryItems->links() }}</div>
         @endif
     </div>
+
+    @push('after-scripts')
+        <script>
+            (function () {
+                const filesInput = document.getElementById('photo-files');
+                const captionInput = document.getElementById('photo-caption');
+                const statusSelect = document.getElementById('photo-status-select');
+                const uploadBtn = document.getElementById('photo-upload-btn');
+                const noteEl = document.getElementById('photo-note');
+                const progressBox = document.getElementById('photo-progress');
+                const labelEl = document.getElementById('photo-progress-label');
+                const barEl = document.getElementById('photo-progress-bar');
+                const errorCountEl = document.getElementById('photo-error-count');
+                const doneEl = document.getElementById('photo-done-message');
+                const token = document.head.querySelector('meta[name="csrf-token"]')?.content || '';
+                const endpoint = @json(route('admin.gallery.store-photo-ajax'));
+
+                let selectedFiles = [];
+                let uploading = false;
+
+                function setProgress(pct) {
+                    barEl.style.width = pct + '%';
+                }
+
+                function setLabel(text) {
+                    labelEl.textContent = text;
+                }
+
+                function uploadOne(file, index, total) {
+                    setLabel('Uploading ' + (index + 1) + ' of ' + total + ' — ' + file.name + '…');
+                    setProgress(Math.round((index / total) * 100));
+
+                    const fd = new FormData();
+                    fd.append('photo', file);
+                    fd.append('photo_caption', captionInput.value);
+                    fd.append('photo_status', statusSelect.value);
+                    fd.append('_token', token);
+
+                    return fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+                        body: fd,
+                    }).then(async (res) => {
+                        const data = await res.json().catch(() => ({}));
+                        if (!res.ok || !data.ok) {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                        return data;
+                    });
+                }
+
+                filesInput.addEventListener('change', function () {
+                    selectedFiles = Array.from(this.files || []);
+                    noteEl.textContent = selectedFiles.length
+                        ? selectedFiles.length + ' photo(s) selected — photos upload one at a time'
+                        : '';
+                    uploadBtn.textContent = selectedFiles.length
+                        ? 'Upload ' + selectedFiles.length + ' Photo(s)'
+                        : 'Choose photos first';
+                    uploadBtn.disabled = selectedFiles.length === 0;
+                    progressBox.classList.add('hidden');
+                    errorCountEl.classList.add('hidden');
+                    doneEl.classList.add('hidden');
+                });
+
+                uploadBtn.addEventListener('click', function () {
+                    if (uploading || selectedFiles.length === 0) return;
+                    uploading = true;
+                    uploadBtn.disabled = true;
+                    progressBox.classList.remove('hidden');
+                    doneEl.classList.add('hidden');
+
+                    const total = selectedFiles.length;
+                    let failed = 0;
+
+                    function next(index) {
+                        if (index >= total) {
+                            setProgress(100);
+                            uploading = false;
+                            if (failed > 0) {
+                                errorCountEl.classList.remove('hidden');
+                                errorCountEl.textContent = failed + ' of ' + total + ' photo(s) failed — please retry them.';
+                                setLabel('Finished with errors');
+                            } else {
+                                setLabel('Done — ' + total + ' photo(s) uploaded successfully');
+                            }
+                            doneEl.classList.remove('hidden');
+                            doneEl.textContent = total + ' photo(s) uploaded successfully.';
+                            setTimeout(() => window.location.reload(), 1500);
+                            return;
+                        }
+                        uploadOne(selectedFiles[index], index, total)
+                            .catch(function () { failed++; })
+                            .finally(function () { next(index + 1); });
+                    }
+
+                    next(0);
+                });
+            })();
+        </script>
+    @endpush
 </x-layouts.admin>
