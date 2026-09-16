@@ -24,8 +24,8 @@
                     @csrf
 
                     <div>
-                        <label for="photo_title" class="mb-1 block text-sm font-medium text-gray-700">Title</label>
-                        <input type="text" name="photo_title" id="photo_title" value="{{ old('photo_title') }}" placeholder="e.g. Spring Concert 2026" required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        <label for="photo_title" class="mb-1 block text-sm font-medium text-gray-700">Title <span class="text-gray-400">(optional — photo names are used if left blank)</span></label>
+                        <input type="text" name="photo_title" id="photo_title" value="{{ old('photo_title') }}" placeholder="e.g. Spring Concert 2026" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
                         @error('photo_title') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
@@ -36,9 +36,10 @@
                     </div>
 
                     <div>
-                        <label for="photo_image" class="mb-1 block text-sm font-medium text-gray-700">Choose a Photo</label>
-                        <input type="file" name="photo_image" id="photo_image" accept="image/*" required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
-                        @error('photo_image') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        <label for="photo_images" class="mb-1 block text-sm font-medium text-gray-700">Choose Photos <span class="text-gray-400">(hold Ctrl/Cmd or Shift to select many at once)</span></label>
+                        <input type="file" name="photo_images[]" id="photo_images" accept="image/*" multiple required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition file:mr-3 file:rounded-lg file:border-0 file:bg-[#A6128D]/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#A6128D] hover:file:bg-[#A6128D]/20 focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                        @error('photo_images') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('photo_images.*') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
@@ -50,7 +51,7 @@
                         @error('photo_status') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
-                    <button type="submit" class="soh-btn-primary w-full">Upload Photo</button>
+                    <button type="submit" class="soh-btn-primary w-full">Upload Photo(s)</button>
                 </form>
             </div>
 

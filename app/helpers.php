@@ -9,6 +9,17 @@ use Sqids\Sqids;
 /*
  * Global helpers file with misc functions.
  */
+if (! function_exists('titleFromFilename')) {
+    function titleFromFilename(string $filename): string
+    {
+        $name = pathinfo($filename, PATHINFO_FILENAME);
+        $name = str_replace(['_', '-', '.', '+'], ' ', $name);
+        $name = trim(preg_replace('/\s+/', ' ', $name));
+
+        return mb_substr($name, 0, 255) ?: 'Photo';
+    }
+}
+
 if (! function_exists('app_name')) {
     /**
      * Helper to grab the application name.

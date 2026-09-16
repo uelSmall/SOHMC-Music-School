@@ -60,6 +60,7 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('/', Home::class)->name('index');
     Route::view('about', 'frontend.about')->name('about');
     Route::get('gallery', [GalleryController::class, 'index'])->name('gallery');
+    Route::get('receipts/{token}', [\App\Http\Controllers\ReceiptController::class, 'show'])->name('receipts.view');
     Route::view('contact', 'frontend.contact')->name('contact');
     Route::post('contact', [\App\Http\Controllers\Frontend\ContactController::class, 'store'])->name('contact.submit');
 
@@ -180,6 +181,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
 
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
+    Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->except(['edit', 'update', 'destroy']);
+    Route::get('payments/{payment}/download', [\App\Http\Controllers\Admin\PaymentController::class, 'download'])->name('payments.download');
+    Route::post('payments/{payment}/resend', [\App\Http\Controllers\Admin\PaymentController::class, 'resend'])->name('payments.resend');
     Route::post('gallery/photos', [\App\Http\Controllers\Admin\GalleryController::class, 'storePhoto'])->name('gallery.store-photo');
     Route::post('gallery/videos', [\App\Http\Controllers\Admin\GalleryController::class, 'storeVideo'])->name('gallery.store-video');
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

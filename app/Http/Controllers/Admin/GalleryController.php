@@ -56,24 +56,32 @@ class GalleryController extends Controller
     public function storePhoto(Request $request)
     {
         $validated = $request->validate([
-            'photo_title' => ['required', 'string', 'max:255'],
+            'photo_title' => ['nullable', 'string', 'max:255'],
             'photo_caption' => ['nullable', 'string', 'max:1000'],
-            'photo_image' => ['required', 'image', 'max:20480'],
+            'photo_images' => ['required', 'array'],
+            'photo_images.*' => ['required', 'image', 'max:20480'],
             'photo_status' => ['required', 'in:0,1,2'],
         ]);
 
-        $item = GalleryItem::create([
-            'title' => $validated['photo_title'],
-            'caption' => $validated['photo_caption'] ?? null,
-            'video_url' => null,
-            'status' => $validated['photo_status'],
-            'sort_order' => 0,
-            'created_by' => auth()->id(),
-        ]);
+        $files = $request->file('photo_images');
+        $sharedTitle = $validated['photo_title'] ?? null;
 
-        $item->addMedia($request->file('photo_image'))->toMediaCollection('gallery');
+        foreach ($files as $file) {
+            $item = GalleryItem::create([
+                'title' => $sharedTitle ?? titleFromFilename($file->getClientOriginalName()),
+                'caption' => $validated['photo_caption'] ?? null,
+                'video_url' => null,
+                'status' => $validated['photo_status'],
+                'sort_order' => 0,
+                'created_by' => auth()->id(),
+            ]);
 
-        return redirect()->route('admin.gallery.index')->with('status', 'Photo uploaded successfully.');
+            $item->addMedia($file)->toMediaCollection('gallery');
+        }
+
+        $count = count($files);
+
+        return redirect()->route('admin.gallery.index')->with('status', "{$count} photo".(($count === 1) ? '' : 's').' uploaded successfully.');
     }
 
     public function storeVideo(Request $request)
