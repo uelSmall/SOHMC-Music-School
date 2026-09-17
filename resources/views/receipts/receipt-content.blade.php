@@ -50,7 +50,7 @@
             </div>
             <div class="brand-text">
                 <p class="brand-name">Sounds of Harmony Music Centre</p>
-                <p class="brand-sub">S.O.H.M.C — Learning music, living harmony</p>
+                <p class="brand-sub">S.O.H.M.C — Creating harmony through expression</p>
             </div>
             <div class="receipt-label">
                 <h2>Receipt</h2>

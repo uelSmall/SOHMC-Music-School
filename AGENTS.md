@@ -70,6 +70,41 @@ lessons.
   on Hostinger must exist for uploads/thumbnails to resolve.
 - **Frontend gallery** shows only `status = 1` items; no pagination.
 
+## Payments & receipts (decisions, Sep 2026)
+
+- **Receipt numbers never reuse.** `Payment::nextReceiptNumber()` reads the
+  Postgres sequence (`payments_id_seq`), *not* a row count — a hard delete
+  would otherwise reissue a number that may already have been emailed out.
+  Gaps after deletes are correct.
+- **Student numbers** live on `users.student_number`, format
+  `SOHMC-<year>-NNNN` (year = join year). Assigned on student registration
+  and admin user creation; `assignStudentNumber()` is also called lazily in
+  `PaymentController@store` so a receipt always shows one. Never reused
+  (`withTrashed()` when computing the next number). All existing students
+  were backfilled.
+- **Payment delete is a hard delete with a confirm gate** in the UI. There is
+  no undo; `PaymentController@destroy` also removes the payment's activity
+  rows so the dashboard never shows a dead "View" link.
+- **WhatsApp**: `Payment::whatsappShareUrl()` builds a `wa.me` link with the
+  public receipt URL prefilled; it prefills the student's `mobile` when set,
+  otherwise opens WhatsApp to pick a contact. `wa.me` sends text only — the
+  PDF is reached via the public receipt link, not attached.
+- **Public receipt URL** is `frontend.receipts.view` (token-based, no auth).
+  Note the route name lives inside the `frontend.` name group.
+- **Phone** is `users.mobile` (not `phone`). Not collected at sign-up — users
+  add it from their profile; admins can set it on create/edit.
+
+## Receipt template
+
+- Styles live in `receipts/receipt-content.blade.php`, **scoped under
+  `.receipt-doc`**, so the same CSS serves both the dompdf PDF page
+  (`receipts/receipt.blade.php`) and the admin preview (embedded in
+  `admin/payments/show.blade.php`). Never put receipt styles in `body` — the
+  preview shares the admin page.
+- A `@media screen and (max-width: 600px)` block stacks the header for
+  phones. dompdf lays out at ~744px, so those rules never affect the PDF.
+- The receipt logo comes from `receipt_logo_base64()` — the single source.
+
 ## Deploy
 
 - Hostinger auto-deploys the `feature/client-dashboard` branch. The user

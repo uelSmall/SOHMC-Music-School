@@ -13,7 +13,7 @@
                     <tr>
                         <td style="background-color:#ffffff; padding:26px 32px; border-bottom:3px solid #A6128D;">
                             <img src="{{ asset('img/sohmc-nav-logo.png') }}" alt="Sounds of Harmony Music Centre" style="display:block; width:170px; height:auto; margin-bottom:6px;" />
-                            <p style="margin:0; color:#6b7280; font-size:13px;">Learning music, living harmony</p>
+                            <p style="margin:0; color:#6b7280; font-size:13px;">S.O.H.M.C — Creating harmony through expression</p>
                         </td>
                     </tr>
                     {{-- Body --}}
