@@ -48,6 +48,9 @@ class PaymentController extends Controller
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
+        // Guarantee the student has a student number so the receipt always shows one
+        User::find($validated['student_id'])?->assignStudentNumber();
+
         $payment = Payment::create([
             'student_id' => $validated['student_id'],
             'receipt_number' => Payment::nextReceiptNumber(),
@@ -111,6 +114,28 @@ class PaymentController extends Controller
         );
 
         return back()->with('status', "Receipt {$payment->receipt_number} re-sent to {$email}.");
+    }
+
+    /**
+     * Permanently delete a payment record. The UI confirm gate is the only
+     * guard — there is no undo. Related activity feed entries are removed so
+     * the dashboard never shows a broken "View" link for a deleted receipt.
+     */
+    public function destroy(Payment $payment)
+    {
+        $receiptNumber = $payment->receipt_number;
+
+        \Spatie\Activitylog\Models\Activity::where('subject_type', Payment::class)
+            ->where('subject_id', $payment->id)
+            ->delete();
+
+        $payment->delete();
+
+        log_activity('deleted payment '.$receiptNumber);
+
+        return redirect()
+            ->route('admin.payments.index')
+            ->with('status', "Payment {$receiptNumber} deleted permanently.");
     }
 
     protected function logoBase64(): string

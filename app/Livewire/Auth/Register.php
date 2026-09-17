@@ -53,6 +53,11 @@ class Register extends Component
         // Assign the selected role
         $user->assignRole($validated['role']);
 
+        // Students get a permanent student number, e.g. SOHMC-2026-0001
+        if ($validated['role'] === 'student') {
+            $user->assignStudentNumber();
+        }
+
         event(new Registered($user));
         event(new UserRegistered($user));
 

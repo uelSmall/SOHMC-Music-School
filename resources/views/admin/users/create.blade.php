@@ -27,6 +27,12 @@
                 @error('email') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
 
+            <div>
+                <label for="mobile" class="mb-1 block text-sm font-medium text-gray-700">Phone Number <span class="text-xs font-normal text-gray-400">(optional — used for WhatsApp receipt delivery)</span></label>
+                <input type="tel" name="mobile" id="mobile" value="{{ old('mobile') }}" placeholder="+1 (868) 000-0000" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />
+                @error('mobile') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            </div>
+
             <div class="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label for="password" class="mb-1 block text-sm font-medium text-gray-700">Password</label>

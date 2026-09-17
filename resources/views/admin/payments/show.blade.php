@@ -11,11 +11,19 @@
                     @csrf
                     <button type="submit" class="soh-btn-outline">Email Again</button>
                 </form>
+                <a href="{{ $payment->whatsappShareUrl() }}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-green-600 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-green-700">
+                    WhatsApp
+                </a>
+                <form method="POST" action="{{ route('admin.payments.destroy', $payment) }}" onsubmit="return confirm('Delete payment {{ $payment->receipt_number }}? This permanently removes the record and its receipt. There is no undo.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50">Delete</button>
+                </form>
             </div>
         </div>
 
         <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            @php $logoBase64 = \Illuminate\Support\Facades\File::exists(public_path('img/sohmc-piano-icon.png')) ? 'data:image/png;base64,'.base64_encode(\Illuminate\Support\Facades\File::get(public_path('img/sohmc-piano-icon.png'))) : ''; @endphp
+            @php $logoBase64 = receipt_logo_base64(); @endphp
             <div class="max-h-[75vh] overflow-y-auto">
                 @include('receipts.receipt-content', compact('logoBase64'))
             </div>

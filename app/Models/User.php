@@ -148,6 +148,37 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
+     * Next student number for the given year, e.g. SOHMC-2026-0001.
+     *
+     * Derived from the highest existing suffix for the year (including
+     * soft-deleted students) so numbers are never reissued once assigned.
+     */
+    public static function nextStudentNumber(?int $year = null): string
+    {
+        $year = $year ?? now()->year;
+
+        $last = (int) static::withTrashed()
+            ->where('student_number', 'like', "SOHMC-{$year}-%")
+            ->max(\Illuminate\Support\Facades\DB::raw(
+                "CAST(SUBSTRING(student_number FROM 'SOHMC-{$year}-([0-9]+)') AS INTEGER)"
+            ));
+
+        return 'SOHMC-'.$year.'-'.str_pad((string) ($last + 1), 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Assign a student number if the user doesn't already have one.
+     */
+    public function assignStudentNumber(): void
+    {
+        if ($this->student_number) {
+            return;
+        }
+
+        $this->forceFill(['student_number' => self::nextStudentNumber()])->save();
+    }
+
+    /**
      * Resolve preferred dashboard route name based on user role.
      */
     public function dashboardRouteName(): string

@@ -40,6 +40,11 @@
                                         @csrf
                                         <button type="submit" class="rounded-lg px-3 py-1.5 text-sm font-medium text-green-700 hover:bg-green-50">Email</button>
                                     </form>
+                                    <form method="POST" action="{{ route('admin.payments.destroy', $payment) }}" onsubmit="return confirm('Delete payment {{ $payment->receipt_number }}? This permanently removes the record and its receipt. There is no undo.')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50">Delete</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

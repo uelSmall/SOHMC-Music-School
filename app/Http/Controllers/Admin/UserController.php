@@ -30,6 +30,7 @@ class UserController extends Controller
             'first_name' => 'required|string|min:2|max:191',
             'last_name' => 'required|string|min:2|max:191',
             'email' => 'required|email|unique:users,email',
+            'mobile' => 'nullable|string|max:20',
             'password' => ['required', 'confirmed', Password::min(6)],
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,name',
@@ -55,6 +56,11 @@ class UserController extends Controller
             $user->clearPermissionCache();
         }
 
+        // Students get a permanent student number, e.g. SOHMC-2026-0001
+        if (in_array('student', $roles, true)) {
+            $user->assignStudentNumber();
+        }
+
         $user->parents()->sync($parents);
 
         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
@@ -76,6 +82,7 @@ class UserController extends Controller
             'first_name' => 'required|string|min:2|max:191',
             'last_name' => 'required|string|min:2|max:191',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'mobile' => 'nullable|string|max:20',
             'password' => ['nullable', 'confirmed', Password::min(6)],
             'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,name',

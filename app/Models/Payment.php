@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Payment extends Model
 {
@@ -47,10 +48,38 @@ class Payment extends Model
         return self::CURRENCY.number_format((float) $this->amount, 2);
     }
 
+    /**
+     * Next receipt number, derived from the Postgres id sequence.
+     *
+     * We deliberately read the sequence instead of counting rows: a hard
+     * delete would otherwise cause the next receipt to reuse a number that
+     * may already have been emailed out. The sequence never rolls back, so
+     * numbers are never reissued (gaps after deletes are normal).
+     */
     public static function nextReceiptNumber(): string
     {
-        $last = (int) self::query()->whereYear('created_at', now()->year)->count();
+        $seq = DB::selectOne('SELECT last_value, is_called FROM payments_id_seq');
 
-        return 'SOHMC-'.now()->year.'-'.str_pad((string) ($last + 1), 4, '0', STR_PAD_LEFT);
+        $nextId = $seq->is_called ? $seq->last_value + 1 : $seq->last_value;
+
+        return 'SOHMC-'.now()->year.'-'.str_pad((string) $nextId, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * wa.me share URL for this receipt. Prefills the student's mobile number
+     * when one is on file (international format, no +); otherwise opens
+     * WhatsApp with the message ready so the sender picks the contact.
+     */
+    public function whatsappShareUrl(): string
+    {
+        $link = route('frontend.receipts.view', $this->receipt_token);
+
+        $message = 'Sounds of Harmony Music Centre — Receipt '.$this->receipt_number
+            .'. View or download your receipt here: '.$link;
+
+        $phone = (string) ($this->student->mobile ?? '');
+        $phone = ltrim(preg_replace('/[^0-9]/', '', $phone), '0');
+
+        return 'https://wa.me/'.$phone.'?text='.rawurlencode($message);
     }
 }

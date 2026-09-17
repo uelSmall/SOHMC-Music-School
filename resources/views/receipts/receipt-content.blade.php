@@ -34,7 +34,7 @@
         @endif
         <tr>
             <td>Student</td>
-            <td>{{ $payment->student->name }}</td>
+            <td>{{ $payment->student->name }} @if($payment->student->student_number)({{ $payment->student->student_number }})@endif</td>
         </tr>
     </table>
 

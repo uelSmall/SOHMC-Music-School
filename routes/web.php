@@ -181,7 +181,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
 
     Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryController::class)->except(['show']);
-    Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->except(['edit', 'update', 'destroy']);
+    Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->except(['edit', 'update']);
     Route::get('payments/{payment}/download', [\App\Http\Controllers\Admin\PaymentController::class, 'download'])->name('payments.download');
     Route::post('payments/{payment}/resend', [\App\Http\Controllers\Admin\PaymentController::class, 'resend'])->name('payments.resend');
     Route::post('gallery/photos', [\App\Http\Controllers\Admin\GalleryController::class, 'storePhoto'])->name('gallery.store-photo');
