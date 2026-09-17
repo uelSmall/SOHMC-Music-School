@@ -215,11 +215,16 @@
                             <p class="text-xs text-gray-700 sm:text-sm">
                                 <span class="font-semibold text-black">{{ $activity->causer?->name ?? 'System' }}</span>
                                 {{ $activity->description }}
-                                @if($activity->subject)
+                                @if($activity->subject && empty($activity->properties['url'] ?? null))
                                     <span class="font-medium text-black">{{ class_basename($activity->subject_type) }} #{{ $activity->subject_id }}</span>
                                 @endif
                             </p>
-                            <p class="mt-0.5 text-[10px] text-gray-400 sm:text-xs">{{ $activity->created_at->diffForHumans() }}</p>
+                            <div class="mt-0.5 flex items-center gap-3">
+                                <p class="text-[10px] text-gray-400 sm:text-xs">{{ $activity->created_at->diffForHumans() }}</p>
+                                @if(! empty($activity->properties['url'] ?? null))
+                                    <a href="{{ $activity->properties['url'] }}" class="soh-link text-xs font-medium sm:text-sm">View</a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

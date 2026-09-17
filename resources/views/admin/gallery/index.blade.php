@@ -195,6 +195,7 @@
                 const doneEl = document.getElementById('photo-done-message');
                 const token = document.head.querySelector('meta[name="csrf-token"]')?.content || '';
                 const endpoint = @json(route('admin.gallery.store-photo-ajax'));
+const logEndpoint = @json(route('admin.gallery.log-photos'));
 
                 let selectedFiles = [];
                 let uploading = false;
@@ -267,6 +268,11 @@
                             }
                             doneEl.classList.remove('hidden');
                             doneEl.textContent = total + ' photo(s) uploaded successfully.';
+                            fetch(logEndpoint, {
+                                method: 'POST',
+                                headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ count: total }),
+                            });
                             setTimeout(() => window.location.reload(), 1500);
                             return;
                         }

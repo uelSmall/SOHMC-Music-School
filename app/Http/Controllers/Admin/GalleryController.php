@@ -116,6 +116,21 @@ class GalleryController extends Controller
         return response()->json(['ok' => true, 'id' => $item->id, 'title' => $item->title]);
     }
 
+    public function logPhotoBatch(Request $request)
+    {
+        $count = max(0, min((int) $request->input('count', 0), 200));
+
+        if ($count > 0) {
+            log_activity(
+                'uploaded '.$count.' photo(s) to the gallery',
+                null,
+                route('admin.gallery.index')
+            );
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function storeVideo(Request $request)
     {
         $validated = $request->validate([
@@ -144,6 +159,12 @@ class GalleryController extends Controller
             'sort_order' => 0,
             'created_by' => auth()->id(),
         ]);
+
+        log_activity(
+            'uploaded video "'.$item->title.'" to the gallery',
+            $item,
+            route('admin.gallery.index')
+        );
 
         return redirect()->route('admin.gallery.index')->with('status', 'Video added successfully.');
     }

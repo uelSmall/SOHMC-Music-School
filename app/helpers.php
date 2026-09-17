@@ -20,6 +20,72 @@ if (! function_exists('titleFromFilename')) {
     }
 }
 
+/*
+ * Log an activity entry for the admin Recent Activity feed.
+ * Description is rendered after the causer's name, so write it as a verb phrase:
+ * e.g. "recorded payment SOHMC-2026-0001 (TT$250.00)".
+ */
+if (! function_exists('log_activity')) {
+    function log_activity(string $description, $subject = null, ?string $url = null, string $logName = 'default', $causer = null): void
+    {
+        $builder = activity($logName)
+            ->causedBy($causer ?? auth()->user())
+            ->withProperties(['url' => $url]);
+
+        if ($subject !== null) {
+            $builder->performedOn($subject);
+        }
+
+        $builder->log($description);
+    }
+}
+
+/*
+ * Base64 data-URI of the brand logo used on receipts (PDF + web).
+ * Defaults to the navbar logo; pass a different filename to swap.
+ */
+if (! function_exists('receipt_logo_base64')) {
+    function receipt_logo_base64(string $logo = 'sohmc-nav-logo.png'): string
+    {
+        $path = public_path('img/'.$logo);
+
+        if (! file_exists($path)) {
+            return '';
+        }
+
+        $mime = mime_content_type($path);
+        $bytes = file_get_contents($path);
+
+        // Downscale the source logo so PDFs and emails stay light.
+        if (function_exists('imagecreatefromstring')) {
+            $src = @imagecreatefromstring($bytes);
+            if ($src !== false) {
+                $maxW = 440;
+                $w = imagesx($src);
+                $h = imagesy($src);
+                if ($w > $maxW) {
+                    $nw = $maxW;
+                    $nh = (int) round($h * ($maxW / $w));
+                    $dst = imagecreatetruecolor($nw, $nh);
+
+                    $alpha = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+                    imagefill($dst, 0, 0, $alpha);
+                    imagesavealpha($dst, true);
+
+                    imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+
+                    ob_start();
+                    imagepng($dst, null, 9);
+                    $bytes = ob_get_clean();
+                    $mime = 'image/png';
+                }
+            }
+        }
+
+        return 'data:'.$mime.';base64,'.base64_encode($bytes);
+    }
+}
+
 if (! function_exists('app_name')) {
     /**
      * Helper to grab the application name.

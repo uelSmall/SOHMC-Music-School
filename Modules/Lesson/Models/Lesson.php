@@ -64,6 +64,17 @@ class Lesson extends BaseModel
             ->useLogName($this->table);
     }
 
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return match ($eventName) {
+            'created' => 'created a lesson',
+            'updated' => 'updated a lesson',
+            'deleted' => 'deleted a lesson',
+            'restored' => 'restored a lesson',
+            default => $eventName,
+        };
+    }
+
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'teacher_id');

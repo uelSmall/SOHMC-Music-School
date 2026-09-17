@@ -43,6 +43,17 @@ class LessonStudentAssignment extends Model
             ->useLogName($this->table);
     }
 
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return match ($eventName) {
+            'created' => 'assigned a lesson to a student',
+            'updated' => 'updated a lesson assignment',
+            'deleted' => 'deleted a lesson assignment',
+            'restored' => 'restored a lesson assignment',
+            default => $eventName,
+        };
+    }
+
     public function lesson(): BelongsTo
     {
         return $this->belongsTo(Lesson::class, 'lesson_id');

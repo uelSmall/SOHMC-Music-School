@@ -58,6 +58,8 @@ class Register extends Component
 
         Auth::login($user);
 
+        log_activity('registered a new '.$validated['role'].' account', $user);
+
         $this->redirect(route('verification.notice', absolute: false), navigate: true);
     }
 }

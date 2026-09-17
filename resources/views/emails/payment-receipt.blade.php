@@ -11,9 +11,9 @@
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px; background-color:#ffffff; border-radius:14px; overflow:hidden;">
                     {{-- Header --}}
                     <tr>
-                        <td style="background-color:#A6128D; padding:26px 32px;">
-                            <p style="margin:0; color:#ffffff; font-size:20px; font-weight:bold;">Sounds of Harmony Music Centre</p>
-                            <p style="margin:4px 0 0; color:#E8D5F0; font-size:13px;">Learning music, living harmony</p>
+                        <td style="background-color:#ffffff; padding:26px 32px; border-bottom:3px solid #A6128D;">
+                            <img src="{{ asset('img/sohmc-nav-logo.png') }}" alt="Sounds of Harmony Music Centre" style="display:block; width:170px; height:auto; margin-bottom:6px;" />
+                            <p style="margin:0; color:#6b7280; font-size:13px;">Learning music, living harmony</p>
                         </td>
                     </tr>
                     {{-- Body --}}

@@ -54,14 +54,6 @@ class PaymentReceiptMail extends Mailable
 
     protected function logoBase64(): string
     {
-        $path = public_path('img/sohmc-piano-icon.png');
-
-        if (file_exists($path)) {
-            $mime = mime_content_type($path);
-
-            return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($path));
-        }
-
-        return '';
+        return receipt_logo_base64();
     }
 }

@@ -69,12 +69,8 @@ class AppServiceProvider extends ServiceProvider
     {
         /**
          * Auth Event Listeners.
+         * LogSuccessfulLogin is auto-discovered from app/Listeners.
          */
-        // Event::listen(
-        //     'App\Events\Auth\UserLoginSuccess',
-        //     'App\Listeners\Auth\UpdateLoginData',
-        //     'App\Listeners\Auth\SendPodcastNotification'
-        // );
 
         /**
          * Frontend Event Listeners.

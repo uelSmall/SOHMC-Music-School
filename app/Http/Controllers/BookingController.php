@@ -146,6 +146,12 @@ class BookingController extends Controller
 
         $notifications->notifyTeacherOfNewRequest($lessonRequest);
 
+        log_activity(
+            'submitted a new lesson booking request',
+            $lessonRequest,
+            route('bookings.show', ['booking' => $lessonRequest->id])
+        );
+
         return redirect()
             ->route('bookings.index')
             ->with('notify', [
@@ -191,6 +197,12 @@ class BookingController extends Controller
 
         $lessonRequest->refresh()->loadMissing('lesson');
         $notifications->notifyTeacherSuggestionAccepted($lessonRequest);
+
+        log_activity(
+            'accepted the suggested lesson time',
+            $lessonRequest,
+            route('bookings.show', ['booking' => $lessonRequest->id])
+        );
 
         return redirect()
             ->route('bookings.index')
@@ -270,6 +282,12 @@ class BookingController extends Controller
         $lessonRequest->refresh();
         $notifications->notifyStudentLessonConfirmed($lessonRequest);
 
+        log_activity(
+            'confirmed a booking request from '.($lessonRequest->student?->name ?? 'a student'),
+            $lessonRequest,
+            route('bookings.show', ['booking' => $lessonRequest->id])
+        );
+
         return redirect()
             ->route('bookings.show', $lessonRequest->lesson)
             ->with('notify', [
@@ -299,6 +317,12 @@ class BookingController extends Controller
 
         $notifications->notifyStudentLessonRescheduled($lessonRequest);
 
+        log_activity(
+            'suggested a new time for a booking request from '.($lessonRequest->student?->name ?? 'a student'),
+            $lessonRequest,
+            route('bookings.show', ['booking' => $lessonRequest->id])
+        );
+
         return redirect()
             ->route('bookings.show', $lessonRequest->id)
             ->with('notify', [
@@ -325,6 +349,12 @@ class BookingController extends Controller
 
         $notifications->notifyStudentLessonRejected($lessonRequest);
 
+        log_activity(
+            'rejected a booking request from '.($lessonRequest->student?->name ?? 'a student'),
+            $lessonRequest,
+            route('bookings.show', ['booking' => $lessonRequest->id])
+        );
+
         return redirect()
             ->route('bookings.index')
             ->with('notify', [
@@ -341,6 +371,12 @@ class BookingController extends Controller
             'status' => LessonStatus::Completed,
             'completed_at' => now(),
         ]);
+
+        log_activity(
+            'marked a lesson as completed',
+            $lesson,
+            route('bookings.show', $lesson)
+        );
 
         return redirect()
             ->route('bookings.show', $lesson)
@@ -361,6 +397,12 @@ class BookingController extends Controller
         ]);
 
         $notifications->notifyStudentLessonCancelled($lesson);
+
+        log_activity(
+            'cancelled a lesson',
+            $lesson,
+            route('bookings.show', $lesson)
+        );
 
         return redirect()
             ->route('bookings.show', $lesson)
@@ -400,6 +442,12 @@ class BookingController extends Controller
 
         $notifications->notifyStudentLessonRescheduled($lesson);
         $notifications->notifyTeacherLessonRescheduled($lesson);
+
+        log_activity(
+            'rescheduled a lesson',
+            $lesson,
+            route('bookings.show', $lesson)
+        );
 
         return redirect()
             ->route('bookings.show', $lesson)

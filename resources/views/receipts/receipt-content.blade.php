@@ -1,7 +1,7 @@
 <div class="wrap">
     <div class="brand">
         <div>
-            <img src="{{ $logoBase64 }}" alt="SOHMC" style="width: 54px; height: 54px; object-fit: cover; border-radius: 10px;" />
+            <img src="{{ $logoBase64 }}" alt="Sounds of Harmony Music Centre" style="width: 170px; height: auto; object-fit: contain;" />
         </div>
         <div class="brand-text">
             <p class="brand-name">Sounds of Harmony Music Centre</p>

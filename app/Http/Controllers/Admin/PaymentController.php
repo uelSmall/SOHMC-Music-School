@@ -66,6 +66,12 @@ class PaymentController extends Controller
             Mail::to($email)->send(new PaymentReceiptMail($payment));
         }
 
+        log_activity(
+            'recorded payment '.$payment->receipt_number.' ('.$payment->amount_formatted.') for '.($payment->student->name ?? 'student'),
+            $payment,
+            route('admin.payments.show', $payment)
+        );
+
         return redirect()
             ->route('admin.payments.index')
             ->with('status', "Payment recorded — receipt {$payment->receipt_number} created and emailed to the student.");
@@ -98,19 +104,17 @@ class PaymentController extends Controller
 
         Mail::to($email)->send(new PaymentReceiptMail($payment));
 
+        log_activity(
+            're-sent receipt '.$payment->receipt_number.' to '.$email,
+            $payment,
+            route('admin.payments.show', $payment)
+        );
+
         return back()->with('status', "Receipt {$payment->receipt_number} re-sent to {$email}.");
     }
 
     protected function logoBase64(): string
     {
-        $path = public_path('img/sohmc-piano-icon.png');
-
-        if (file_exists($path)) {
-            $mime = mime_content_type($path);
-
-            return 'data:'.$mime.';base64,'.base64_encode(file_get_contents($path));
-        }
-
-        return '';
+        return receipt_logo_base64();
     }
 }
