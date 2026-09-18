@@ -51,6 +51,9 @@
                                 </span>
                             </div>
                             <p class="mt-1 text-xs leading-5 text-gray-600">{{ $data['message'] ?? '' }}</p>
+                            @if (! empty($data['from']))
+                                <p class="mt-1 text-[11px] font-semibold text-[color:var(--soh-purple)]">From: {{ $data['from'] }}</p>
+                            @endif
                             <p class="mt-2 text-[11px] text-gray-400">{{ $notification->created_at?->diffForHumans() }}</p>
                         </div>
                     </div>
@@ -129,6 +132,9 @@
                                     </span>
                                 </div>
                                 <p class="mt-1 text-sm leading-relaxed text-gray-600">{{ $data['message'] ?? '' }}</p>
+                                @if (! empty($data['from']))
+                                    <p class="mt-1 text-[11px] font-semibold text-[color:var(--soh-purple)]">From: {{ $data['from'] }}</p>
+                                @endif
                                 <p class="mt-2 text-xs text-gray-400">{{ $notification->created_at?->diffForHumans() }}</p>
                             </div>
                         </div>

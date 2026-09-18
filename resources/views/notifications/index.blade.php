@@ -82,6 +82,9 @@
                             <div class="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-500">
                                 <span>Created {{ $notification->created_at?->format('M d, Y g:i A') }}</span>
                                 <span>{{ $notification->created_at?->diffForHumans() }}</span>
+                                @if (! empty($data['from']))
+                                    <span>From: {{ $data['from'] }}</span>
+                                @endif
                                 @if (! empty($data['lesson_request_id']))
                                     <span>Request #{{ $data['lesson_request_id'] }}</span>
                                 @endif

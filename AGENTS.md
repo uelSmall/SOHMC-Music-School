@@ -135,6 +135,16 @@ Gotchas learned the hard way:
   SPF/DKIM, and matching `APP_URL`. The deploy guide's `smtp.mailtrap.io` is a
   *capture* service — real mail will never leave it.
 
+## Admin messaging (Sep 2026)
+
+- Admins can message students from `admin.messages.create` (sidebar "Send
+  Message"): one student, or `all_students` broadcast. Uses the existing
+  database-notification system — students see it in the bell (polls 30s).
+- `AdminMessage` notification (`title`, `message`, `from` keys) + optional
+  email via `AdminMessageMail` (plain HTML view `emails/admin-message` — no
+  `mail::` components). Always `via('database')`; email only when checked.
+- Sends go through `$student->notify(...)` — synchronous, no queue needed.
+
 ## Deploy
 
 - Hostinger auto-deploys the `feature/client-dashboard` branch. The user

@@ -190,6 +190,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'v
     Route::post('gallery/videos', [\App\Http\Controllers\Admin\GalleryController::class, 'storeVideo'])->name('gallery.store-video');
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
+    Route::get('messages/create', [\App\Livewire\Backend\Messages\SendMessage::class, '__invoke'])->name('messages.create');
     Route::get('bug-reports', [\App\Http\Controllers\BugReportController::class, 'index'])->name('bug-reports.index');
     Route::get('bug-reports/{report}', [\App\Http\Controllers\BugReportController::class, 'show'])->name('bug-reports.show');
     Route::patch('bug-reports/{report}', [\App\Http\Controllers\BugReportController::class, 'update'])->name('bug-reports.update');
