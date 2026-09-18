@@ -6,7 +6,9 @@ use App\Events\Frontend\UserRegistered;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -30,6 +32,16 @@ class Register extends Component
      */
     public function register(): void
     {
+        // A soft-deleted account still owns its email at the database level
+        // (users_email_unique is a full unique index), so the generic
+        // "email already taken" error would leave the person stuck with no
+        // explanation. Tell them what happened and how to get help instead.
+        if (User::onlyTrashed()->where('email', Str::lower($this->email))->exists()) {
+            throw ValidationException::withMessages([
+                'email' => __('This email belongs to a deactivated account. Please contact us so we can reactivate it.'),
+            ]);
+        }
+
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -37,9 +49,7 @@ class Register extends Component
             'role' => ['required', 'string', 'in:student,teacher,parent'],
         ]);
 
-        $validated['password'] = $validated['password'];
-
-        // Remove role from data that goes to User model (role is managed via Spatie)
+        // Role is handled via Spatie below, so keep it out of the User attributes.
         $userData = $validated;
         unset($userData['role']);
 

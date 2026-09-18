@@ -105,6 +105,36 @@ lessons.
   phones. dompdf lays out at ~744px, so those rules never affect the PDF.
 - The receipt logo comes from `receipt_logo_base64()` — the single source.
 
+## Registration & email verification
+
+Flow: `/register` (guest, gated by `USER_REGISTRATION`) → Livewire
+`Auth\Register` → user created + role assigned + student number → `Registered`
+event sends the framework `VerifyEmail` notification (signed link) → logged in
+but `verified` middleware holds them at `verification.notice` until they click.
+
+Gotchas learned the hard way:
+
+- **Verification link expiry** is `config('auth.verification.expire')`, set to
+  **120 minutes** (Laravel's 60 was too short). The signature is tied to the
+  full URL, so **`APP_URL` must exactly match the live domain** (scheme +
+  www/non-www) or every link 403s.
+- **Expired/invalid links are handled gracefully**: `bootstrap/app.php`
+  catches `InvalidSignatureException` for the `verification.verify` route and
+  redirects to `verification.notice` with status `verification-link-invalid`.
+  That is why the verify route must keep its name.
+- **Verification requires being logged in** (route is behind `auth`). Opening
+  the email on a different device/browser lands on `/login` first — expected.
+- **Soft-deleted emails can't re-register**: `users_email_unique` is a *full*
+  unique index, so a trashed row still owns its email. `Auth\Register` now
+  detects that and shows "deactivated account" guidance instead of the opaque
+  "already taken." A real fix (partial unique index + `whereNull('deleted_at')`
+  on the unique rule) needs a production migration and sign-off.
+- **Mail config is environment, not code.** Local `.env` is `MAIL_MAILER=log`
+  (nothing is sent — written to the log) and `APP_URL=http://localhost`. On
+  Hostinger verify `MAIL_MAILER=smtp`, a from-address on the real domain with
+  SPF/DKIM, and matching `APP_URL`. The deploy guide's `smtp.mailtrap.io` is a
+  *capture* service — real mail will never leave it.
+
 ## Deploy
 
 - Hostinger auto-deploys the `feature/client-dashboard` branch. The user

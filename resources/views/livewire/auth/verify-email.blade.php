@@ -9,6 +9,12 @@
         </div>
     @endif
 
+    @if (session("status") == "verification-link-invalid")
+        <div class="text-center font-medium text-amber-600! dark:text-amber-400!">
+            {{ __("That verification link has expired or is no longer valid. Send yourself a fresh one below.") }}
+        </div>
+    @endif
+
     <div class="flex flex-col items-center justify-between space-y-3">
         <x-frontend.link wire:click="sendVerification" class="w-full">
             {{ __("Resend verification email") }}

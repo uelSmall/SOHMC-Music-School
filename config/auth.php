@@ -101,6 +101,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Email Verification
+    |--------------------------------------------------------------------------
+    |
+    | How long (in minutes) an email verification link stays valid. Laravel's
+    | built-in default of 60 minutes proved too short for real users who only
+    | check their email later, so we allow two hours. Expired links now land on
+    | the "verify your email" screen with a clear message instead of a 403.
+    |
+    */
+
+    'verification' => [
+        'expire' => env('AUTH_VERIFICATION_EXPIRE', 120),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |

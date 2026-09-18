@@ -4,6 +4,8 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,5 +27,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // An expired or tampered email-verification link would otherwise show a
+        // bare 403 dead end. Send the user back to the "verify your email"
+        // screen so they can request a fresh link instead.
+        $exceptions->render(function (InvalidSignatureException $e, Request $request) {
+            if ($request->routeIs('verification.verify')) {
+                return redirect()
+                    ->route('verification.notice')
+                    ->with('status', 'verification-link-invalid');
+            }
+        });
     })->create();
