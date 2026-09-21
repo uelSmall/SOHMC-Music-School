@@ -28,6 +28,27 @@
                 @error('email') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
             </div>
 
+            <div class="rounded-xl border border-gray-200 p-4">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">Email Verification</p>
+                        @if($user->email_verified_at)
+                            <p class="mt-0.5 text-xs text-green-600">Verified {{ $user->email_verified_at->diffForHumans() }}.</p>
+                        @else
+                            <p class="mt-0.5 text-xs text-amber-600">Not verified yet.</p>
+                        @endif
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="checkbox" name="verified" value="1" {{ old('verified', $user->email_verified_at ? 1 : 0) ? 'checked' : '' }} class="rounded border-gray-300 text-[#A6128D] focus:ring-[#A6128D]/20" />
+                            Mark as verified
+                        </label>
+                        <a href="{{ route('backend.users.email-confirmation-resend', $user->id) }}" class="soh-btn-outline text-xs">Resend verification email</a>
+                    </div>
+                </div>
+                <p class="mt-2 text-xs text-gray-400">Two ways to un-stick a student: mark them verified right here, or resend a fresh link (valid for 2 hours).</p>
+            </div>
+
             <div>
                 <label for="mobile" class="mb-1 block text-sm font-medium text-gray-700">Phone Number <span class="text-xs font-normal text-gray-400">(optional — used for WhatsApp receipt delivery)</span></label>
                 <input type="tel" name="mobile" id="mobile" value="{{ old('mobile', $user->mobile) }}" placeholder="+1 (868) 000-0000" class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm transition focus:border-[#A6128D] focus:ring-2 focus:ring-[#A6128D]/20 focus:outline-none" />

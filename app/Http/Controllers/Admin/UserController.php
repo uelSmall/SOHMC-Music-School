@@ -102,6 +102,11 @@ class UserController extends Controller
         $roles = $validated['roles'] ?? [];
         unset($validated['roles']);
 
+        // Email verification toggle — "Mark as verified" checkbox on the edit form.
+        // Checkbox unchecked = absent, so a verified user stays verified because the
+        // form renders it checked unless the admin deliberately unchecks it.
+        $validated['email_verified_at'] = $request->boolean('verified') ? now() : null;
+
         $parents = $validated['parents'] ?? [];
         unset($validated['parents']);
 

@@ -237,12 +237,17 @@ QUEUE_CONNECTION=redis
 SESSION_DRIVER=redis
 
 # Production email settings
+# WARNING: do NOT use smtp.mailtrap.io here — that service only CAPTURES mail,
+# it never delivers it. Use your hosting provider's real SMTP relay and make
+# sure MAIL_FROM_ADDRESS is on the real domain with SPF/DKIM records set up.
 MAIL_MAILER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
+MAIL_HOST=smtp.your-hosting-provider.com
+MAIL_PORT=587
 MAIL_USERNAME=your_smtp_username
 MAIL_PASSWORD=your_smtp_password
 MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@your-domain.com
+MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 ### File System Configuration
