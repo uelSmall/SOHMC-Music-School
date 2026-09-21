@@ -397,6 +397,16 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     /**
+     * Invalidate the presenter's per-user roles cache so role reads reflect
+     * the pivot table, not a stale snapshot from before a role change.
+     */
+    public function clearRolesCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('roles_user_'.$this->id.'_never');
+        \Illuminate\Support\Facades\Cache::forget('roles_user_'.$this->id.'_'.\Illuminate\Support\Facades\Cache::get('spatie_permissions_last_updated', 'never'));
+    }
+
+    /**
      * Override getAllPermissions to use cached data.
      */
     public function getAllPermissions(): \Illuminate\Support\Collection

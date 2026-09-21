@@ -51,8 +51,21 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
+        // Raw pivot writes — Spatie's syncRoles can silently fail on the live
+        // schema (model_has_roles has no guard_name column), leaving a brand
+        // new user with no roles (AGENTS.md daybook, Sep 2026).
         if (! empty($roles)) {
-            $user->syncRoles($roles);
+            foreach ($roles as $roleName) {
+                $roleId = \DB::table('roles')->where('name', $roleName)->value('id');
+                if ($roleId) {
+                    \DB::table('model_has_roles')->insert([
+                        'role_id' => $roleId,
+                        'model_type' => User::class,
+                        'model_id' => $user->id,
+                    ]);
+                }
+            }
+
             $user->clearPermissionCache();
         }
 
@@ -69,7 +82,14 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::with('permissions')->get();
-        $userRoles = $user->roles->pluck('name')->toArray();
+        // Read roles straight from the pivot table — the presenter's cached
+        // accessor can serve stale role data after a role change (AGENTS.md).
+        $userRoles = \DB::table('model_has_roles')
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->where('model_has_roles.model_id', $user->id)
+            ->where('model_has_roles.model_type', User::class)
+            ->pluck('roles.name')
+            ->toArray();
         $parents = User::role('parent')->orderBy('name')->get();
         $userParents = $user->parents()->pluck('users.id')->map(fn ($id) => (int) $id)->toArray();
 
@@ -111,7 +131,32 @@ class UserController extends Controller
         unset($validated['parents']);
 
         $user->update($validated);
-        $user->syncRoles($roles);
+
+        // Roles are written straight to the pivot table. Spatie's syncRoles can
+        // silently detach roles without re-attaching on the live schema
+        // (model_has_roles has no guard_name column), leaving a user with no
+        // roles. Roles are only touched when the form actually submits them, so
+        // a save that isn't about roles can never wipe them.
+        if ($request->has('roles')) {
+            \DB::table('model_has_roles')
+                ->where('model_id', $user->id)
+                ->where('model_type', User::class)
+                ->delete();
+
+            foreach ($roles as $roleName) {
+                $roleId = \DB::table('roles')->where('name', $roleName)->value('id');
+                if ($roleId) {
+                    \DB::table('model_has_roles')->insert([
+                        'role_id' => $roleId,
+                        'model_type' => User::class,
+                        'model_id' => $user->id,
+                    ]);
+                }
+            }
+
+            $user->clearRolesCache();
+        }
+
         $user->clearPermissionCache();
 
         $user->parents()->sync($parents);

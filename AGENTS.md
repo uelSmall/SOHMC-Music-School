@@ -55,6 +55,15 @@ lessons.
   persist on the live DB. Use **raw `DB::table()` writes** for role/name
   changes. Role ids: 35=super admin, 36=administrator, 37=teacher,
   38=student, 39=parent.
+  - **Confirmed wipe (Sep 21, 2026)**: `syncRoles()` on the admin user edit
+    form ran `detach()` then failed to re-attach, leaving the user (id 82,
+    Kareema) with **zero** roles while the presenter's `roles_user_<id>_never`
+    cache still served "student" — so the edit form showed the role checked
+    while the users list/counts showed blank. `Admin\UserController@store` and
+    `@update` now write roles with raw `DB::table('model_has_roles')` inserts
+    and call `$user->clearRolesCache()` afterwards. `@update` only touches
+    roles when the form actually submits the `roles` field, so a non-role save
+    can never wipe them. `@edit` reads roles from the pivot, not the cache.
 - **Users**: `super@admin.com` = Uel Small (super admin, the owner).
   `admin@admin.com` = Malchiel Small (administrator + teacher, the developer).
 - **Admin route group** requires `role:administrator|super admin`. Only a
