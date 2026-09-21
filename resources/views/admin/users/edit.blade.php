@@ -43,7 +43,7 @@
                             <input type="checkbox" name="verified" value="1" {{ old('verified', $user->email_verified_at ? 1 : 0) ? 'checked' : '' }} class="rounded border-gray-300 text-[#A6128D] focus:ring-[#A6128D]/20" />
                             Mark as verified
                         </label>
-                        <a href="{{ route('backend.users.email-confirmation-resend', $user->id) }}" class="soh-btn-outline text-xs">Resend verification email</a>
+                        <a href="{{ route('backend.users.emailConfirmationResend', $user->id) }}" class="soh-btn-outline text-xs">Resend verification email</a>
                     </div>
                 </div>
                 <p class="mt-2 text-xs text-gray-400">Two ways to un-stick a student: mark them verified right here, or resend a fresh link (valid for 2 hours).</p>
