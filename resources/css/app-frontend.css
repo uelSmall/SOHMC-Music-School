@@ -35,11 +35,17 @@
 	display: none !important;
 }
 
-/* Tailwind v4 preflight leaves buttons at the browser-default arrow cursor;
-   restore the pointer hand for every actionable button site-wide. */
+/* Tailwind v4 preflight leaves interactive elements at the browser-default
+   arrow cursor; restore the pointer hand for every actionable control
+   site-wide: buttons, role="button" elements, labels that toggle/focus an
+   input, and checkbox/radio inputs themselves. */
 @layer base {
 	button:not([disabled]),
-	[role="button"]:not([disabled]) {
+	[role="button"]:not([disabled]),
+	label:has(> input),
+	label[for],
+	input[type="checkbox"]:not(:disabled),
+	input[type="radio"]:not(:disabled) {
 		cursor: pointer;
 	}
 }
