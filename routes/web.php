@@ -274,6 +274,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/bookings/{lesson}/reschedule-lesson', [\App\Http\Controllers\BookingController::class, 'rescheduleLesson'])
         ->name('bookings.reschedule-lesson')
         ->middleware('role:teacher|administrator');
+    Route::delete('/bookings/lessons/{lesson}', [\App\Http\Controllers\BookingController::class, 'destroyLesson'])
+        ->name('bookings.destroy-lesson')
+        ->middleware('role:teacher|administrator|super admin');
+    Route::delete('/bookings/requests/{lessonRequest}', [\App\Http\Controllers\BookingController::class, 'destroyRequest'])
+        ->name('bookings.destroy-request')
+        ->middleware('role:teacher|administrator|super admin');
 
     // Legacy student booking routes → 301 to unified
     Route::get('/student/booking-management', fn () => redirect()->route('bookings.index', [], 301));

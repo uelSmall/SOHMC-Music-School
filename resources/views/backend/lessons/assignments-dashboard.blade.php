@@ -133,6 +133,7 @@
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Due Date</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Messages</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700">Assigned</th>
+                        <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-700">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -174,10 +175,21 @@
                             <td class="px-6 py-4 text-sm text-gray-600">
                                 {{ $assignment->assigned_at->format('M d, Y') }}
                             </td>
+                            <td class="px-6 py-4 text-right">
+                                <button
+                                    type="button"
+                                    wire:click="deleteAssignment({{ $assignment->id }})"
+                                    wire:confirm="Delete this assignment for {{ $assignment->student?->name ?? 'this student' }}? The conversation and progress on '{{ $assignment->lesson?->title ?? 'this lesson' }}' will be permanently removed. There is no undo."
+                                    class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-red-600 transition-all hover:bg-red-50 hover:text-red-700"
+                                >
+                                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
+                            <td colspan="7" class="px-6 py-12 text-center">
                                 <p class="text-gray-500">No assignments yet. Click "Assign Lesson" to get started.</p>
                             </td>
                         </tr>

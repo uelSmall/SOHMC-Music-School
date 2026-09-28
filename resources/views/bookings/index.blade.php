@@ -283,6 +283,11 @@
                                                 @method('PATCH')
                                                 <button type="submit" class="rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700">Reject</button>
                                             </form>
+                                            <form method="POST" action="{{ route('bookings.destroy-request', $request) }}" onsubmit='return confirm(@js('Delete this booking request for '.($request->student?->name ?? 'this student').'? This permanently removes it. There is no undo.'))'>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="rounded-md border border-red-300 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Delete</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </article>
@@ -310,7 +315,7 @@
                                             <div class="text-sm text-gray-600">{{ $request->instrument?->name }}</div>
                                             <div class="text-sm text-gray-600">{{ $request->requested_date?->format('M d, Y') }} · {{ \Illuminate\Support\Carbon::parse($request->requested_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($request->requested_end_time)->format('g:i A') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $request) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                        @include('bookings.partials.booking-actions', ['item' => $request])
                                     </div>
                                 </article>
                             @empty
@@ -334,7 +339,7 @@
                                                 <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }}</div>
                                                 <div class="text-sm text-gray-600">{{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                             </div>
-                                            <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                            @include('bookings.partials.booking-actions', ['item' => $lesson])
                                         </div>
                                     </article>
                                 @empty
@@ -354,7 +359,7 @@
                                                 <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }}</div>
                                                 <div class="text-sm text-gray-600">{{ $lesson->lesson_date?->format('M d, Y') }} · {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                             </div>
-                                            <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                            @include('bookings.partials.booking-actions', ['item' => $lesson])
                                         </div>
                                     </article>
                                 @empty
@@ -380,7 +385,7 @@
                                             <div class="font-semibold text-black">{{ $lesson->student?->name }}</div>
                                             <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }} · {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                        @include('bookings.partials.booking-actions', ['item' => $lesson])
                                     </div>
                                 </article>
                             @empty
@@ -405,7 +410,7 @@
                                             <div class="font-semibold text-black">{{ $lesson->student?->name }}</div>
                                             <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }} · {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                        @include('bookings.partials.booking-actions', ['item' => $lesson])
                                     </div>
                                 </article>
                             @empty
@@ -455,7 +460,9 @@
                                                 @endphp
                                                 <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $sc }}">{{ $lesson->status->label() }}</span>
                                             </td>
-                                            <td class="px-3 py-4"><a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium">View</a></td>
+                                            <td class="px-3 py-4">
+                                                @include('bookings.partials.booking-actions', ['item' => $lesson, 'variant' => 'outline'])
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr><td colspan="7" class="px-3 py-8 text-center text-gray-500">No bookings found.</td></tr>
@@ -481,7 +488,7 @@
                                                     <div class="font-semibold text-black">{{ $lesson->student?->name }} &rarr; {{ $lesson->teacher?->name }}</div>
                                                     <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }} · {{ $lesson->lesson_date?->format('M d, Y') }} · {{ \Illuminate\Support\Carbon::parse($lesson->lesson_start_time)->format('g:i A') }} - {{ \Illuminate\Support\Carbon::parse($lesson->lesson_end_time)->format('g:i A') }}</div>
                                                 </div>
-                                                <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                                @include('bookings.partials.booking-actions', ['item' => $lesson])
                                             </div>
                                         </article>
                                     @endforeach
@@ -509,7 +516,7 @@
                                             <div class="font-semibold text-black">{{ $lesson->student?->name }} &rarr; {{ $lesson->teacher?->name }}</div>
                                             <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }} · {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                        @include('bookings.partials.booking-actions', ['item' => $lesson])
                                     </div>
                                 </article>
                             @empty
@@ -534,7 +541,7 @@
                                             <div class="font-semibold text-black">{{ $lesson->student?->name }} &rarr; {{ $lesson->teacher?->name }}</div>
                                             <div class="text-sm text-gray-600">{{ $lesson->instrument?->name }} · {{ $lesson->lesson_date?->format('M d, Y') }}</div>
                                         </div>
-                                        <a href="{{ route('bookings.show', $lesson) }}" class="soh-link text-sm font-medium whitespace-nowrap">View</a>
+                                        @include('bookings.partials.booking-actions', ['item' => $lesson])
                                     </div>
                                 </article>
                             @empty

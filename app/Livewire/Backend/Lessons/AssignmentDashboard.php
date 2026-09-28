@@ -32,6 +32,29 @@ class AssignmentDashboard extends Component
         $this->reset(['commentAssignmentId', 'commentBody']);
     }
 
+    public function deleteAssignment(int $assignmentId): void
+    {
+        // Teachers are scoped to their own lessons via scopeToOwnOrAll().
+        $assignment = LessonStudentAssignment::query()
+            ->with(['lesson:id,title', 'student:id,name'])
+            ->where(function ($query) {
+                $this->scopeToOwnOrAll($query);
+            })
+            ->findOrFail($assignmentId);
+
+        $label = ($assignment->lesson?->title ?? 'Assignment').' — '.($assignment->student?->name ?? 'student');
+
+        // Comment threads are removed by the FK cascade on
+        // lesson_assignment_comments.lesson_student_assignment_id.
+        $assignment->delete();
+
+        if ($this->commentAssignmentId === $assignmentId) {
+            $this->reset(['commentAssignmentId', 'commentBody']);
+        }
+
+        $this->dispatch('notify', message: "Assignment deleted: {$label}.", type: 'success');
+    }
+
     public function saveComment(): void
     {
         $this->validate([

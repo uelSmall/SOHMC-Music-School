@@ -457,6 +457,60 @@ class BookingController extends Controller
             ]);
     }
 
+    /**
+     * Permanently delete a confirmed lesson booking. Deleting the linked
+     * LessonRequest cascades the BookedLesson via the lesson_requests →
+     * booked_lessons FK, so the whole chain is removed.
+     *
+     * Separate route from destroyRequest() on purpose: the two tables have
+     * independent id sequences, so a single {booking} route could resolve to
+     * the wrong record.
+     */
+    public function destroyLesson(Request $request, BookedLesson $lesson): RedirectResponse
+    {
+        $this->authorize('manage', $lesson);
+
+        $label = trim(($lesson->student?->name ?? 'a student').' — '.($lesson->instrument?->name ?? 'lesson'));
+
+        DB::transaction(function () use ($lesson): void {
+            if ($lesson->lessonRequest) {
+                $lesson->lessonRequest->delete();
+            } else {
+                $lesson->delete();
+            }
+        });
+
+        log_activity('deleted a booking for '.($lesson->student?->name ?? 'a student'), null, null, 'default', $request->user());
+
+        return redirect()
+            ->route('bookings.index')
+            ->with('notify', [
+                'message' => 'Booking deleted: '.$label.'.',
+                'type' => 'success',
+            ]);
+    }
+
+    /**
+     * Permanently delete a lesson request (pending/rescheduled). Cascades the
+     * linked BookedLesson when one exists.
+     */
+    public function destroyRequest(Request $request, LessonRequest $lessonRequest): RedirectResponse
+    {
+        $this->authorize('update', $lessonRequest);
+
+        $label = trim(($lessonRequest->student?->name ?? 'a student').' — '.($lessonRequest->instrument?->name ?? 'lesson'));
+        $lessonRequest->delete();
+
+        log_activity('deleted a booking request from '.($lessonRequest->student?->name ?? 'a student'), null, null, 'default', $request->user());
+
+        return redirect()
+            ->route('bookings.index')
+            ->with('notify', [
+                'message' => 'Booking deleted: '.$label.'.',
+                'type' => 'success',
+            ]);
+    }
+
     private function studentIndex(Request $request): View
     {
         $studentId = (int) $request->user()->id;
