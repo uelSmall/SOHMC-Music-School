@@ -35,6 +35,15 @@
 	display: none !important;
 }
 
+/* Tailwind v4 preflight leaves buttons at the browser-default arrow cursor;
+   restore the pointer hand for every actionable button site-wide. */
+@layer base {
+	button:not([disabled]),
+	[role="button"]:not([disabled]) {
+		cursor: pointer;
+	}
+}
+
 body {
 	font-family: var(--soh-font-body);
 	background: var(--soh-surface);
